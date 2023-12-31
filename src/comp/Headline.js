@@ -1,4 +1,6 @@
 import react from 'react';
+import '../styles/Headline.css';
+
 const Headline = () => { return (
 
 <div>
