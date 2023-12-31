@@ -1,0 +1,15 @@
+.navbar {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+}
+
+.navbar-brand {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.navbar-brand:hover {
+  color: #0056b3;
+}
