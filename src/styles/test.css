@@ -1,0 +1,18 @@
+.testimonial-carousel-container {
+  width: 80%;
+  margin: auto;
+}
+
+.testimonial-item {
+  text-align: center;
+  padding: 20px;
+}
+
+.quote {
+  font-style: italic;
+  margin-bottom: 10px;
+}
+
+.author {
+  font-weight: bold;
+}

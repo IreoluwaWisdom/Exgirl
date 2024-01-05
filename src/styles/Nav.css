@@ -7,9 +7,10 @@
 .navbar-brand {
   color: blue;
   text-decoration: none;
-  font-weight: bold;
+  
   padding: 100vh;
   margin: 0;
+  font-size: 2em;
 }
 
 .navbar-brand:hover {
