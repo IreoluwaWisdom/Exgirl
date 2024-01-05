@@ -11,7 +11,7 @@ const RestaurantMenu = () => {
   ];
 
   return (
-    <div className="menu-container">
+    <div id="restaurantMenu" className="menu-container">
       <div className="menu-scroll">
         {menuItems.map((item, index) => (
           <div key={index} className="menu-item">

@@ -1,0 +1,15 @@
+
+
+.order-now-button {
+  background-color: #ff6347; /* Coral color, you can customize */
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+
+.order-now-button:hover {
+  background-color: #ff4500; /* Darker shade on hover, you can customize */
+}

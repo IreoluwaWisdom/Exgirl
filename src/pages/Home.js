@@ -3,6 +3,7 @@ import Headline from '../comp/Headline';
 import RestaurantMenu from '../comp/RestaurantMenu'
 import Welcome from '../comp/Welcome'
 import TestimonialCarousel from '../comp/TestimonialCarousel';
+import OrderNowButton from '../comp/OrderNowButton'
 
 const Home = () => {
 	
@@ -11,7 +12,8 @@ const Home = () => {
       <Headline/>
       <h1>Home</h1>
       <Welcome/>
-      <RestaurantMenu/>
+      <RestaurantMenu name = 'restaurantMenu'/>
+      <OrderNowButton/>
      <TestimonialCarousel />
     </div>
   );
