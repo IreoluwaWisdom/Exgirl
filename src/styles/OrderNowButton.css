@@ -8,6 +8,7 @@
   cursor: pointer;
   border: none;
   border-radius: 5px;
+  margin-top: 30vh;
 }
 
 .order-now-button:hover {

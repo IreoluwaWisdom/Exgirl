@@ -5,9 +5,12 @@ import '../styles/OrderNowButton.css'
 const OrderNowButton = () => {
   return (
     <Link to="restaurantMenu" smooth={true} duration={500}>
-      <button className="order-now-button">Order Now</button>
+      <button className="order-now-button" 
+      style = {{marginTop:'15vh'}}
+      >Order Now</button>
     </Link>
   );
 };
 
 export default OrderNowButton;
+

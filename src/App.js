@@ -22,6 +22,7 @@ import Rice from './items/Rice';
 import Semo from './items/Semo';
 import Sharwarma from './items/Sharwarma';
 import Spaghetti from './items/Spaghetti'
+import SignUp from './comp/SignUp'
 
 
 
@@ -57,7 +58,8 @@ const App = () => {
         <Route path = "/menu/semo" element = {<Semo/>} />
         <Route path = "/menu/sharwarma" element = {<Sharwarma/>} />
         <Route path = "/menu/spaghetti" element = {<Spaghetti/>} />
-        
+        <Route path = "/sign-up" element = {<SignUp/>} />
+
         </Routes>
 
 </Router>
