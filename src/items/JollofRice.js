@@ -5,7 +5,7 @@ const JollofRice = () => {
   return (
     <div>
       <h1>Jollof Rice</h1>
-      <QuantitySelector/>
+      <QuantitySelector itemName="Jollof Rice"/>
     </div>
   );
 };

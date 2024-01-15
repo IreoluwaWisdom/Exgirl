@@ -7,7 +7,7 @@ const FriedChicken = () => {
   return (
     <div>
       <h1>Fried Chicken</h1>
-      <QuantitySelector/>
+      <QuantitySelector itemName="Fried Chicken"/>
     </div>
   );
 };

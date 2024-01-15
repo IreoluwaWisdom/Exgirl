@@ -29,6 +29,8 @@ import SignUp from './comp/SignUp'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
+
+    
   return (
 
 

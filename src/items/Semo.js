@@ -7,7 +7,7 @@ const Semo = () => {
   return (
     <div>
       <h1>Semo and Efo Riro</h1>
-      <QuantitySelector/>
+      <QuantitySelector itemName="Semo and Efo Riro"/>
     </div>
   );
 };

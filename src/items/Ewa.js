@@ -6,7 +6,7 @@ const Ewa = () => {
   return (
     <div>
       <h1>Ewa agoyin and bread</h1>
-      <QuantitySelector/>
+      <QuantitySelector itemName="Ewa agoyin and bread"/>
     </div>
   );
 };

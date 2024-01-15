@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
-import { getFirestore, collection, addDoc } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, collection, addDoc } from 'firebase/firestore';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -31,8 +31,10 @@ const SignUp = () => {
     };
 
     // Add user details to Firestore
-    const userRef = await addDoc(collection(db, 'users'), userDetails);
+    const userRef = doc(collection(db, 'users'), email);
 
+  // Set user details in Firestore
+  await setDoc(userRef, userDetails);
     // Provide feedback to the user
     console.log(`Verification email sent to ${userCredential.user.email}`);
     console.log('User details stored in Firestore with ID:', userRef.id);

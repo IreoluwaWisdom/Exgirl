@@ -7,7 +7,7 @@ const Fish = () => {
   return (
     <div>
       <h1>Fish and Meat Sauce</h1>
-      <QuantitySelector/>
+      <QuantitySelector itemName="Fish and Meat Sauce"/>
     </div>
   );
 };

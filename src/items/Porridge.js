@@ -7,7 +7,7 @@ const Porridge = () => {
   return (
     <div>
       <h1>Porridge</h1>
-      <QuantitySelector/>
+      <QuantitySelector itemName="Porridge"/>
     </div>
   );
 };

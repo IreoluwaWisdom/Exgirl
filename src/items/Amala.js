@@ -6,7 +6,7 @@ const Amala = () => {
   return (
     <div>
       <h1>Amala and Ewedu</h1>
-      <QuantitySelector/>
+      <QuantitySelector itemName="Amala and Ewedu" itemPrice = '5000' />
     </div>
   );
 };

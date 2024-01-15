@@ -7,7 +7,7 @@ const Pando = () => {
   return (
     <div>
       <h1>Pando Yam with Efo riro</h1>
-      <QuantitySelector/>
+      <QuantitySelector itemName="Pando Yam with Efo riro"/>
     </div>
   );
 };
