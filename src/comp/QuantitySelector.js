@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { collection, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../config/firebaseConfig';
 
-const QuantitySelector = ({itemName}, {itemPrice}) => {
+const QuantitySelector = ({itemName, itemPrice}) => {
    const { currentUser } = useAuth();
   const [quantity, setQuantity] = useState(1);
 
@@ -20,7 +20,8 @@ const QuantitySelector = ({itemName}, {itemPrice}) => {
 
   const addToCart = async () => {
   if (currentUser) {
-    try {
+
+try{
       const userRef = doc(collection(db, 'users'), currentUser.email);
       const userDoc = await getDoc(userRef);
 

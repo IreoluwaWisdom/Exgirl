@@ -2,14 +2,19 @@ const testimonials = [
   {
     id: 1,
     author: 'Ireoluwa Olukayode',
-    quote: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    quote: 'This place is just the best',
   },
   {
     id: 2,
-    author: 'Jane Smith',
-    quote: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+    author: 'Pastor Doyin',
+    quote: 'You dont want to try another restaurant!',
   },
-  // Add more testimonials as needed
+   {
+    id: 3,
+    author: 'Customer',
+    quote: 'I totally forgot about my ex',
+  }
+  // Add m,ore testimonials as needed
 ];
 
 export default testimonials;

@@ -6,6 +6,7 @@ import Menu from './pages/Menu';
 import Cart from './pages/Cart';
 import Support from './pages/Support';
 import Profile from './pages/Profile';
+import Checkout from './pages/Checkout';
 import JollofRice from './items/JollofRice';
 import Amala from './items/Amala';
 import Chicken from './items/Chicken';
@@ -23,7 +24,6 @@ import Semo from './items/Semo';
 import Sharwarma from './items/Sharwarma';
 import Spaghetti from './items/Spaghetti'
 import SignUp from './comp/SignUp'
-
 
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -44,6 +44,7 @@ const App = () => {
         <Route path = "/cart" element = {<Cart/>} />
         <Route path = "/support" element = {<Support/>} />
         <Route path = "/profile" element = {<Profile/>} />
+        <Route path = "/checkout" element = {<Checkout/>} />
         <Route path = "/menu/jollof-rice" element = {<JollofRice/>} />
         <Route path = "/menu/amala" element = {<Amala/>} />
         <Route path = "/menu/chicken" element = {<Chicken/>} />
