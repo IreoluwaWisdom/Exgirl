@@ -59,27 +59,27 @@ const SignUp = () => {
       <form onSubmit={handleSignUp}>
         <label>
           Email:
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <input type="email" value={email}  onChange={(e) => setEmail(e.target.value)} required />
         </label>
         <br />
         <label>
           Password:
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required/>
         </label>
         <br />
         <label>
           Username:
-          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required/>
         </label>
         <br />
         <label>
           Phone Number:
-          <input type="tel" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
+          <input type="tel" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} required/>
         </label>
         <br />
         <label>
           Date of Birth:
-          <input type="date" value={dob} onChange={(e) => setDOB(e.target.value)} />
+          <input type="date" value={dob} onChange={(e) => setDOB(e.target.value)} required/>
         </label>
         <br />
         <button type="submit">Sign Up</button>

@@ -36,54 +36,112 @@ const Cart = ({ user }) => {
   const fetchCart = async (currentUser) => {
     try {
       if (!currentUser || !currentUser.email) {
-        console.log('none');
+        console.log('No user or email found.');
         return;
       }
 
       const userRef = doc(db, 'users', currentUser.email);
-      const userDoc = await getDoc(userRef);
+      let cartDataFromFirestore = {};
 
-      if (userDoc.exists()) {
-        const userData = userDoc.data();
-        setCart(userData.cart || {});
-
-        // Fetch prices from 'menu' collection
-        const pricesPromises = Object.keys(userData.cart || {}).map(async (itemName) => {
-          const menuDoc = await getDoc(doc(db, 'menu', itemName));
-          if (menuDoc.exists()) {
-            const price = menuDoc.data().price || 0;
-            return { itemName, price, quantity: userData.cart[itemName] || 0 };
-          }
-          return null;
-        });
-
-        const itemsWithPrices = (await Promise.all(pricesPromises)).filter(Boolean);
-
-        // Calculate total price
-        const total = itemsWithPrices.reduce((acc, { price, quantity }) => acc + price * quantity, 0);
-        setTotalPrice(total);
-
-        // Update Firestore with total price
-        await setDoc(userRef, { totalPrice: total }, { merge: true });
-
-        // Update state with items and prices
-        setItemsWithPrices(itemsWithPrices);
+      try {
+        // Attempt to fetch cart data from Firestore
+        const userDoc = await getDoc(userRef);
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          cartDataFromFirestore = userData.cart || {};
+        }
+      } catch (firestoreError) {
+        console.error('Error fetching cart data from Firestore:', firestoreError);
       }
+
+      // Get cart data from local storage
+      const cartDataFromLocalStorage = JSON.parse(localStorage.getItem('cart')) || {};
+
+      // Merge cart data from local storage with the latest data from Firestore
+      const mergedCartData = { ...cartDataFromLocalStorage, ...cartDataFromFirestore };
+
+      // Update local storage with the merged cart data
+      localStorage.setItem('cart', JSON.stringify(mergedCartData));
+
+      setCart(mergedCartData);
+
+      // Fetch prices from 'menu' collection
+      const pricesPromises = Object.keys(mergedCartData).map(async (itemName) => {
+        const menuDoc = await getDoc(doc(db, 'menu', itemName));
+        if (menuDoc.exists()) {
+          const price = menuDoc.data().price || 0;
+          return { itemName, price, quantity: mergedCartData[itemName] || 0 };
+        }
+        return null;
+      });
+
+      const itemsWithPrices = (await Promise.all(pricesPromises)).filter(Boolean);
+
+      // Calculate total price
+      const total = itemsWithPrices.reduce((acc, { price, quantity }) => acc + price * quantity, 0);
+      setTotalPrice(total);
+
+      // Update Firestore with total price (if there's internet connection)
+      if (navigator.onLine && Object.keys(cartDataFromFirestore).length > 0) {
+        await setDoc(userRef, { cart: mergedCartData, totalPrice: total }, { merge: true });
+      }
+
+      // Update state with items and prices
+      setItemsWithPrices(itemsWithPrices);
     } catch (error) {
       console.error('Error fetching cart:', error);
+    }
+  };
+
+  const increaseQuantity = (itemName) => {
+    const updatedCart = { ...cart, [itemName]: (cart[itemName] || 0) + 1 };
+    updateCart(updatedCart);
+  };
+
+  const decreaseQuantity = (itemName) => {
+    if (cart[itemName] > 1) {
+      const updatedCart = { ...cart, [itemName]: cart[itemName] - 1 };
+      updateCart(updatedCart);
+    }
+  };
+
+  const removeItem = (itemName) => {
+    const updatedCart = { ...cart };
+    delete updatedCart[itemName];
+    updateCart(updatedCart);
+  };
+
+  const updateCart = (updatedCart) => {
+    // Update local storage
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+
+    // Update state with the updated cart
+    setCart(updatedCart);
+
+    // Recalculate total price
+    const total = itemsWithPrices.reduce((acc, { price, quantity }) => acc + price * quantity, 0);
+    setTotalPrice(total);
+
+    // Update Firestore with total price (if there's internet connection)
+    if (navigator.onLine) {
+      const userRef = doc(db, 'users', currentUser.email);
+      setDoc(userRef, { cart: updatedCart, totalPrice: total }, { merge: true });
     }
   };
 
   return (
     <div>
       <h2>Your Cart</h2>
-      {itemsWithPrices.map(({ itemName, price, quantity }) => (
+      {Object.keys(cart).map((itemName) => (
         <div key={itemName}>
-          <p>{itemName}: {quantity} (Price per item: ${price})</p>
-          {/* Add edit functionality if needed */}
+          <p>
+            {itemName}: {cart[itemName]} (Price per item: ${itemsWithPrices.find((item) => item.itemName === itemName)?.price})
+            <button onClick={() => increaseQuantity(itemName)}>+</button>
+            <button onClick={() => decreaseQuantity(itemName)}>-</button>
+            <button onClick={() => removeItem(itemName)}>Remove</button>
+          </p>
         </div>
       ))}
-
       <p>Total Price: ${totalPrice.toFixed(2)}</p>
       <Link to="/checkout">
         <button>Proceed to Checkout</button>

@@ -4,6 +4,9 @@ import RestaurantMenu from '../comp/RestaurantMenu'
 import Welcome from '../comp/Welcome'
 import TestimonialCarousel from '../comp/TestimonialCarousel';
 import OrderNowButton from '../comp/OrderNowButton'
+import HowItWorks from '../comp/HowItWorks';
+import Footer from '../comp/Footer';
+
 
 const Home = () => {
 	
@@ -15,6 +18,8 @@ const Home = () => {
       <RestaurantMenu name = 'restaurantMenu'/>
       <OrderNowButton/>
      <TestimonialCarousel />
+     <HowItWorks/>
+     <Footer/>
     </div>
   );
 };

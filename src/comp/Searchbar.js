@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import rice from '../assets/rice.jpg';
+
 
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [listItems, setListItems] = useState([
-    { text: 'Jollof Rice', link: '/menu/jollof-rice' },
+    { text: 'Jollof Rice', link: '/menu/jollof-rice', image: rice, description: 'Delicious rice dish with tomatoes and spices.' },
     { text: 'Fried Rice', link: '/menu/fried-rice' },
     { text: 'Ewa Agoyin and Bread', link: '/menu/ewa' },
     { text: 'Noodles and Egg', link: '/menu/noodles' },
@@ -31,7 +33,7 @@ const SearchBar = () => {
     item.text.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  return (
+ return (
     <div>
       <input
         type="text"
@@ -40,17 +42,19 @@ const SearchBar = () => {
         onChange={handleSearch}
         className ='d-flex justify-content-center mx-auto'
         style = {{width: '80vw', margin: '0', borderRadius: '20px', marginBottom: '1.5vh'}}
-
       />
       <h6 style = {{marginLeft:'3vw'}}> Meals </h6>
-      
-        {filteredList.map((item, index) => (
-          <div key={index} style = {{ textDecoration : 'none', color: 'black', marginLeft: '6vw'}} >
-            <Link to={item.link} style = {{ textDecoration : 'none', color: 'black'}}>{item.text}</Link>
+
+      {filteredList.map((item, index) => (
+        <div key={index} style = {{ textDecoration : 'none', color: 'black', marginLeft: '6vw'}} >
+          <Link to={item.link} style = {{ textDecoration : 'none', color: 'black'}}>
+            <img src={item.image} alt={item.text} style={{ width: '50px', height: '50px', marginRight: '8px' }} />
+            {item.text}
+          </Link>
+          <p>{item.description}</p>
           <hr/>
-          </div>
-        ))}
-      
+        </div>
+      ))}
     </div>
   );
 };

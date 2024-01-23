@@ -6,6 +6,9 @@ import Menu from './pages/Menu';
 import Cart from './pages/Cart';
 import Support from './pages/Support';
 import Profile from './pages/Profile';
+import Account from './pages/Account';
+import SignUpPage from './pages/SignUpPage';
+import SignInPage from './pages/SignInPage';
 import Checkout from './pages/Checkout';
 import JollofRice from './items/JollofRice';
 import Amala from './items/Amala';
@@ -23,7 +26,8 @@ import Rice from './items/Rice';
 import Semo from './items/Semo';
 import Sharwarma from './items/Sharwarma';
 import Spaghetti from './items/Spaghetti'
-import SignUp from './comp/SignUp'
+import SignUp from './comp/SignUp';
+
 
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -45,6 +49,9 @@ const App = () => {
         <Route path = "/support" element = {<Support/>} />
         <Route path = "/profile" element = {<Profile/>} />
         <Route path = "/checkout" element = {<Checkout/>} />
+        <Route path = "/account" element = {<Account/>} />
+        <Route path = "/sign-up" element = {<SignUpPage/>} />
+        <Route path = "/sign-in" element = {<SignInPage/>} />
         <Route path = "/menu/jollof-rice" element = {<JollofRice/>} />
         <Route path = "/menu/amala" element = {<Amala/>} />
         <Route path = "/menu/chicken" element = {<Chicken/>} />

@@ -25,7 +25,8 @@ const Checkout = () => {
         if (userDoc.exists()) {
           const userData = userDoc.data();
           const totalPrice = userData.totalPrice || 0;
- const cart = userData.cart || {};
+          const cart = userData.cart || {};
+
           // Update Firestore subdocument with checkout information
           await updateDoc(userRef, {
             checkout: {
@@ -53,6 +54,14 @@ const Checkout = () => {
               // After successful payment, update Firestore with 'paid' status, move items to 'order' subdocument
               updateFirestoreAfterPayment(userRef, cart);
             },
+
+            onClose: function(data) {
+              // Implement what should happen when the modal is closed here
+              console.log(data);
+              // Redirect to the homepage
+              window.location.href = "/checkout";
+            },
+
             // ... other Monnify callback functions
           });
 
@@ -78,15 +87,13 @@ const Checkout = () => {
     }
   };
 
- 
-
   return (
     <div>
       <h2>Checkout</h2>
       <form>
         <label>
           Time to be Delivered:
-          <input type="text" value={deliveryTime} onChange={(e) => setDeliveryTime(e.target.value)} />
+          <input type="text" value={deliveryTime} onChange={(e) => setDeliveryTime(e.target.value)} required/>
         </label>
         <br />
         <label>

@@ -1,12 +1,14 @@
-// AuthContext.js
-
 import React, { useContext, useState, useEffect } from 'react';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 
 const AuthContext = React.createContext();
 
 export const useAuth = () => {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 };
 
 export const AuthProvider = ({ children }) => {
@@ -24,6 +26,14 @@ export const AuthProvider = ({ children }) => {
 
   const value = {
     currentUser,
+    signOut: async () => {
+      try {
+        await signOut(auth);
+      } catch (error) {
+        console.error('Sign-out error:', error.message);
+        // Handle the error, e.g., show an error message to the user
+      }
+    },
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
