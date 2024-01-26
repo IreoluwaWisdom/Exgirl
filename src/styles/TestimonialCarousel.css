@@ -1,6 +1,8 @@
 .testimonial-carousel-container {
-  width: 80%;
+  width: 50vw;
   margin: auto;
+  background-color: #FFFDD0;
+  border-radius: 25px;
 }
 
 .testimonial-item {

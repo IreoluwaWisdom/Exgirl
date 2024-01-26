@@ -6,7 +6,7 @@ const OrderNowButton = () => {
   return (
     <Link to="restaurantMenu" smooth={true} duration={500}>
       <button className="order-now-button" 
-      style = {{marginTop:'15vh'}}
+      style = {{marginTop:'15vh', marginRight:'auto', marginLeft:'auto'}}
       >Order Now</button>
     </Link>
   );

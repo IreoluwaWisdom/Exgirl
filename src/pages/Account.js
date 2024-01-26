@@ -1,6 +1,8 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import SignUpButton from '../Buttons/SignUpButton';
+import SignInButton from '../Buttons/SignInButton';
 import Continuing from '../Texts/Continuing';
 import UserDetails from '../comp/UserDetails';
 import QuantitySelector from '../comp/QuantitySelector';
@@ -22,7 +24,7 @@ const Account = () => {
 
   return (
     <div>
-      <h1>Account</h1>
+      Account
       {currentUser ? (
         <>
           <UserDetails userData={currentUser} />
@@ -31,8 +33,10 @@ const Account = () => {
       ) : (
         <>
           <h5>You are using Guest Mode</h5>
+          <SignInButton/>
           <SignUpButton />
           <Continuing />
+          Need Help? Chat with Perry
         </>
       )}
     </div>
