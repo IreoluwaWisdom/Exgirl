@@ -63,7 +63,8 @@ const SignIn = () => {
         // You can use localStorage.setItem or your preferred state management technique
         console.log('User Data:', userData);
       } else {
-        setErrorMessage('User data not found in Firestore.');
+        setErrorMessage('User data not found 
+An error occured');
       }
 
       // Handle successful sign-in, e.g., redirect the user or update state
