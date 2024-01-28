@@ -4,15 +4,14 @@ import {
   signInWithEmailAndPassword,
   setPersistence,
   browserLocalPersistence,
-  sendEmailVerification,
 } from 'firebase/auth';
-import { getFirestore, collection, doc, where, query, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userData, setUserData] = useState(null);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     const auth = getAuth();
@@ -42,7 +41,7 @@ const SignIn = () => {
       const isEmailVerified = userCredential.user.emailVerified;
 
       if (!isEmailVerified) {
-        setErrorMessage('Email not verified. Please check your email for a verification link.');
+        setMessage('Email not verified. Please check your email for a verification link.');
         return;
       }
 
@@ -59,19 +58,21 @@ const SignIn = () => {
         // Set user data in state
         setUserData(userData);
 
+        // Reset message state
+        setMessage('');
+
         // Store user data locally, e.g., in state or local storage
         // You can use localStorage.setItem or your preferred state management technique
         console.log('User Data:', userData);
       } else {
-        setErrorMessage('User data not found 
-An error occured');
+        setMessage('User data not found. An error occurred.');
       }
 
       // Handle successful sign-in, e.g., redirect the user or update state
       console.log('Signed in:', userCredential.user.email);
     } catch (error) {
       console.error('Sign-in error:', error.code, error.message);
-      setErrorMessage('Invalid email or password. Please try again.');
+      setMessage('Invalid email or password. Please try again.');
     }
   };
 
@@ -92,8 +93,8 @@ An error occured');
         <button type="submit">Sign In</button>
       </form>
 
-      {/* Display error message */}
-      {errorMessage && <p>{errorMessage}</p>}
+      {/* Display message */}
+      {message && <p>{message}</p>}
 
       {/* Display user data */}
       {userData && (
