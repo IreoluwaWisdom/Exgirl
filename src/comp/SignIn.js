@@ -12,6 +12,7 @@ const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userData, setUserData] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     const auth = getAuth();
@@ -41,7 +42,7 @@ const SignIn = () => {
       const isEmailVerified = userCredential.user.emailVerified;
 
       if (!isEmailVerified) {
-        console.log('Email not verified. Please check your email for a verification link.');
+        setErrorMessage('Email not verified. Please check your email for a verification link.');
         return;
       }
 
@@ -62,14 +63,14 @@ const SignIn = () => {
         // You can use localStorage.setItem or your preferred state management technique
         console.log('User Data:', userData);
       } else {
-        console.log('User data not found in Firestore.');
+        setErrorMessage('User data not found in Firestore.');
       }
 
       // Handle successful sign-in, e.g., redirect the user or update state
       console.log('Signed in:', userCredential.user.email);
     } catch (error) {
       console.error('Sign-in error:', error.code, error.message);
-      // Handle the error, e.g., show an error message to the user
+      setErrorMessage('Invalid email or password. Please try again.');
     }
   };
 
@@ -89,6 +90,9 @@ const SignIn = () => {
         <br />
         <button type="submit">Sign In</button>
       </form>
+
+      {/* Display error message */}
+      {errorMessage && <p>{errorMessage}</p>}
 
       {/* Display user data */}
       {userData && (
