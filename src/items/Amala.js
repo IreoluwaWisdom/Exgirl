@@ -1,6 +1,6 @@
 import React from "react";
 import QuantitySelector from '../comp/QuantitySelector';
-
+import Next from '../comp/Next';
 
 const Amala = () => {
   return (
@@ -8,6 +8,7 @@ const Amala = () => {
       <h1>Amala and Ewedu</h1>
       <QuantitySelector itemName="Amala and Ewedu" itemPrice = '5000' />
     </div>
+<div> <Next/> </div>
   );
 };
 export default Amala;
