@@ -1,25 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai'; // Import heart icons
 import '../styles/RestaurantMenu.css'; 
-import rice from '../assets/rice.jpg';
-import jollofrice from '../assets/jollof-rice.jpg';
 import amala from '../assets/amala.jpg';
-import friedrice from '../assets/fried-rice.jpg';
-import ewa from '../assets/ewa.jpg';
-import noodles from '../assets/noodles.jpg';
-import porridge from '../assets/porridge.jpg';
-import chicken from '../assets/chicken.jpg';
-import shawarma from '../assets/sharwarma.jpg';
-import spaghetti from '../assets/spaghetti.jpg';
 import semo from '../assets/semo.jpg';
 import fufu from '../assets/fufu.jpg';
 import pando from '../assets/pando.jpg';
-import grilledchicken from '../assets/grilled-chicken.jpg';
-import friedchicken from '../assets/fried-chicken.jpg';
-import fish from '../assets/fish.jpg';
 
 const SwallowMenu = () => {
+  const [isVisible, setIsVisible] = useState(false);
   const [hoveredItem, setHoveredItem] = useState(null);
   const [favorites, setFavorites] = useState([]);
+  const menuItemRefs = useRef([]);
 
   const menuItems = [
     { name: 'Semo and Efo Riro', price: '₦15', description: 'Delicious Semo served with Efo Riro stew.', image: semo },
@@ -28,6 +19,28 @@ const SwallowMenu = () => {
     { name: 'Amala and Ewedu', price: '₦15', description: 'Authentic Amala served with Ewedu soup.', image: amala },
     // Add more items as needed
   ];
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    menuItemRefs.current.forEach((ref) => {
+      observer.observe(ref);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   const handleHover = (index) => {
     setHoveredItem(index);
@@ -52,17 +65,18 @@ const SwallowMenu = () => {
             className="menu-item" 
             onMouseEnter={() => handleHover(index)}
             onMouseLeave={() => handleHover(null)}
+            ref={(ref) => menuItemRefs.current[index] = ref}
           >
             <div className="item-image-container">
               <img 
                 src={item.image} 
                 alt={item.name} 
                 className="item-image" 
-                style={{ opacity: hoveredItem === index ? 0.7 : 1 }} 
+                style={{ height:'40vw' }} 
               />
-              {hoveredItem === index && (
+              {(hoveredItem === index || isVisible) && (
                 <div className="item-description-overlay">
-                  <p className="item-description">{item.description}</p>
+                  <p className="item-description shaky">{item.description}</p>
                 </div>
               )}
             </div>
@@ -70,10 +84,10 @@ const SwallowMenu = () => {
               <p className="item-name">{item.name}</p>
               <p className="item-price">{item.price}</p>
               <button 
-                className={favorites.includes(index) ? "favorite-button active" : "favorite-button"}
+                className="favorite-button"
                 onClick={() => handleFavorite(index)}
               >
-                ❤️
+                {favorites.includes(index) ? <AiFillHeart className="favorite-icon" /> : <AiOutlineHeart className="favorite-icon" />}
               </button>
             </div>
           </div>

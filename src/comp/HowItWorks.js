@@ -1,28 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { FaUser, FaUtensils, FaShoppingCart } from 'react-icons/fa'; // Import icons
-import Accordion from './Accordion'; // Assume you have an Accordion component
+import { FaUser, FaUtensils, FaShoppingCart } from 'react-icons/fa';
+import Accordion from './Accordion';
+import '../styles/HowItWorks.css'; // Import your CSS file for styling
 
 const HowItWorks = () => {
-  const [stepClicked, setStepClicked] = useState([false, false, false]); // State to track step click status
-  const [activeStepIndex, setActiveStepIndex] = useState(null); // State to track active step
-  const [handPosition, setHandPosition] = useState({ top: 0, left: 0 }); // State to control hand icon position
-  const [showHand, setShowHand] = useState(false); // State to control hand icon visibility
+  const [stepClicked, setStepClicked] = useState([false, false, false]);
+  const [activeStepIndex, setActiveStepIndex] = useState(null);
+  const [handPosition, setHandPosition] = useState({ top: 0, left: 0 });
+  const [showHand, setShowHand] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setShowHand(true); // Show hand icon after 3 seconds
+      setShowHand(true);
     }, 3000);
 
-    return () => clearTimeout(timer); // Clean up timer on component unmount
+    return () => clearTimeout(timer);
   }, []);
 
   const handleStepClick = (index) => {
     setStepClicked((prev) => {
       const newState = [...prev];
-      newState[index] = true; // Update clicked step
+      newState[index] = true;
       return newState;
     });
-    setShowHand(false); // Hide hand icon when step is clicked
+    setShowHand(false);
   };
 
   useEffect(() => {
@@ -30,8 +31,8 @@ const HowItWorks = () => {
       const stepElement = document.getElementById(`step-${activeStepIndex}`);
       if (stepElement) {
         const { offsetTop, offsetLeft, offsetWidth } = stepElement;
-        const handLeft = offsetLeft + offsetWidth + 10; // Adjust as needed
-        const handTop = offsetTop + 5; // Adjust as needed
+        const handLeft = offsetLeft + offsetWidth + 10;
+        const handTop = offsetTop + 5;
         setHandPosition({ top: handTop, left: handLeft });
       }
     }
@@ -59,18 +60,17 @@ const HowItWorks = () => {
       clicked: stepClicked[2],
       onClick: () => handleStepClick(2),
     },
-    // Add more steps as needed
   ];
 
   return (
     <div className="how-it-works-container">
-      <h2>How it Works</h2>
+      <h2 className="heading">How it Works</h2>
       {showHand && (
         <FaUser
           className="hand-icon"
           style={{ top: handPosition.top, left: handPosition.left }}
         />
-      )} {/* Show hand icon */}
+      )}
       <Accordion items={steps} setActiveStepIndex={setActiveStepIndex} />
     </div>
   );

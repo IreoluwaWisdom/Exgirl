@@ -5,8 +5,8 @@ const SignUpButton = () => {
   return (
     <div>
     <Link to = '/sign-up'>
-      <button>
-      Sign up with email
+      <button style = {{backgroundColor:'white', color: '#6A0DAD', borderColor:'#6A0DAD', borderWidth:'1px'}}>
+      CREATE AN ACCOUNT
       </button>
       </Link>
     </div>

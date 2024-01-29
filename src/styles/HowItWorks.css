@@ -1,0 +1,20 @@
+.how-it-works-container {
+  text-align: center;
+}
+
+.heading {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.hand-icon {
+  position: absolute;
+  transition: top 1s, left 1s;
+}
+
+.hand-icon:hover {
+  transform: scale(1.2);
+}
+
+/* Add styles for Accordion component as needed */

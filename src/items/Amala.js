@@ -7,8 +7,9 @@ const Amala = () => {
     <div>
       <h1>Amala and Ewedu</h1>
       <QuantitySelector itemName="Amala and Ewedu" itemPrice = '5000' />
-    </div>
 <div> <Next/> </div>
+    </div>
+
   );
 };
 export default Amala;

@@ -1,0 +1,23 @@
+.connect-with-us {
+  position: relative; /* Position the Connect With Us component absolutely */
+  top: 20px; /* Adjust as needed */
+  right: 0px; /* Adjust as needed */
+  opacity: 0;
+  transform: translateY(-20px); /* Adjust as needed */
+  transition: opacity 0.5s ease, transform 1s ease;
+}
+
+.connect-with-us.visible {
+  opacity: 1;
+  transform: translateY(0); /* Drop transition effect */
+}
+
+.connect-with-us a {
+  margin-right: 020px;
+  color: #B8860B; /* Adjust color as needed */
+  font-size: 24px; /* Adjust size as needed */
+}
+
+.connect-with-us a:hover {
+  color: #ffdd00; /* Change color on hover as needed */
+}

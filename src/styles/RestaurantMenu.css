@@ -36,28 +36,20 @@
 
 .item-description-overlay {
   position: absolute;
-  top: 50%;
+  top: 20%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: #FFFDD0 ;
+  opacity: 0.5;
   padding: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: opacity 0.3s ease;
   z-index: 1;
+  text-align: center; /* Center horizontally */
 }
 
 .item-description {
   margin: 0;
   font-size: 14px;
-  text-align: center;
 }
 
-.shaky {
-  animation: shaky-animation 0.5s infinite alternate; /* Apply shaky animation */
-}
-
-@keyframes shaky-animation {
-  0% { transform: translate(-50%, -50%) rotate(-3deg); }
-  100% { transform: translate(-50%, -50%) rotate(3deg); }
-}

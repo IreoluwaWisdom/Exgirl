@@ -4,10 +4,10 @@ import {Link} from 'react-router-dom';
 const SignInButton = () => {
   return (
     <div>
-    <Link to = '/sign-in'>
-      <button>
+    <Link to = '/sign-in'  style ={{ color:'#B8860B'}}>
+      
       Sign in
-      </button>
+      
       </Link>
     </div>
   );
