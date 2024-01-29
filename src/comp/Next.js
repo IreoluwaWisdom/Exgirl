@@ -3,7 +3,7 @@ import { MdOutlineNavigateNext } from "react-icons/md";
 
 const Next= (link) => {
   return (
-    <div style = {{marginBottom:'20vh'}} >
+    <div  >
       <MdOutlineNavigateNext/>
     </div>
   );
