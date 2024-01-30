@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/TypingAnimation.css'; // Import CSS for styling the animation
+import '../styles/Typing.css'; // Import CSS for styling the animation
 
-const TypingAnimation = () => {
+const Typing = ({phrase}) => {
   const [text, setText] = useState('');
-  const phrase = 'Hello, World!'; // Change to your desired phrase
-  const typingSpeed = 100; // Adjust typing speed as needed
+  // Change to your desired phrase
+  const typingSpeed = 500; // Adjust typing speed as needed
   const backspaceSpeed = 50; // Adjust backspacing speed as needed
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const TypingAnimation = () => {
           setTimeout(typeText, typingSpeed);
         } else {
           isTyping = false;
-          setTimeout(backspaceText, 1500); // Delay before backspacing
+          setTimeout(backspaceText, 9000); // Delay before backspacing
         }
       }
     };
@@ -45,10 +45,13 @@ const TypingAnimation = () => {
   }, []);
 
   return (
+    <div style={{height:'4vh', textAlign:'center'}}>
     <div className="typing-animation">
       <span>{text}</span>
+      
+    </div>
     </div>
   );
 };
 
-export default TypingAnimation;
+export default Typing;

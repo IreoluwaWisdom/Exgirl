@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import {Link} from 'react-router-dom';
 import { FaUser, FaUtensils, FaShoppingCart } from 'react-icons/fa';
 import Accordion from './Accordion';
-import '../styles/HowItWorks.css'; // Import your CSS file for styling
+import '../styles/HowItWorks.css'; 
+import SignUpButton from '../Buttons/SignUpButton';
+import SignInButton from '../Buttons/SignInButton';
+// Import your CSS file for styling
 
 const HowItWorks = () => {
   const [stepClicked, setStepClicked] = useState([false, false, false]);
@@ -41,22 +45,26 @@ const HowItWorks = () => {
   const steps = [
     {
       icon: <FaUser />,
-      title: 'Step 1: Register for an account',
-      content: 'Details about registering for an account...',
+      title: ' Register for an account',
+      content: ( <div style={{marginLeft:'10vw', display: 'flex', textAlign:'center' }}>
+  <SignUpButton />
+  <span style={{ color: '#6A0DAD', margin: '0 10px' }}>&nbsp;OR&nbsp;</span>
+  <SignInButton />
+</div>),
       clicked: stepClicked[0],
       onClick: () => handleStepClick(0),
     },
     {
       icon: <FaUtensils />,
-      title: 'Step 2: Browse the menu',
-      content: 'Details about browsing the menu...',
+      title: (<div> Browse the menu</div>),
+      content: (<div > <button style ={{backgroundColor:'#6a0dad', borderColor :'#6a0dad'}}> <Link to = '/menu' style ={{textDecoration:'none', color :'white'}}> Menu</Link></button></div>),
       clicked: stepClicked[1],
       onClick: () => handleStepClick(1),
     },
     {
       icon: <FaShoppingCart />,
-      title: 'Step 3: Place your order',
-      content: 'Details about placing an order...',
+      title: ' Checkout your cart',
+      content: (<div > <button style ={{backgroundColor:'#6a0dad', borderColor :'#6a0dad'}}> <Link to = '/cart' style ={{textDecoration:'none', color :'white'}}> Head to cart</Link></button></div>),
       clicked: stepClicked[2],
       onClick: () => handleStepClick(2),
     },
@@ -65,12 +73,7 @@ const HowItWorks = () => {
   return (
     <div className="how-it-works-container">
       <h2 className="heading">How it Works</h2>
-      {showHand && (
-        <FaUser
-          className="hand-icon"
-          style={{ top: handPosition.top, left: handPosition.left }}
-        />
-      )}
+     
       <Accordion items={steps} setActiveStepIndex={setActiveStepIndex} />
     </div>
   );

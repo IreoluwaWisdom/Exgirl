@@ -29,8 +29,8 @@ const Connect = () => {
     };
   }, []);
   return (
-    <div style = {{marginBottom:'20vh'}} >
-      <h6>CONNECT WITH US</h6>
+    <div style = {{marginTop:'13vh', marginBottom:'20vh'}} >
+      <h6 style={{fontSize:'120%', marginLeft:'4vw',fontWeight:'bold', color:"#B8806B"}}>CONNECT WITH US</h6>
  <div ref={containerRef} className={`connect-with-us ${isVisible ? 'visible' : ''}`}>
       <a href="tel:YOUR_PHONE_NUMBER"><FaPhone /></a>
       <a href="mailto:YOUR_EMAIL_ADDRESS"><FaEnvelope /></a>

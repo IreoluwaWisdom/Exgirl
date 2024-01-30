@@ -12,11 +12,11 @@ const Showed = () => {
 
  
   return (
-    <div style ={{textAlign: 'center'}}>
+    <div style ={{textAlign: 'center', marginBottom:'3vh'}}>
       
     
           <h5 style={{color:'#6A0DAD'}}>YOU ARE USING GUEST MODE</h5>
-                            <div style={{ display: 'flex' }}>
+                            <div style={{marginLeft:'10vw', display: 'flex', textAlign:'center' }}>
   <SignUpButton />
   <span style={{ color: '#6A0DAD', margin: '0 10px' }}>&nbsp;OR&nbsp;</span>
   <SignInButton />

@@ -11,7 +11,7 @@ const SwallowMenu = () => {
   const menuItemRefs = useRef([]);
 
   const menuItems = [
-    { name: 'Semo and Efo Riro', price: '₦15', description: 'Delicious Semo served with Efo Riro stew.', image: semo },
+    { name: 'Semo and Efo Riro', price: '₦1500', description: 'Delicious Semo served with Efo Riro stew.', image: semo },
     { name: 'Fufu and Egusi', price: '₦15', description: 'Traditional Fufu paired with Egusi soup.', image: fufu },
     { name: 'Pando yam and efo riro', price: '₦15', description: 'Pando Yam accompanied by Efo Riro sauce.', image: pando },
     { name: 'Amala and Ewedu', price: '₦15', description: 'Authentic Amala served with Ewedu soup.', image: amala },

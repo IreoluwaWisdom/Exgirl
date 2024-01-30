@@ -1,5 +1,4 @@
 import React from "react";
-import Headline from '../comp/Headline';
 import SwallowMenu from '../comp/SwallowMenu'
 import ModernMenu from '../comp/ModernMenu'
 import ProteinMenu from '../comp/ProteinMenu';
@@ -11,7 +10,7 @@ import HowItWorks from '../comp/HowItWorks';
 import Footer from '../comp/Footer';
 import Connect from '../comp/Connect';
 import { useAuth } from '../context/AuthContext';
-
+import Typing from '../Texts/Typing.js';
 
 const Home = () => {
 	 const { currentUser } = useAuth();
@@ -20,14 +19,18 @@ const Home = () => {
     <div>
       <Welcome/>
       {!currentUser && <Showed />}
+      <Typing phrase ='Swallows'/>
       <SwallowMenu name = 'restaurant-menu'/>
-      <ModernMenu/>
+      <Typing phrase ='Modern Fusion '/>
+      <ModernMenu/>      
+      <Typing phrase ='Proteins'/>
       <ProteinMenu/>
       <OrderNowButton/>
      <TestimonialCarousel />
      <HowItWorks/>
      <Connect/>
      <Footer/>
+
     </div>
   );
 };
