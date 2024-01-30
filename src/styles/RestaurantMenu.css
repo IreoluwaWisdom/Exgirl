@@ -11,7 +11,7 @@
 
 .menu-item {
   flex: 0 0 auto;
-  margin-right: 15px;
+  margin-right: 10px;
   max-width: 200px;
   position: relative; /* Ensure relative positioning for absolute positioning of overlay */
 }
@@ -31,22 +31,10 @@
 }
 
 .item-price {
-  color: #777;
+  color: #6A0DAD;
 }
 
-.item-description-overlay {
-  position: absolute;
-  top: 20%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #FFFDD0 ;
-  opacity: 0.5;
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 1;
-  text-align: center; /* Center horizontally */
-}
+
 
 .item-description {
   margin: 0;

@@ -1,7 +1,8 @@
 .connect-with-us {
   position: relative; /* Position the Connect With Us component absolutely */
   top: 20px; /* Adjust as needed */
-  right: 0px; /* Adjust as needed */
+  margin-left: 10vw;
+  margin-right: auto; /* Adjust as needed */
   opacity: 0;
   transform: translateY(-40px); /* Adjust as needed */
   transition: opacity 0.5s ease, transform 1s ease;

@@ -9,7 +9,7 @@
 }
 
 .hand-icon {
-  position: absolute;
+  position: relative;
   transition: top 1s, left 1s;
 }
 

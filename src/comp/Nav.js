@@ -23,27 +23,27 @@ const Nav = () => {
       <div className="container">
         <Link to="/" className="navbar-brand" style={{ fontSize: '2em' }}>
           <FiHome />
-          {currentPage === 'home' && <span style ={{fontSize: '5vw'}}>Home</span>}
+          {currentPage === 'home' && <span style ={{fontSize: '2vw'}}>Home</span>}
         </Link>
 
         <Link to="/menu" className="navbar-brand" style={{ fontSize: '2em' }}>
           <MdOutlineFoodBank />
-          {currentPage === 'menu' && <span style ={{fontSize: '5vw'}}>Menu</span>}
+          {currentPage === 'menu' && <span style ={{fontSize: '2vw'}}>Menu</span>}
         </Link>
 
         <Link to="/cart" className="navbar-brand" style={{ fontSize: '2em' }}>
           <IoMdReorder />
-          {currentPage === 'cart' && <span style ={{fontSize: '5vw'}}>Cart</span>}
+          {currentPage === 'cart' && <span style ={{fontSize: '2vw'}}>Cart</span>}
         </Link>
 
         <Link to="/support" className="navbar-brand" style={{ fontSize: '2em' }}>
           <BiSupport />
-          {currentPage === 'support' && <span style ={{fontSize: '3.8vw'}}>Support</span>}
+          {currentPage === 'support' && <span style ={{fontSize: '2vw'}}>Support</span>}
         </Link>
 
         <Link to="/account" style={{ fontSize: '2em' }} className="navbar-brand">
           <CgProfile />
-          {currentPage === 'account' && <span style ={{fontSize: '3.8vw'}}>Account</span>}
+          {currentPage === 'account' && <span style ={{fontSize: '2vw'}}>Account</span>}
         </Link>
       </div>
     </nav>
