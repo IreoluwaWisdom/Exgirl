@@ -1,20 +1,71 @@
+/* Styling for How it Works component */
 .how-it-works-container {
-  text-align: center;
-}
-
-.heading {
-  font-size: 24px;
-  color: #333;
-  margin-bottom: 20px;
-}
-
-.hand-icon {
   position: relative;
-  transition: top 1s, left 1s;
+  width: 360px;
+  height: 640px;
+  margin: auto;
+  border: 16px black solid;
+  border-top-width: 60px;
+  border-bottom-width: 60px;
+  border-radius: 36px;
 }
 
-.hand-icon:hover {
-  transform: scale(1.2);
+/* Horizontal line on the top of the component */
+.how-it-works-container:before {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 5px;
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #333;
+  border-radius: 10px;
 }
 
-/* Add styles for Accordion component as needed */
+/* Screen (content) of the component */
+.how-it-works-container .content {
+  width: 100%;
+  height: 100%;
+  background: white;
+  overflow: hidden;
+}
+
+/* Styling for step content */
+.step-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.or-divider {
+  margin: 0 10px;
+}
+
+/* Styling for menu button */
+.menu-button {
+  background-color: #6a0dad;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.menu-button .menu-link {
+  text-decoration: none;
+  color: white;
+}
+
+/* Styling for cart button */
+.cart-button {
+  background-color: #6a0dad;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.cart-button .cart-link {
+  text-decoration: none;
+  color: white;
+}
