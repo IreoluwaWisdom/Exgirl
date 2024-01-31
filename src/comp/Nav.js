@@ -19,31 +19,31 @@ const Nav = () => {
   }, [location.pathname]);
 
   return (
-    <nav className="navbar fixed-bottom  navbar-light bg-light" style={{ marginTop: '5vh', padding: '0vh' }}>
+    <nav className="navbar fixed-bottom navbar-light bg-light" style={{ marginTop: '5vh', padding: '0vh' }}>
       <div className="container">
-        <Link to="/" className="navbar-brand" style={{ fontSize: '2em' }}>
+        <Link to="/" className={`navbar-brand${currentPage === 'home' ? ' active' : ''}`} style={{ fontSize: '2em' }}>
           <FiHome />
-          {currentPage === 'home' && <span style ={{fontSize: '2vw'}}>Home</span>}
+          {currentPage === 'home' && <span style={{ fontSize: '2vw' }}>Home</span>}
         </Link>
 
-        <Link to="/menu" className="navbar-brand" style={{ fontSize: '2em' }}>
+        <Link to="/menu" className={`navbar-brand${currentPage === 'menu' ? ' active' : ''}`} style={{ fontSize: '2em' }}>
           <MdOutlineFoodBank />
-          {currentPage === 'menu' && <span style ={{fontSize: '2vw'}}>Menu</span>}
+          {currentPage === 'menu' && <span style={{ fontSize: '2vw' }}>Menu</span>}
         </Link>
 
-        <Link to="/cart" className="navbar-brand" style={{ fontSize: '2em' }}>
+        <Link to="/cart" className={`navbar-brand${currentPage === 'cart' ? ' active' : ''}`} style={{ fontSize: '2em' }}>
           <IoMdReorder />
-          {currentPage === 'cart' && <span style ={{fontSize: '2vw'}}>Cart</span>}
+          {currentPage === 'cart' && <span style={{ fontSize: '2vw' }}>Cart</span>}
         </Link>
 
-        <Link to="/support" className="navbar-brand" style={{ fontSize: '2em' }}>
+        <Link to="/support" className={`navbar-brand${currentPage === 'support' ? ' active' : ''}`} style={{ fontSize: '2em' }}>
           <BiSupport />
-          {currentPage === 'support' && <span style ={{fontSize: '2vw'}}>Support</span>}
+          {currentPage === 'support' && <span style={{ fontSize: '2vw' }}>Support</span>}
         </Link>
 
-        <Link to="/account" style={{ fontSize: '2em' }} className="navbar-brand">
+        <Link to="/account" className={`navbar-brand${currentPage === 'account' ? ' active' : ''}`} style={{ fontSize: '2em' }}>
           <CgProfile />
-          {currentPage === 'account' && <span style ={{fontSize: '2vw'}}>Account</span>}
+          {currentPage === 'account' && <span style={{ fontSize: '2vw' }}>Account</span>}
         </Link>
       </div>
     </nav>
