@@ -1,11 +1,11 @@
 /* Styling for How it Works component */
 .how-it-works-container {
   position: relative;
-  width: 270px;
-  height: 480px;
+  width: 300px;
+  height: 520px;
   margin: auto;
-  border: 16px #6a0dad solid;
-  border-top-width: 60px;
+  border: 10px #6a0dad solid;
+  border-top-width: 40px;
   border-bottom-width: 60px;
   border-radius: 36px;
 }
@@ -28,6 +28,7 @@
 .how-it-works-container .content {
   width: 100%;
   height: 100%;
+  padding-left: 50px;
   background: white;
   overflow: hidden;
 }
@@ -68,4 +69,8 @@
 .cart-button .cart-link {
   text-decoration: none;
   color: white;
+}
+
+.heading {
+	text-align: center;
 }
