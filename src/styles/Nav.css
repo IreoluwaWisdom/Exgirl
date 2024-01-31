@@ -16,3 +16,10 @@
 .navbar-brand:hover {
   color: #0056b3;
 }
+
+.navbar-brand.active {
+  border-radius: 20px;
+  background-color: #6a0dad; /* Choose your desired color */
+  color: white;
+  padding: 5px 10px;
+}
