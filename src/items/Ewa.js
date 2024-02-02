@@ -1,6 +1,6 @@
 import React from "react";
 import QuantitySelector from '../comp/QuantitySelector';
-
+import ewa from '../assets/ewa.jpg';
 
 const Ewa = () => {
   return (

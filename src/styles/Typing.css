@@ -6,6 +6,8 @@
   padding-right: 5px;
   white-space: nowrap;
   overflow: hidden;
+  padding-top: '4vh';
+  padding-bottom: '0vh'
 }
 
 .typing-animation span {

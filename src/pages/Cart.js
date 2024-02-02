@@ -3,6 +3,7 @@ import { getDoc, doc, setDoc } from 'firebase/firestore';
 import { db } from '../config/firebaseConfig';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { Link } from 'react-router-dom';
+import '../styles/Cart.css'; // Import the CSS file for styling
 
 const Cart = ({ user }) => {
   const [cart, setCart] = useState({});
@@ -130,21 +131,24 @@ const Cart = ({ user }) => {
   };
 
   return (
-    <div>
-      <h2>Your Cart</h2>
+    <div className="cart-container">
+      <h2 className="cart-header">Your Cart</h2>
       {Object.keys(cart).map((itemName) => (
-        <div key={itemName}>
-          <p>
-            {itemName}: {cart[itemName]} (Price per item: ${itemsWithPrices.find((item) => item.itemName === itemName)?.price})
+        <div key={itemName} className="cart-item">
+          <p className="item-name">
+            {itemName}: 
+            <span className="item-quantity">{cart[itemName]}</span> 
+            <span className="item-price">(Price per item: ${itemsWithPrices.find((item) => item.itemName === itemName)?.price})</span>
             <button onClick={() => increaseQuantity(itemName)}>+</button>
             <button onClick={() => decreaseQuantity(itemName)}>-</button>
             <button onClick={() => removeItem(itemName)}>Remove</button>
           </p>
         </div>
       ))}
-      <p>Total Price: ${totalPrice.toFixed(2)}</p>
+      <br/>
+      <p className="cart-total">Total Price: ${totalPrice.toFixed(2)}</p>
       <Link to="/checkout">
-        <button>Proceed to Checkout</button>
+        <button className="proceed-btn">Proceed to Checkout</button>
       </Link>
     </div>
   );

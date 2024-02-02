@@ -1,6 +1,6 @@
 import React from "react";
 import QuantitySelector from '../comp/QuantitySelector';
-
+import chicken from '../assets/chicken.jpg';
 
 const Chicken = () => {
   return (

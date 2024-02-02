@@ -29,7 +29,7 @@ const SwallowMenu = () => {
   };
 
   return (
-    <div className="menu-container">
+    <div className="menu-container" style ={{marginTop:'8vh'}}>
       <div className='menu-scroll'>
         {menuItems.map((item, index) => (
           <div 

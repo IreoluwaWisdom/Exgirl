@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Typing.css'; // Import CSS for styling the animation
 
-const Typing = ({phrase}) => {
+const Typing = ({phrase, style}) => {
   const [text, setText] = useState('');
   // Change to your desired phrase
   const typingSpeed = 500; // Adjust typing speed as needed
@@ -45,8 +45,8 @@ const Typing = ({phrase}) => {
   }, []);
 
   return (
-    <div style={{height:'4vh', textAlign:'center'}}>
-    <div className="typing-animation">
+    <div  >
+    <div className="typing-animation" style={{height:'10vh', backgroundColor:'#fffdd0', borderRadiusLeft:'50%', textAlign:'center', paddingBottom:'0vh'}}>
       <span>{text}</span>
       
     </div>

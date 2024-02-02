@@ -157,7 +157,7 @@ const QuantitySelector = ({ itemName, itemPrice }) => {
 
   return (
     <div>
-      <div>
+      <div style ={{}}>
         <button onClick={decreaseQuantity} style={{ width: '10vw', marginBottom: '5vh' }} disabled={!isItemInCart}>-</button>
         <span>{quantity}</span>
         <button onClick={increaseQuantity} style={{ width: '10vw' }}>+</button>

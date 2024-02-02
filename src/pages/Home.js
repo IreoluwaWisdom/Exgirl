@@ -1,4 +1,5 @@
 import React from "react";
+import Headline from '../comp/Headline';
 import SwallowMenu from '../comp/SwallowMenu'
 import ModernMenu from '../comp/ModernMenu'
 import ProteinMenu from '../comp/ProteinMenu';
@@ -17,9 +18,9 @@ const Home = () => {
 
   return (
     <div>
-      <Welcome/>
+    <Headline/> 
       {!currentUser && <Showed />}
-      <Typing phrase ='Swallows'/>
+      <Typing phrase ='Swallows' className = 'menu'/>
       <SwallowMenu name = 'restaurant-menu'/>
       <Typing phrase ='Modern Fusion '/>
       <ModernMenu/>      

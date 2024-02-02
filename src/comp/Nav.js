@@ -7,6 +7,8 @@ import { BiSupport } from 'react-icons/bi';
 import { CgProfile } from 'react-icons/cg';
 import { useAuth } from '../context/AuthContext';
 import { db } from '../config/firebaseConfig';
+import '../styles/Nav.css';
+
 
 const Nav = () => {
   const location = useLocation();
@@ -19,29 +21,35 @@ const Nav = () => {
   }, [location.pathname]);
 
   return (
-    <nav className="navbar fixed-bottom navbar-light bg-light" style={{ marginTop: '5vh', padding: '0vh' }}>
+    <nav className="navbar fixed-bottom navbar-light" style={{ marginTop: '5vh', padding: '0vh', backgroundColor:'#fffdd0' }}>
       <div className="container">
-        <Link to="/" className={`navbar-brand${currentPage === 'home' ? ' active' : ''}`} style={{ fontSize: '2em' }}>
+        <Link to="/" className={`navbar-brand${currentPage === 'home' ?
+         ' active' : ''}`} style={{ fontSize: '2em', ...(currentPage === 'home' && 
+         {backgroundColor: 'white', color:'#6a0dad', borderRadius: '20px', padding:'0px 15px'}) }}>
           <FiHome />
           {currentPage === 'home' && <span style={{ fontSize: '2vw' }}>Home</span>}
         </Link>
 
-        <Link to="/menu" className={`navbar-brand${currentPage === 'menu' ? ' active' : ''}`} style={{ fontSize: '2em' }}>
+        <Link to="/menu" className={`navbar-brand${currentPage === 'menu' ? ' active' : ''}`} style={{ fontSize: '2em', ...(currentPage === 'menu' && 
+         {backgroundColor: 'white', color:'#6a0dad', borderRadius: '20px', padding:'0px 15px'}) }}>
           <MdOutlineFoodBank />
           {currentPage === 'menu' && <span style={{ fontSize: '2vw' }}>Menu</span>}
         </Link>
 
-        <Link to="/cart" className={`navbar-brand${currentPage === 'cart' ? ' active' : ''}`} style={{ fontSize: '2em' }}>
+        <Link to="/cart" className={`navbar-brand${currentPage === 'cart' ? ' active' : ''}`} style={{ fontSize: '2em', ...(currentPage === 'cart' && 
+         {backgroundColor: 'white', color:'#6a0dad', borderRadius: '20px', padding:'0px 15px'}) }}>
           <IoMdReorder />
           {currentPage === 'cart' && <span style={{ fontSize: '2vw' }}>Cart</span>}
         </Link>
 
-        <Link to="/support" className={`navbar-brand${currentPage === 'support' ? ' active' : ''}`} style={{ fontSize: '2em' }}>
+        <Link to="/support" className={`navbar-brand${currentPage === 'support' ? ' active' : ''}`} style={{ fontSize: '2em', ...(currentPage === 'support' && 
+         {backgroundColor: 'white', color:'#6a0dad', borderRadius: '20px', padding:'0px 15px'}) }}>
           <BiSupport />
           {currentPage === 'support' && <span style={{ fontSize: '2vw' }}>Support</span>}
         </Link>
 
-        <Link to="/account" className={`navbar-brand${currentPage === 'account' ? ' active' : ''}`} style={{ fontSize: '2em' }}>
+        <Link to="/account" className={`navbar-brand${currentPage === 'account' ? ' active' : ''}`} style={{ fontSize: '2em', ...(currentPage === 'account' && 
+         {backgroundColor: 'white', color:'#6a0dad', borderRadius: '20px', padding:'0px 15px'}) }}>
           <CgProfile />
           {currentPage === 'account' && <span style={{ fontSize: '2vw' }}>Account</span>}
         </Link>
