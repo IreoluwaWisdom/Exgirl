@@ -24,6 +24,12 @@ const Checkout = () => {
   const [message, setMessage] = useState("");
   const [confirmPin, setConfirmPin] = useState("");
 
+  // Function to check if a given time falls within the acceptable range (6:00 AM to 6:00 PM)
+  const isAcceptableTime = (time) => {
+    const hour = parseInt(time.split(":")[0]);
+    return hour >= 6 && hour < 18;
+  };
+
   const handleCheckout = async () => {
     try {
       if (
@@ -39,11 +45,7 @@ const Checkout = () => {
         const selectedDate = selectedDateTime.toISOString().split("T")[0];
         const selectedTime = selectedDateTime.getHours();
 
-        if (
-          selectedDate >= currentDate &&
-          selectedTime >= 6 &&
-          selectedTime < 18
-        ) {
+        if (selectedDate >= currentDate && isAcceptableTime(deliveryTime)) {
           const userRef = doc(db, "users", currentUser.email);
 
           const userDoc = await getDoc(userRef);
@@ -127,14 +129,24 @@ const Checkout = () => {
         <br />
         <label>
           Time to be Delivered:
-          <input
-            type="time"
+          <select
             value={deliveryTime}
             onChange={(e) => setDeliveryTime(e.target.value)}
             required
-            min="06:00"
-            max="18:00"
-          />
+          >
+            <option value="">Select Time</option>
+            {[...Array(24).keys()].map((hour) => (
+              <option
+                key={hour}
+                value={`${hour.toString().padStart(2, "0")}:00`}
+                disabled={
+                  !isAcceptableTime(`${hour.toString().padStart(2, "0")}:00`)
+                }
+              >
+                {`${hour.toString().padStart(2, "0")}:00`}
+              </option>
+            ))}
+          </select>
         </label>
         <br />
         <label>
