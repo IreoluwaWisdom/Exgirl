@@ -1,89 +1,112 @@
-// Checkout.js
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { doc, updateDoc, getDoc } from 'firebase/firestore';
-import { db } from '../config/firebaseConfig';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { doc, updateDoc, getDoc } from "firebase/firestore";
+import { db } from "../config/firebaseConfig";
 
 // Assuming you have MonnifySDK available in your project
 const MonnifySDK = window.MonnifySDK;
 
+const locations = [
+  "Fajol",
+  "Obantoko",
+  "Asero",
+  "Adatan",
+  "Eleweran",
+  "Somorin",
+];
+
 const Checkout = () => {
   const { currentUser } = useAuth();
-  const [deliveryTime, setDeliveryTime] = useState('');
-  const [location, setLocation] = useState('');
-  const [message, setMessage] = useState('');
-  const [confirmPin, setConfirmPin] = useState('');
+  const [deliveryDate, setDeliveryDate] = useState("");
+  const [deliveryTime, setDeliveryTime] = useState("");
+  const [location, setLocation] = useState("");
+  const [message, setMessage] = useState("");
+  const [confirmPin, setConfirmPin] = useState("");
 
   const handleCheckout = async () => {
     try {
-      if (currentUser && currentUser.email) {
-        const userRef = doc(db, 'users', currentUser.email);
+      if (
+        currentUser &&
+        currentUser.email &&
+        deliveryDate &&
+        deliveryTime &&
+        location
+      ) {
+        const currentDate = new Date().toISOString().split("T")[0];
+        const currentTime = new Date().getHours() + 1; // GMT+1
+        const selectedDateTime = new Date(`${deliveryDate}T${deliveryTime}`);
+        const selectedDate = selectedDateTime.toISOString().split("T")[0];
+        const selectedTime = selectedDateTime.getHours();
 
-        // Fetch user data including totalPrice from Firestore
-        const userDoc = await getDoc(userRef);
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          const totalPrice = userData.totalPrice || 0;
-          const cart = userData.cart || {};
+        if (
+          selectedDate >= currentDate &&
+          selectedTime >= 6 &&
+          selectedTime < 18
+        ) {
+          const userRef = doc(db, "users", currentUser.email);
 
-          // Update Firestore subdocument with checkout information
-          await updateDoc(userRef, {
-            checkout: {
-              deliveryTime,
-              location,
-              message,
-              confirmPin,
-            },
-          });
+          const userDoc = await getDoc(userRef);
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            const totalPrice = userData.totalPrice || 0;
+            const cart = userData.cart || {};
 
-          MonnifySDK.initialize({
-            amount: totalPrice, // Convert to kobo (MonnifySDK uses the smallest currency unit)
-            currency: "NGN",
-            reference: new String((new Date()).getTime()),
-            customerFullName: "Ireoluwa", // replace with actual customer name
-            customerEmail: "wisdomireoluwa@gmail.com", // replace with actual customer email
-            apiKey: "MK_TEST_7M2J17JK93", // replace with your Monnify API key
-            contractCode: "3362135433", // replace with your Monnify Contract Code
-            paymentDescription: "Your Payment Description",
+            await updateDoc(userRef, {
+              checkout: {
+                deliveryDate,
+                deliveryTime,
+                location,
+                message,
+                confirmPin,
+              },
+            });
 
-            onComplete: function(response) {
-              // Implement what happens when the transaction is completed.
-              console.log(response);
+            MonnifySDK.initialize({
+              amount: totalPrice,
+              currency: "NGN",
+              reference: new String(new Date().getTime()),
+              customerFullName: "Ireoluwa",
+              customerEmail: "wisdomireoluwa@gmail.com",
+              apiKey: "MK_TEST_7M2J17JK93",
+              contractCode: "3362135433",
+              paymentDescription: "Your Payment Description",
 
-              // After successful payment, update Firestore with 'paid' status, move items to 'order' subdocument
-              updateFirestoreAfterPayment(userRef, cart);
-            },
+              onComplete: function (response) {
+                console.log(response);
+                updateFirestoreAfterPayment(userRef, cart);
+              },
 
-            onClose: function(data) {
-              // Implement what should happen when the modal is closed here
-              console.log(data);
-              // Redirect to the homepage
-              window.location.href = "/checkout";
-            },
+              onClose: function (data) {
+                console.log(data);
+                window.location.href = "/checkout";
+              },
+            });
 
-            // ... other Monnify callback functions
-          });
-
-          console.log('Order processed successfully');
-          // Redirect to a success page or display a success message
+            console.log("Order processed successfully");
+          }
+        } else {
+          alert(
+            "Please select a future date and a time between 6:00 AM and 6:00 PM.",
+          );
         }
+      } else {
+        alert("Please provide delivery date, time, and location.");
       }
     } catch (error) {
-      console.error('Error during checkout:', error);
+      console.error("Error during checkout:", error);
     }
   };
 
   const updateFirestoreAfterPayment = async (userRef, cart) => {
     try {
-      // Update Firestore with 'paid' status, move items to 'order' subdocument
       await updateDoc(userRef, {
-        status: 'paid',
+        status: "paid",
         order: cart,
-        cart: {}, // Clear the cart after successful payment
+        cart: {},
       });
     } catch (error) {
-      console.error('Error updating Firestore after payment:', error);
+      console.error("Error updating Firestore after payment:", error);
     }
   };
 
@@ -92,26 +115,64 @@ const Checkout = () => {
       <h2>Checkout</h2>
       <form>
         <label>
+          Date to be Delivered:
+          <input
+            type="date"
+            value={deliveryDate}
+            onChange={(e) => setDeliveryDate(e.target.value)}
+            required
+            min={new Date().toISOString().split("T")[0]}
+          />
+        </label>
+        <br />
+        <label>
           Time to be Delivered:
-          <input type="text" value={deliveryTime} onChange={(e) => setDeliveryTime(e.target.value)} required/>
+          <input
+            type="time"
+            value={deliveryTime}
+            onChange={(e) => setDeliveryTime(e.target.value)}
+            required
+            min="06:00"
+            max="18:00"
+          />
         </label>
         <br />
         <label>
           Location:
-          <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
+          <select
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            required
+          >
+            <option value="">Select Location</option>
+            {locations.map((loc, index) => (
+              <option key={index} value={loc}>
+                {loc}
+              </option>
+            ))}
+          </select>
         </label>
         <br />
         <label>
           Message to Delivery Personnel:
-          <textarea value={message} onChange={(e) => setMessage(e.target.value)} />
+          <textarea
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
         </label>
         <br />
         <label>
           Confirm Delivery with Pin (optional):
-          <input type="text" value={confirmPin} onChange={(e) => setConfirmPin(e.target.value)} />
+          <input
+            type="text"
+            value={confirmPin}
+            onChange={(e) => setConfirmPin(e.target.value)}
+          />
         </label>
         <br />
-        <button type="button" onClick={handleCheckout}>Checkout</button>
+        <button type="button" onClick={handleCheckout}>
+          Checkout
+        </button>
       </form>
       <Link to="/cart">
         <button>Back to Cart</button>
