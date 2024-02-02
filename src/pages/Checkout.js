@@ -19,33 +19,33 @@ const locations = [
 const Checkout = () => {
   const { currentUser } = useAuth();
   const [deliveryDate, setDeliveryDate] = useState("");
-  const [deliveryTime, setDeliveryTime] = useState("");
+  const [deliveryHour, setDeliveryHour] = useState("06");
+  const [deliveryMinute, setDeliveryMinute] = useState("00");
   const [location, setLocation] = useState("");
   const [message, setMessage] = useState("");
   const [confirmPin, setConfirmPin] = useState("");
 
   // Function to check if a given time falls within the acceptable range (6:00 AM to 6:00 PM)
-  const isAcceptableTime = (time) => {
-    const hour = parseInt(time.split(":")[0]);
-    return hour >= 6 && hour < 18;
+  const isAcceptableTime = (hour, minute) => {
+    const time = parseInt(hour) + parseInt(minute) / 60;
+    return time >= 6 && time < 18;
   };
 
   const handleCheckout = async () => {
     try {
-      if (
-        currentUser &&
-        currentUser.email &&
-        deliveryDate &&
-        deliveryTime &&
-        location
-      ) {
+      if (currentUser && currentUser.email && deliveryDate && location) {
         const currentDate = new Date().toISOString().split("T")[0];
-        const currentTime = new Date().getHours() + 1; // GMT+1
-        const selectedDateTime = new Date(`${deliveryDate}T${deliveryTime}`);
+        const selectedDateTime = new Date(
+          `${deliveryDate}T${deliveryHour}:${deliveryMinute}`,
+        );
         const selectedDate = selectedDateTime.toISOString().split("T")[0];
-        const selectedTime = selectedDateTime.getHours();
+        const selectedHour = selectedDateTime.getHours();
+        const selectedMinute = selectedDateTime.getMinutes();
 
-        if (selectedDate >= currentDate && isAcceptableTime(deliveryTime)) {
+        if (
+          selectedDate >= currentDate &&
+          isAcceptableTime(deliveryHour, deliveryMinute)
+        ) {
           const userRef = doc(db, "users", currentUser.email);
 
           const userDoc = await getDoc(userRef);
@@ -57,7 +57,7 @@ const Checkout = () => {
             await updateDoc(userRef, {
               checkout: {
                 deliveryDate,
-                deliveryTime,
+                deliveryTime: `${deliveryHour}:${deliveryMinute}`,
                 location,
                 message,
                 confirmPin,
@@ -130,20 +130,28 @@ const Checkout = () => {
         <label>
           Time to be Delivered:
           <select
-            value={deliveryTime}
-            onChange={(e) => setDeliveryTime(e.target.value)}
+            value={deliveryHour}
+            onChange={(e) => setDeliveryHour(e.target.value)}
             required
           >
-            <option value="">Select Time</option>
-            {[...Array(24).keys()].map((hour) => (
+            {[...Array(13).keys()].map((hour) => (
+              <option key={hour} value={(hour + 6).toString().padStart(2, "0")}>
+                {(hour + 6).toString().padStart(2, "0")}
+              </option>
+            ))}
+          </select>
+          :
+          <select
+            value={deliveryMinute}
+            onChange={(e) => setDeliveryMinute(e.target.value)}
+            required
+          >
+            {[...Array(4).keys()].map((index) => (
               <option
-                key={hour}
-                value={`${hour.toString().padStart(2, "0")}:00`}
-                disabled={
-                  !isAcceptableTime(`${hour.toString().padStart(2, "0")}:00`)
-                }
+                key={index}
+                value={(index * 15).toString().padStart(2, "0")}
               >
-                {`${hour.toString().padStart(2, "0")}:00`}
+                {(index * 15).toString().padStart(2, "0")}
               </option>
             ))}
           </select>
