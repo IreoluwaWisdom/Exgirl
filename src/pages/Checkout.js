@@ -113,26 +113,37 @@ const Checkout = () => {
   };
 
   return (
-    <div>
-      <h2>Checkout</h2>
+    <div
+      style={{
+        maxWidth: "600px",
+        margin: "0 auto",
+        marginBottom: "20vh",
+        padding: "20px",
+      }}
+    >
+      <h2 style={{ fontSize: "24px", marginBottom: "20px", color: "#333" }}>
+        Checkout
+      </h2>
       <form>
-        <label>
+        <label style={{ marginBottom: "10px", display: "block" }}>
           Date to be Delivered:
           <input
             type="date"
             value={deliveryDate}
             onChange={(e) => setDeliveryDate(e.target.value)}
             required
+            style={{ width: "100%", padding: "8px", borderRadius: "4px" }}
             min={new Date().toISOString().split("T")[0]}
           />
         </label>
         <br />
-        <label>
+        <label style={{ marginBottom: "10px", display: "block" }}>
           Time to be Delivered:
           <select
             value={deliveryHour}
             onChange={(e) => setDeliveryHour(e.target.value)}
             required
+            style={{ width: "49%", padding: "8px", borderRadius: "4px" }}
           >
             {[...Array(13).keys()].map((hour) => (
               <option key={hour} value={(hour + 6).toString().padStart(2, "0")}>
@@ -145,6 +156,7 @@ const Checkout = () => {
             value={deliveryMinute}
             onChange={(e) => setDeliveryMinute(e.target.value)}
             required
+            style={{ width: "49%", padding: "8px", borderRadius: "4px" }}
           >
             {[...Array(4).keys()].map((index) => (
               <option
@@ -157,12 +169,13 @@ const Checkout = () => {
           </select>
         </label>
         <br />
-        <label>
+        <label style={{ marginBottom: "10px", display: "block" }}>
           Location:
           <select
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             required
+            style={{ width: "100%", padding: "8px", borderRadius: "4px" }}
           >
             <option value="">Select Location</option>
             {locations.map((loc, index) => (
@@ -173,29 +186,55 @@ const Checkout = () => {
           </select>
         </label>
         <br />
-        <label>
+        <label style={{ marginBottom: "10px", display: "block" }}>
           Message to Delivery Personnel:
           <textarea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            style={{ width: "100%", padding: "8px", borderRadius: "4px" }}
           />
         </label>
         <br />
-        <label>
+        <label style={{ marginBottom: "10px", display: "block" }}>
           Confirm Delivery with Pin (optional):
           <input
             type="text"
             value={confirmPin}
             onChange={(e) => setConfirmPin(e.target.value)}
+            style={{ width: "100%", padding: "8px", borderRadius: "4px" }}
           />
         </label>
         <br />
-        <button type="button" onClick={handleCheckout}>
+        <button
+          type="button"
+          onClick={handleCheckout}
+          style={{
+            padding: "10px 20px",
+            backgroundColor: "#6a0dad",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+            fontSize: "16px",
+          }}
+        >
           Checkout
         </button>
       </form>
       <Link to="/cart">
-        <button>Back to Cart</button>
+        <button
+          style={{
+            padding: "10px 20px",
+            backgroundColor: "#bb806b",
+            color: "#fff",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+            fontSize: "16px",
+          }}
+        >
+          Back to Cart
+        </button>
       </Link>
     </div>
   );
