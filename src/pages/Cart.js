@@ -197,7 +197,7 @@ const Cart = ({ user }) => {
             }}
             onClick={() => increaseQuantity(itemName)}
           >
-            +
+            -
           </button>
           <button
             style={{
@@ -213,7 +213,7 @@ const Cart = ({ user }) => {
             }}
             onClick={() => decreaseQuantity(itemName)}
           >
-            -
+            +
           </button>
           <button
             style={{

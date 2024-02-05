@@ -66,3 +66,20 @@
 .checkout-container a button:hover {
   background-color: #218838;
 }
+.box {
+  background: #fff;
+  font-family: Montserrat, sans-serif;
+  line-height: 30px;
+  color: black;
+  padding: 40px;
+  box-shadow:
+    inset #6a0dad 0 0 0 5px,
+    inset #7d30e3 0 0 0 1px,
+    inset #9342e7 0 0 0 10px,
+    inset #a856eb 0 0 0 11px,
+    inset #bc6af0 0 0 0 16px,
+    inset #d07df4 0 0 0 17px,
+    inset #e9f0b6 0 0 0 21px,
+    inset #dca4f5 0 0 0 22px;
+  text-shadow: 3px 3px 1px #fffdd0;
+}
