@@ -28,6 +28,10 @@
     "eject": {
       "name": "eject",
       "command": "npm run eject"
+    },
+    "npm install": {
+      "name": "firebase",
+      "command": "npm install"
     }
   }
 }
