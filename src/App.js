@@ -28,6 +28,7 @@ import Semo from "./items/Semo";
 import Sharwarma from "./items/Sharwarma";
 import Spaghetti from "./items/Spaghetti";
 import SignUp from "./comp/SignUp";
+import ResetPassword from "./pages/ResetPassword";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -44,6 +45,7 @@ const App = () => {
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/account" element={<Account />} />
         <Route path="/sign-up" element={<SignUpPage />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/sign-out" element={<SignOut />} />
         <Route path="/sign-in" element={<SignInPage />} />
         <Route path="/menu/jollof-rice" element={<JollofRice />} />

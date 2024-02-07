@@ -6,6 +6,7 @@ const UserDetails = ({ userEmail }) => {
   const [userData, setUserData] = useState(null);
   const [editing, setEditing] = useState(false);
   const [editedUserData, setEditedUserData] = useState(null);
+  const [online, setOnline] = useState(navigator.onLine);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -16,6 +17,7 @@ const UserDetails = ({ userEmail }) => {
           const userData = userSnapshot.data();
           setUserData(userData);
           setEditedUserData(userData);
+          localStorage.setItem("userData", JSON.stringify(userData));
         } else {
           console.error("User data not found");
         }
@@ -24,7 +26,21 @@ const UserDetails = ({ userEmail }) => {
       }
     };
 
+    // Fetch user data initially
     fetchUserData();
+
+    // Check for online/offline status
+    const handleOnlineStatusChange = () => {
+      setOnline(navigator.onLine);
+    };
+
+    window.addEventListener("online", handleOnlineStatusChange);
+    window.addEventListener("offline", handleOnlineStatusChange);
+
+    return () => {
+      window.removeEventListener("online", handleOnlineStatusChange);
+      window.removeEventListener("offline", handleOnlineStatusChange);
+    };
   }, [userEmail]);
 
   const handleEdit = () => {
@@ -47,6 +63,7 @@ const UserDetails = ({ userEmail }) => {
 
       // Disable editing mode
       setEditing(false);
+      localStorage.setItem("userData", JSON.stringify(editedUserData));
     } catch (error) {
       console.error("Error updating user data:", error.message);
       // Handle error
@@ -89,7 +106,7 @@ const UserDetails = ({ userEmail }) => {
             <p>Username: {userData.username}</p>
             <p>Phone Number: {userData.phoneNumber}</p>
             <p>Email: {userData.email}</p>
-            <p>Date of Birth: {userData.dob}</p>
+            <p>Date of Birth: {userData.dateOfBirth}</p>
             <button onClick={handleEdit}>Edit</button>
           </div>
         )
