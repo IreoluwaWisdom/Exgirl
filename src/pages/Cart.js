@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { getDoc, doc, setDoc } from "firebase/firestore";
+import { getDoc, doc, setDoc, collection } from "firebase/firestore";
 import { db } from "../config/firebaseConfig";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { Link } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 import EmptyCart from "../comp/EmptyCart";
 import Showed from "../comp/Showed";
 import "../styles/Cart.css";
 import Loader from "../comp/Loader";
 
 const Cart = ({ user }) => {
-  const [cart, setCart] = useState({});
+  const { cart, dispatch } = useCart();
   const [totalPrice, setTotalPrice] = useState(0);
   const [itemsWithPrices, setItemsWithPrices] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
@@ -24,8 +25,7 @@ const Cart = ({ user }) => {
         fetchCart(user);
       } else {
         setCurrentUser(null);
-        setCart({});
-        setItemsWithPrices([]);
+        dispatch({ type: "RESET_CART" });
         setLoading(false);
       }
     });
@@ -42,40 +42,30 @@ const Cart = ({ user }) => {
         return;
       }
 
-      const userRef = doc(db, "users", currentUser.email);
-      let cartDataFromFirestore = {};
-
-      try {
-        const userDoc = await getDoc(userRef);
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          cartDataFromFirestore = userData.cart || {};
-        }
-      } catch (firestoreError) {
-        console.error(
-          "Error fetching cart data from Firestore:",
-          firestoreError,
-        );
-      }
-
-      const cartDataFromLocalStorage =
-        JSON.parse(localStorage.getItem("cart")) || {};
+      const userCartRef = doc(collection(db, "carts"), currentUser.email);
+      const userCartDoc = await getDoc(userCartRef);
+      const cartDataFromFirestore = userCartDoc.exists()
+        ? userCartDoc.data().cart
+        : {};
 
       const mergedCartData = {
-        ...cartDataFromLocalStorage,
+        ...(JSON.parse(localStorage.getItem("cart")) || {}),
         ...cartDataFromFirestore,
       };
 
       localStorage.setItem("cart", JSON.stringify(mergedCartData));
-
-      setCart(mergedCartData);
+      dispatch({ type: "SET_CART", payload: mergedCartData });
 
       const pricesPromises = Object.keys(mergedCartData).map(
         async (itemName) => {
           const menuDoc = await getDoc(doc(db, "menu", itemName));
           if (menuDoc.exists()) {
             const price = menuDoc.data().price || 0;
-            return { itemName, price, quantity: mergedCartData[itemName] || 0 };
+            return {
+              itemName,
+              price,
+              quantity: mergedCartData[itemName] || 0,
+            };
           }
           return null;
         },
@@ -90,8 +80,6 @@ const Cart = ({ user }) => {
         0,
       );
       setTotalPrice(total);
-
-      localStorage.setItem("itemsWithPrices", JSON.stringify(itemsWithPrices));
 
       setItemsWithPrices(itemsWithPrices);
       setLoading(false);
@@ -120,44 +108,21 @@ const Cart = ({ user }) => {
 
   const updateCart = (updatedCart) => {
     localStorage.setItem("cart", JSON.stringify(updatedCart));
+    dispatch({ type: "SET_CART", payload: updatedCart });
 
-    setCart(updatedCart);
+    const auth = getAuth();
+    const user = auth.currentUser;
 
-    const updatedItemsWithPrices = itemsWithPrices.map((item) => {
-      const price = updatedCart[item.itemName]
-        ? updatedCart[item.itemName] * item.price
-        : 0;
-      return { ...item, price };
-    });
-
-    localStorage.setItem(
-      "itemsWithPrices",
-      JSON.stringify(updatedItemsWithPrices),
-    );
-
-    const total = updatedItemsWithPrices.reduce(
-      (acc, { price }) => acc + price,
-      0,
-    );
-    setTotalPrice(total);
-
-    if (navigator.onLine) {
-      const userRef = doc(db, "users", currentUser.email);
-      setDoc(
-        userRef,
-        { cart: updatedCart, totalPrice: total },
-        { merge: true },
-      );
+    if (user) {
+      const userCartRef = doc(collection(db, "carts"), user.email);
+      setDoc(userCartRef, { cart: updatedCart }, { merge: true })
+        .then(() => console.log("Cart updated successfully"))
+        .catch((error) => console.error("Error updating cart:", error));
     }
   };
 
   if (loading) {
-    return (
-      <div>
-        {" "}
-        <Loader />
-      </div>
-    );
+    return <Loader />;
   }
 
   if (!currentUser) {
@@ -166,6 +131,10 @@ const Cart = ({ user }) => {
         <Showed />
       </div>
     );
+  }
+
+  if (Object.keys(cart).length === 0) {
+    return <EmptyCart />;
   }
 
   return (
@@ -249,8 +218,12 @@ const Cart = ({ user }) => {
             const localTotalPrice =
               JSON.parse(localStorage.getItem("totalPrice")) || totalPrice;
             setTotalPrice(localTotalPrice);
-            const userRef = doc(db, "users", currentUser.email);
-            setDoc(userRef, { totalPrice: localTotalPrice }, { merge: true });
+            const userCartRef = doc(collection(db, "carts"), currentUser.email);
+            setDoc(
+              userCartRef,
+              { totalPrice: localTotalPrice },
+              { merge: true },
+            );
           }}
         >
           <button

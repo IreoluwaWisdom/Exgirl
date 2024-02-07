@@ -12,12 +12,11 @@ import {
   where,
   getDocs,
 } from "firebase/firestore";
-import UserDetails from "./UserDetails";
+import { Link } from "react-router-dom";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userData, setUserData] = useState(null);
   const [message, setMessage] = useState("");
   const [showSuccessMessage, setShowSuccessMessage] = useState(false); // State to control the visibility of success message
 
@@ -69,7 +68,6 @@ const SignIn = () => {
         const userData = querySnapshot.docs[0].data();
 
         // Set user data in state
-        setUserData(userData);
 
         // Reset message state
         setMessage("");
@@ -80,7 +78,7 @@ const SignIn = () => {
         // Hide success message after 3 seconds
         setTimeout(() => {
           setShowSuccessMessage(false);
-        }, 3000);
+        }, 10000000000000);
 
         // Store user data locally, e.g., in state or local storage
         // You can use localStorage.setItem or your preferred state management technique
@@ -126,10 +124,14 @@ const SignIn = () => {
       {message && <p>{message}</p>}
 
       {/* Display success message */}
-      {showSuccessMessage && <p>Sign in successful</p>}
-
-      {/* Display user details if available */}
-      {userData && <UserDetails userEmail={userData.email} />}
+      {showSuccessMessage && (
+        <>
+          <p>Sign in successful</p>{" "}
+          <Link to="/account">
+            <button> Confirm</button>{" "}
+          </Link>
+        </>
+      )}
     </div>
   );
 };

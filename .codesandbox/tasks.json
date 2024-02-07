@@ -32,6 +32,10 @@
     "npm install": {
       "name": "firebase",
       "command": "npm install"
+    },
+    "react-router-dom@latest": {
+      "name": "npm install",
+      "command": "react-router-dom@latest"
     }
   }
 }

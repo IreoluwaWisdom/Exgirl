@@ -1,68 +1,51 @@
-// CartContext.js
-import React, { createContext, useContext, useReducer } from 'react';
-import { getFirestore, doc, setDoc, collection } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
+import React, { createContext, useContext, useReducer, useEffect } from "react";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  collection,
+  onSnapshot,
+} from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { db } from "../config/firebaseConfig";
+
 const CartContext = createContext();
-
-// Modify CartContext.js
-
-// ... (previous code)
 
 const cartReducer = (state, action) => {
   switch (action.type) {
-    case 'ADD_TO_CART':
-      // Logic to add item to the cart
-      const updatedCart = [...state, action.payload];
-      // Update Firestore here with updatedCart
-      updateFirestoreCart(updatedCart);
-      return updatedCart;
-    case 'UPDATE_QUANTITY':
-      // Logic to update quantity of an item in the cart
-      const updatedCartQuantity = state.map((item) =>
-        item.id === action.payload.id ? { ...item, quantity: action.payload.quantity } : item
-      );
-      // Update Firestore here with updatedCartQuantity
-      updateFirestoreCart(updatedCartQuantity);
-      return updatedCartQuantity;
-    case 'REMOVE_FROM_CART':
-      // Logic to remove item from the cart
-      const updatedCartRemove = state.filter((item) => item.id !== action.payload.id);
-      // Update Firestore here with updatedCartRemove
-      updateFirestoreCart(updatedCartRemove);
-      return updatedCartRemove;
+    case "SET_CART":
+      return action.payload;
+    case "RESET_CART":
+      return {};
     default:
       return state;
   }
 };
 
-const updateFirestoreCart = async (userId, cart) => {
-  try {
+const CartProvider = ({ children }) => {
+  const [cart, dispatch] = useReducer(cartReducer, {});
+
+  useEffect(() => {
     const auth = getAuth();
     const user = auth.currentUser;
 
     if (!user) {
-      // Handle the case where the user is not authenticated
-      console.error('User not authenticated');
+      console.error("User not authenticated");
       return;
     }
 
-    const db = getFirestore();
- const userCartRef = doc(collection(db, 'carts'), userId);
+    const unsubscribe = onSnapshot(
+      doc(collection(db, "carts"), user.email),
+      (snapshot) => {
+        const data = snapshot.data();
+        dispatch({ type: "SET_CART", payload: data.cart || {} });
+      },
+    );
 
-    // Update Firestore document with the new cart data
-    await setDoc(userCartRef, { cart }, { merge: true });
-
-    console.log('Firestore cart updated successfully');
-  } catch (error) {
-    console.error('Error updating Firestore cart:', error);
-  }
-};
-
-// ... (rest of the code)
-
-
-export const CartProvider = ({ children }) => {
-  const [cart, dispatch] = useReducer(cartReducer, []);
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   return (
     <CartContext.Provider value={{ cart, dispatch }}>
@@ -71,6 +54,8 @@ export const CartProvider = ({ children }) => {
   );
 };
 
-export const useCart = () => {
+const useCart = () => {
   return useContext(CartContext);
 };
+
+export { CartProvider, useCart };

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import SignUpButton from "../Buttons/SignUpButton";
 import SignInButton from "../Buttons/SignInButton";
@@ -6,18 +7,7 @@ import Continuing from "../Texts/Continuing";
 import UserDetails from "../comp/UserDetails";
 
 const Account = () => {
-  const { currentUser, signOut } = useAuth();
-
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-      // Clear user data from local storage
-      localStorage.clear();
-    } catch (error) {
-      console.error("Sign-out error:", error.message);
-      // Handle the error, e.g., show an error message to the user
-    }
-  };
+  const { currentUser } = useAuth();
 
   return (
     <div>
@@ -25,7 +15,10 @@ const Account = () => {
       {currentUser ? (
         <>
           <UserDetails userEmail={currentUser.email} />
-          <button onClick={handleSignOut}>Sign Out</button>
+          {/* Change the button to link to the sign-out page */}
+          <Link to="/sign-out">
+            <button>Sign Out</button>
+          </Link>
         </>
       ) : (
         <>
