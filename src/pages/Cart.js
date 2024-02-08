@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { getDoc, doc, setDoc, collection } from "firebase/firestore";
+import {
+  getDoc,
+  doc,
+  setDoc,
+  collection,
+  onSnapshot,
+} from "firebase/firestore";
 import { db } from "../config/firebaseConfig";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { Link } from "react-router-dom";
@@ -35,6 +41,37 @@ const Cart = ({ user }) => {
     };
   }, [user]);
 
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, "menu"), (snapshot) => {
+      const updatedItemsWithPrices = snapshot.docs
+        .filter((doc) => cart[doc.id] > 0)
+        .map((doc) => ({
+          itemName: doc.id,
+          price: doc.data().price || 0,
+          quantity: cart[doc.id] || 0,
+        }));
+      setItemsWithPrices(updatedItemsWithPrices);
+    });
+
+    return () => unsubscribe();
+  }, [cart]);
+
+  useEffect(() => {
+    const calculateTotalPrice = () => {
+      const total = itemsWithPrices.reduce(
+        (acc, { price, quantity }) => acc + price * quantity,
+        0,
+      );
+      setTotalPrice(total);
+      if (currentUser) {
+        const userCartRef = doc(collection(db, "carts"), currentUser.email);
+        setDoc(userCartRef, { totalPrice: total }, { merge: true });
+      }
+    };
+
+    calculateTotalPrice();
+  }, [itemsWithPrices, currentUser]);
+
   const fetchCart = async (currentUser) => {
     try {
       if (!currentUser || !currentUser.email) {
@@ -55,33 +92,6 @@ const Cart = ({ user }) => {
 
       localStorage.setItem("cart", JSON.stringify(mergedCartData));
       dispatch({ type: "SET_CART", payload: mergedCartData });
-
-      const pricesPromises = Object.keys(mergedCartData).map(
-        async (itemName) => {
-          const menuDoc = await getDoc(doc(db, "menu", itemName));
-          if (menuDoc.exists()) {
-            const price = menuDoc.data().price || 0;
-            return {
-              itemName,
-              price,
-              quantity: mergedCartData[itemName] || 0,
-            };
-          }
-          return null;
-        },
-      );
-
-      const itemsWithPrices = (await Promise.all(pricesPromises)).filter(
-        Boolean,
-      );
-
-      const total = itemsWithPrices.reduce(
-        (acc, { price, quantity }) => acc + price * quantity,
-        0,
-      );
-      setTotalPrice(total);
-
-      setItemsWithPrices(itemsWithPrices);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching cart:", error);
@@ -101,8 +111,7 @@ const Cart = ({ user }) => {
   };
 
   const removeItem = (itemName) => {
-    const updatedCart = { ...cart };
-    delete updatedCart[itemName];
+    const updatedCart = { ...cart, [itemName]: 0 };
     updateCart(updatedCart);
   };
 
@@ -133,25 +142,22 @@ const Cart = ({ user }) => {
     );
   }
 
-  if (Object.keys(cart).length === 0) {
+  if (itemsWithPrices.length === 0) {
     return <EmptyCart />;
   }
 
   return (
     <div className="cart-container">
       <h2 className="cart-header">Your Cart</h2>
-      {Object.keys(cart).map((itemName) => (
-        <div key={itemName} className="cart-item">
+      {itemsWithPrices.map((item) => (
+        <div key={item.itemName} className="cart-item">
           <span className="item-name" style={{ textAlign: "center" }}>
-            {itemName}
+            {item.itemName}
           </span>
           <br />
-          <span className="item-quantity">Quantity: {cart[itemName]}</span>
+          <span className="item-quantity">Quantity: {item.quantity}</span>
           <br />
-          <span className="item-price">
-            (Price per item: $
-            {itemsWithPrices.find((item) => item.itemName === itemName)?.price})
-          </span>
+          <span className="item-price">(Price per item: ${item.price})</span>
           <br />
           <button
             style={{
@@ -164,7 +170,7 @@ const Cart = ({ user }) => {
               height: "40px",
               borderRadius: "50%",
             }}
-            onClick={() => increaseQuantity(itemName)}
+            onClick={() => decreaseQuantity(item.itemName)}
           >
             -
           </button>
@@ -180,7 +186,7 @@ const Cart = ({ user }) => {
               height: "40px",
               borderRadius: "20px",
             }}
-            onClick={() => decreaseQuantity(itemName)}
+            onClick={() => increaseQuantity(item.itemName)}
           >
             +
           </button>
@@ -191,7 +197,7 @@ const Cart = ({ user }) => {
               backgroundColor: "#6a0dad",
               borderColor: "#6a0dad",
             }}
-            onClick={() => removeItem(itemName)}
+            onClick={() => removeItem(item.itemName)}
           >
             Remove
           </button>
@@ -213,17 +219,6 @@ const Cart = ({ user }) => {
             textDecoration: "none",
             fontWeight: "bold",
             textAlign: "center",
-          }}
-          onClick={() => {
-            const localTotalPrice =
-              JSON.parse(localStorage.getItem("totalPrice")) || totalPrice;
-            setTotalPrice(localTotalPrice);
-            const userCartRef = doc(collection(db, "carts"), currentUser.email);
-            setDoc(
-              userCartRef,
-              { totalPrice: localTotalPrice },
-              { merge: true },
-            );
           }}
         >
           <button
