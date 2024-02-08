@@ -7,12 +7,12 @@ import { getAuth } from "firebase/auth";
 
 const QuantitySelector = ({ itemName, itemPrice }) => {
   const { cart, dispatch } = useCart();
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(0); // Set initial quantity to 0
   const [isItemInCart, setIsItemInCart] = useState(false);
 
   useEffect(() => {
     const mergedCartData = JSON.parse(localStorage.getItem("cart")) || {};
-    setQuantity(mergedCartData[itemName] || 1);
+    setQuantity(mergedCartData[itemName] || 0); // Set quantity to 0 if item not found
     setIsItemInCart(mergedCartData.hasOwnProperty(itemName));
   }, [itemName]);
 
@@ -23,7 +23,7 @@ const QuantitySelector = ({ itemName, itemPrice }) => {
   };
 
   const decreaseQuantity = () => {
-    if (quantity > 1) {
+    if (quantity > 0) {
       const updatedQuantity = quantity - 1;
       setQuantity(updatedQuantity);
       updateCart(updatedQuantity);
@@ -53,6 +53,7 @@ const QuantitySelector = ({ itemName, itemPrice }) => {
     const updatedCart = { ...cart };
     delete updatedCart[itemName];
     dispatch({ type: "SET_CART", payload: updatedCart });
+    setQuantity(0); // Set quantity to 0 when item is removed
 
     // Update cart data in Firestore
     const auth = getAuth();
@@ -74,7 +75,7 @@ const QuantitySelector = ({ itemName, itemPrice }) => {
         <button
           onClick={decreaseQuantity}
           style={{ width: "10vw", marginBottom: "5vh" }}
-          disabled={quantity === 1 || !isItemInCart}
+          disabled={quantity === 0 || !isItemInCart}
         >
           -
         </button>
@@ -87,7 +88,9 @@ const QuantitySelector = ({ itemName, itemPrice }) => {
         {isItemInCart ? (
           <>
             <button onClick={() => updateCart(quantity)}>Update Cart</button>
-            <button onClick={removeItemFromCart}>Remove</button>
+            <button onClick={removeItemFromCart} disabled={quantity === 0}>
+              Remove
+            </button>
           </>
         ) : (
           <button onClick={() => updateCart(quantity)}>Add to Cart</button>
