@@ -1,7 +1,18 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { doc, updateDoc, getDoc } from "firebase/firestore";
+import {
+  doc,
+  updateDoc,
+  getDoc,
+  query,
+  collection,
+  orderBy,
+  limit,
+  getDocs,
+  setDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 import { db } from "../config/firebaseConfig";
 import "../styles/Checkout.css";
 import DateTimeDisplay from "../comp/Date";
@@ -78,7 +89,7 @@ const Checkout = () => {
 
               onComplete: function (response) {
                 console.log(response);
-                updateFirestoreAfterPayment(userRef, cart);
+                updateFirestoreAfterPayment(currentUser.email, cart);
               },
 
               onClose: function (data) {
@@ -102,15 +113,46 @@ const Checkout = () => {
     }
   };
 
-  const updateFirestoreAfterPayment = async (userRef, cart) => {
+  const updateFirestoreAfterPayment = async (userEmail, cart) => {
     try {
-      await updateDoc(userRef, {
-        status: "paid",
-        order: cart,
-        cart: {},
-      });
+      // Fetch the last order ID from Firestore
+      const lastOrderQuery = query(
+        collection(db, "orders"),
+        orderBy("orderId", "desc"),
+        limit(1),
+      );
+      const lastOrderSnapshot = await getDocs(lastOrderQuery);
+      let lastOrderId = 0;
+
+      if (!lastOrderSnapshot.empty) {
+        lastOrderId = parseInt(
+          lastOrderSnapshot.docs[0].data().orderId.replace("exgirl", ""),
+        );
+      }
+
+      // Increment the last order ID to get the new order ID
+      const newOrderId = `exgirl${(lastOrderId + 1).toString().padStart(4, "0")}`;
+
+      // Create the order object
+      const orderData = {
+        orderId: newOrderId,
+        userEmail,
+        items: cart.items,
+        deliveryDate: cart.checkout.deliveryDate,
+        deliveryTime: cart.checkout.deliveryTime,
+        location: cart.checkout.location,
+        message: cart.checkout.message,
+        confirmPin: cart.checkout.confirmPin,
+        createdAt: serverTimestamp(),
+      };
+
+      // Add the new order to the "orders" collection
+      const orderRef = doc(db, "orders", newOrderId);
+      await setDoc(orderRef, orderData);
+
+      console.log("Order stored in Firestore after successful payment.");
     } catch (error) {
-      console.error("Error updating Firestore after payment:", error);
+      console.error("Error storing order in Firestore after payment:", error);
     }
   };
 
