@@ -74,7 +74,7 @@ const Checkout = () => {
               contractCode: "3362135433",
               paymentDescription: "Your Payment Description",
 
-              onClose: function (response) {
+              onComplete: function (response) {
                 console.log(response);
                 updateFirestoreAfterPayment(
                   currentUser.email,
@@ -83,8 +83,12 @@ const Checkout = () => {
                   `${deliveryHour}:${deliveryMinute}`,
                   location,
                   message,
-                  confirmPin
+                  confirmPin,
                 );
+              },
+              onClose: function (data) {
+                console.log(data);
+                window.location.href = "/checkout";
               },
             });
 
@@ -112,7 +116,7 @@ const Checkout = () => {
     deliveryTime,
     location,
     message,
-    confirmPin
+    confirmPin,
   ) => {
     try {
       console.log("Cart:", cart);
