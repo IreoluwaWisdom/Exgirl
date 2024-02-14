@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import {
   doc,
-  updateDoc,
   getDoc,
   query,
   collection,
@@ -17,7 +16,6 @@ import { db } from "../config/firebaseConfig";
 import "../styles/Checkout.css";
 import DateTimeDisplay from "../comp/Date";
 
-// Assuming you have MonnifySDK available in your project
 const MonnifySDK = window.MonnifySDK;
 
 const locations = [
@@ -38,7 +36,6 @@ const Checkout = () => {
   const [message, setMessage] = useState("");
   const [confirmPin, setConfirmPin] = useState("");
 
-  // Function to check if a given time falls within the acceptable range (6:00 AM to 6:00 PM)
   const isAcceptableTime = (hour, minute) => {
     const time = parseInt(hour) + parseInt(minute) / 60;
     return time >= 6 && time < 18;
@@ -59,23 +56,13 @@ const Checkout = () => {
           selectedDate >= currentDate &&
           isAcceptableTime(deliveryHour, deliveryMinute)
         ) {
-          const userRef = doc(db, "users", currentUser.email);
+          const cartRef = doc(db, "carts", currentUser.email);
+          const cartDoc = await getDoc(cartRef);
 
-          const userDoc = await getDoc(userRef);
-          if (userDoc.exists()) {
-            const userData = userDoc.data();
-            const totalPrice = userData.totalPrice || 0;
-            const cart = userData.cart || {};
-
-            await updateDoc(userRef, {
-              checkout: {
-                deliveryDate,
-                deliveryTime: `${deliveryHour}:${deliveryMinute}`,
-                location,
-                message,
-                confirmPin,
-              },
-            });
+          if (cartDoc.exists()) {
+            const cartData = cartDoc.data();
+            const totalPrice = cartData.totalPrice || 0;
+            const cart = cartData || {};
 
             MonnifySDK.initialize({
               amount: totalPrice,
@@ -87,18 +74,23 @@ const Checkout = () => {
               contractCode: "3362135433",
               paymentDescription: "Your Payment Description",
 
-              onComplete: function (response) {
+              onClose: function (response) {
                 console.log(response);
-                updateFirestoreAfterPayment(currentUser.email, cart);
-              },
-
-              onClose: function (data) {
-                console.log(data);
-                window.location.href = "/checkout";
+                updateFirestoreAfterPayment(
+                  currentUser.email,
+                  cart,
+                  deliveryDate,
+                  `${deliveryHour}:${deliveryMinute}`,
+                  location,
+                  message,
+                  confirmPin
+                );
               },
             });
 
             console.log("Order processed successfully");
+          } else {
+            console.log("Cart document does not exist for this user.");
           }
         } else {
           alert(
@@ -113,51 +105,63 @@ const Checkout = () => {
     }
   };
 
-  const updateFirestoreAfterPayment = async (userEmail, cart) => {
+  const updateFirestoreAfterPayment = async (
+    userEmail,
+    cart,
+    deliveryDate,
+    deliveryTime,
+    location,
+    message,
+    confirmPin
+  ) => {
     try {
-      // Fetch the last order ID from Firestore
-      const lastOrderQuery = query(
-        collection(db, "orders"),
-        orderBy("orderId", "desc"),
-        limit(1),
-      );
-      const lastOrderSnapshot = await getDocs(lastOrderQuery);
-      let lastOrderId = 0;
+      console.log("Cart:", cart);
 
-      if (!lastOrderSnapshot.empty) {
-        lastOrderId = parseInt(
-          lastOrderSnapshot.docs[0].data().orderId.replace("exgirl", ""),
+      if (cart) {
+        console.log("Cart items:", cart);
+
+        const lastOrderQuery = query(
+          collection(db, "orders"),
+          orderBy("orderId", "desc"),
+          limit(1),
         );
+        const lastOrderSnapshot = await getDocs(lastOrderQuery);
+        let lastOrderId = 0;
+
+        if (!lastOrderSnapshot.empty) {
+          lastOrderId = parseInt(
+            lastOrderSnapshot.docs[0].data().orderId.replace("exgirl", ""),
+          );
+        }
+
+        const newOrderId = `exgirl${(lastOrderId + 1)
+          .toString()
+          .padStart(4, "0")}`;
+
+        const orderRef = doc(db, "orders", newOrderId);
+        await setDoc(orderRef, {
+          orderId: newOrderId,
+          userEmail,
+          items: cart,
+          deliveryDate,
+          deliveryTime,
+          location,
+          message,
+          confirmPin,
+          createdAt: serverTimestamp(),
+        });
+
+        console.log("Order stored in Firestore after successful payment.");
+      } else {
+        console.log("Cart data is incomplete or missing.");
       }
-
-      // Increment the last order ID to get the new order ID
-      const newOrderId = `exgirl${(lastOrderId + 1).toString().padStart(4, "0")}`;
-
-      // Create the order object
-      const orderData = {
-        orderId: newOrderId,
-        userEmail,
-        items: cart.items,
-        deliveryDate: cart.checkout.deliveryDate,
-        deliveryTime: cart.checkout.deliveryTime,
-        location: cart.checkout.location,
-        message: cart.checkout.message,
-        confirmPin: cart.checkout.confirmPin,
-        createdAt: serverTimestamp(),
-      };
-
-      // Add the new order to the "orders" collection
-      const orderRef = doc(db, "orders", newOrderId);
-      await setDoc(orderRef, orderData);
-
-      console.log("Order stored in Firestore after successful payment.");
     } catch (error) {
       console.error("Error storing order in Firestore after payment:", error);
     }
   };
 
   return (
-    <div class="box">
+    <div className="box">
       <div
         style={{
           maxWidth: "600px",
