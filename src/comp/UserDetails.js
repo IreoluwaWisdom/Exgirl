@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../config/firebaseConfig";
+import "../styles/Account.css";
 
 const UserDetails = ({ userEmail }) => {
   const [userData, setUserData] = useState(null);
@@ -96,7 +97,7 @@ const UserDetails = ({ userEmail }) => {
             <input
               type="date"
               name="dateOfBirth"
-              value={editedUserData.dateOfBirth}
+              value={editedUserData.dob}
               onChange={handleChange}
             />
             <button onClick={handleSave}>Save</button>
@@ -106,7 +107,7 @@ const UserDetails = ({ userEmail }) => {
             <p>Username: {userData.username}</p>
             <p>Phone Number: {userData.phoneNumber}</p>
             <p>Email: {userData.email}</p>
-            <p>Date of Birth: {userData.dateOfBirth}</p>
+            <p>Date of Birth: {userData.dob}</p>
             <button onClick={handleEdit}>Edit</button>
           </div>
         )
