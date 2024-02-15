@@ -10,6 +10,7 @@ import {
   limit,
   getDocs,
   setDoc,
+  deleteDoc,
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../config/firebaseConfig";
@@ -74,7 +75,7 @@ const Checkout = () => {
               contractCode: "3362135433",
               paymentDescription: "Your Payment Description",
 
-              onComplete: function (response) {
+              onClose: function (response) {
                 console.log(response);
                 updateFirestoreAfterPayment(
                   currentUser.email,
@@ -86,10 +87,12 @@ const Checkout = () => {
                   confirmPin,
                 );
               },
-              onClose: function (data) {
-                console.log(data);
-                window.location.href = "/checkout";
-              },
+
+              //onClose: function (data) {
+              //console.log(data);
+              //window.location.href = "/checkout";
+
+              // },
             });
 
             console.log("Order processed successfully");
@@ -154,6 +157,10 @@ const Checkout = () => {
           confirmPin,
           createdAt: serverTimestamp(),
         });
+
+        const cartRef = doc(db, "carts", userEmail);
+        await deleteDoc(cartRef);
+        localStorage.setItem("cart", JSON.stringify({}));
 
         console.log("Order stored in Firestore after successful payment.");
       } else {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { getDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../config/firebaseConfig";
 import "../styles/Account.css";
+import { Link } from "react-router-dom";
 
 const UserDetails = ({ userEmail }) => {
   const [userData, setUserData] = useState(null);
@@ -104,11 +105,60 @@ const UserDetails = ({ userEmail }) => {
           </div>
         ) : (
           <div>
-            <p>Username: {userData.username}</p>
-            <p>Phone Number: {userData.phoneNumber}</p>
-            <p>Email: {userData.email}</p>
-            <p>Date of Birth: {userData.dob}</p>
-            <button onClick={handleEdit}>Edit</button>
+            <div
+              style={{
+                marginBottom: "4vh",
+              }}
+            >
+              Username
+              <div>{userData.username}</div>
+            </div>
+            <div>
+              Phone Number
+              <div>{userData.phoneNumber}</div>
+            </div>
+
+            <div>
+              Email <div> {userData.email}</div>
+            </div>
+
+            <div style={{ marginBottom: "10vh" }}>
+              Date of Birth
+              <div>{userData.dob}</div>
+            </div>
+            <Link to="/sign-out">
+              <button
+                style={{
+                  padding: "5px 13px",
+                  backgroundColor: "darkred",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                  fontSize: "16px",
+                  position: "relative",
+                  right: "5vw",
+                }}
+              >
+                Sign Out
+              </button>
+            </Link>
+            <button
+              onClick={handleEdit}
+              style={{
+                padding: "5px 30px",
+                backgroundColor: "#6a0dad",
+                color: "#fff",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer",
+                fontSize: "16px",
+                position: "relative",
+                left: "25vw",
+              }}
+            >
+              Edit
+            </button>
           </div>
         )
       ) : (

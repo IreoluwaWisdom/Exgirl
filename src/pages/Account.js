@@ -18,16 +18,13 @@ const Account = () => {
         <div className="user-details-container">
           <UserDetails userEmail={currentUser.email} />
           {/* Change the button to link to the sign-out page */}
-          <Link to="/sign-out">
-            <button>Sign Out</button>
-          </Link>
         </div>
       ) : (
         <div>
           <h5>You are using Guest Mode</h5>
-          <div className="button-group">
+          <div style={{ textAlign: "center" }}>
             <SignUpButton />
-            OR
+            OR &nbsp;
             <SignInButton />
           </div>
           <Continuing />
