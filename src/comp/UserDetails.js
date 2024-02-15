@@ -108,14 +108,20 @@ const UserDetails = ({ userEmail }) => {
             <div
               style={{
                 marginBottom: "4vh",
+                fontSize: "120%",
+                fontWeight: "bold",
               }}
             >
               Username
-              <div>{userData.username}</div>
+              <div style={{ fontWeight: "normal", fontSize: "16px" }}>
+                {userData.username}
+              </div>
             </div>
             <div>
               Phone Number
-              <div>{userData.phoneNumber}</div>
+              <div style={{ fontWeight: "normal", fontSize: "16px" }}>
+                {userData.phoneNumber}
+              </div>
             </div>
 
             <div>
