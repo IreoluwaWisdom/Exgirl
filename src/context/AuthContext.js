@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
 
 const AuthContext = React.createContext();
 
@@ -13,19 +14,34 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
+  const [userOrders, setUserOrders] = useState([]);
   const auth = getAuth();
+  const db = getFirestore();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user);
+      if (user) {
+        const ordersRef = collection(db, 'orders');
+        const q = query(ordersRef, where('userEmail', '==', user.email));
+        const querySnapshot = await getDocs(q);
+        const orders = [];
+        querySnapshot.forEach((doc) => {
+          orders.push({ id: doc.id, ...doc.data() });
+        });
+        setUserOrders(orders);
+      } else {
+        setUserOrders([]);
+      }
     });
 
     // Cleanup subscription on unmount
     return () => unsubscribe();
-  }, [auth]);
+  }, [auth, db]);
 
   const value = {
     currentUser,
+    userOrders,
     signOut: async () => {
       try {
         await signOut(auth);
