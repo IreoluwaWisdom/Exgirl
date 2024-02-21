@@ -86,26 +86,33 @@ const UserDetails = ({ userEmail }) => {
               name="username"
               value={editedUserData.username}
               onChange={handleChange}
+              style={{ marginBottom: "2vh" }}
             />
             <input
               type="text"
               name="phoneNumber"
               value={editedUserData.phoneNumber}
               onChange={handleChange}
+              style={{ marginBottom: "2vh" }}
             />
             <input
               type="text"
               name="email"
               value={editedUserData.email}
               onChange={handleChange}
+              style={{ marginBottom: "2vh" }}
             />
             <input
               type="date"
               name="dateOfBirth"
               value={editedUserData.dob}
               onChange={handleChange}
+              style={{ marginBottom: "4vh" }}
             />
-            <button onClick={handleSave}>Save</button>
+            <br />
+            <div style={{ textAlign: "center" }}>
+              <button onClick={handleSave}>Save</button>
+            </div>
           </div>
         ) : (
           <div>
