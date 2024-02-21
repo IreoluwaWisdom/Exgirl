@@ -5,7 +5,9 @@ import "../styles/Account.css";
 import { Link } from "react-router-dom";
 
 const UserDetails = ({ userEmail }) => {
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState(
+    JSON.parse(localStorage.getItem("userData")) || null,
+  );
   const [editing, setEditing] = useState(false);
   const [editedUserData, setEditedUserData] = useState(null);
   const [online, setOnline] = useState(navigator.onLine);
@@ -28,8 +30,10 @@ const UserDetails = ({ userEmail }) => {
       }
     };
 
-    // Fetch user data initially
-    fetchUserData();
+    // Fetch user data initially only if online
+    if (online) {
+      fetchUserData();
+    }
 
     // Check for online/offline status
     const handleOnlineStatusChange = () => {
@@ -43,7 +47,7 @@ const UserDetails = ({ userEmail }) => {
       window.removeEventListener("online", handleOnlineStatusChange);
       window.removeEventListener("offline", handleOnlineStatusChange);
     };
-  }, [userEmail]);
+  }, [userEmail, online]);
 
   const handleEdit = () => {
     setEditing(true);
