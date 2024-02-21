@@ -111,7 +111,19 @@ const UserDetails = ({ userEmail }) => {
             />
             <br />
             <div style={{ textAlign: "center" }}>
-              <button onClick={handleSave}>Save</button>
+              <button
+                style={{
+                  borderRadius: "15px",
+                  padding: "4px 25px",
+                  backgroundColor: "darkblue",
+                  color: "white",
+                  border: "none",
+                  fontSize: "80%",
+                }}
+                onClick={handleSave}
+              >
+                Save
+              </button>
             </div>
           </div>
         ) : (
