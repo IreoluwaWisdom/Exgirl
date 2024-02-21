@@ -4,6 +4,9 @@ import { db } from "../config/firebaseConfig";
 import "../styles/Account.css";
 import { Link } from "react-router-dom";
 
+// Import default profile picture
+import defaultProfilePicture from "../assets/Designer.jpeg";
+
 const UserDetails = ({ userEmail }) => {
   const [userData, setUserData] = useState(
     JSON.parse(localStorage.getItem("userData")) || null,
@@ -11,6 +14,9 @@ const UserDetails = ({ userEmail }) => {
   const [editing, setEditing] = useState(false);
   const [editedUserData, setEditedUserData] = useState(null);
   const [online, setOnline] = useState(navigator.onLine);
+  const [profilePicture, setProfilePicture] = useState(
+    localStorage.getItem("profilePicture") || defaultProfilePicture,
+  );
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -61,15 +67,34 @@ const UserDetails = ({ userEmail }) => {
     }));
   };
 
+  const handleProfilePictureChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setProfilePicture(reader.result);
+    };
+    if (file) {
+      reader.readAsDataURL(file);
+      // You can also upload the file to storage and get its URL to save to Firestore
+    }
+  };
+
   const handleSave = async () => {
     try {
       // Update Firestore document with edited user data
       const userRef = doc(db, "users", userEmail);
       await updateDoc(userRef, editedUserData);
 
+      // Save profile picture URL to Firestore
+      // For now, I'm assuming you have a 'profilePicture' field in the user document
+      await updateDoc(userRef, {
+        profilePicture: profilePicture,
+      });
+
       // Disable editing mode
       setEditing(false);
       localStorage.setItem("userData", JSON.stringify(editedUserData));
+      localStorage.setItem("profilePicture", profilePicture);
     } catch (error) {
       console.error("Error updating user data:", error.message);
       // Handle error
@@ -81,6 +106,18 @@ const UserDetails = ({ userEmail }) => {
       {userData ? (
         editing ? (
           <div>
+            {/* Display profile picture and option to change */}
+            <img
+              src={profilePicture}
+              alt="Profile"
+              style={{ width: "100px", height: "100px", borderRadius: "50%" }}
+            />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleProfilePictureChange}
+              style={{ marginBottom: "2vh" }}
+            />
             <input
               type="text"
               name="username"
@@ -128,6 +165,12 @@ const UserDetails = ({ userEmail }) => {
           </div>
         ) : (
           <div>
+            {/* Display profile picture and user information */}
+            <img
+              src={profilePicture}
+              alt="Profile"
+              style={{ width: "100px", height: "100px", borderRadius: "50%" }}
+            />
             <div
               style={{
                 marginBottom: "0.5vh",
