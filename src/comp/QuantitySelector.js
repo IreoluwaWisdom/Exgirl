@@ -7,12 +7,12 @@ import { getAuth } from "firebase/auth";
 
 const QuantitySelector = ({ itemName, itemPrice }) => {
   const { cart, dispatch } = useCart();
-  const [quantity, setQuantity] = useState(0); // Set initial quantity to 0
+  const [quantity, setQuantity] = useState(0);
   const [isItemInCart, setIsItemInCart] = useState(false);
 
   useEffect(() => {
     const mergedCartData = JSON.parse(localStorage.getItem("cart")) || {};
-    setQuantity(mergedCartData[itemName] || 0); // Set quantity to 0 if item not found
+    setQuantity(mergedCartData[itemName] || 0);
     setIsItemInCart(mergedCartData.hasOwnProperty(itemName));
   }, [itemName]);
 
@@ -37,7 +37,6 @@ const QuantitySelector = ({ itemName, itemPrice }) => {
     };
     dispatch({ type: "SET_CART", payload: updatedCart });
 
-    // Update cart data in Firestore
     const auth = getAuth();
     const user = auth.currentUser;
 
@@ -53,9 +52,9 @@ const QuantitySelector = ({ itemName, itemPrice }) => {
     const updatedCart = { ...cart };
     delete updatedCart[itemName];
     dispatch({ type: "SET_CART", payload: updatedCart });
-    setQuantity(0); // Set quantity to 0 when item is removed
+    setQuantity(0);
+    updateCart(0);
 
-    // Update cart data in Firestore
     const auth = getAuth();
     const user = auth.currentUser;
 
@@ -71,18 +70,15 @@ const QuantitySelector = ({ itemName, itemPrice }) => {
 
   return (
     <div>
-      <div style={{}}>
+      <div>
         <button
           onClick={decreaseQuantity}
-          style={{ width: "10vw", marginBottom: "5vh" }}
           disabled={quantity === 0 || !isItemInCart}
         >
           -
         </button>
         <span>{quantity}</span>
-        <button onClick={increaseQuantity} style={{ width: "10vw" }}>
-          +
-        </button>
+        <button onClick={increaseQuantity}>+</button>
       </div>
       <div>
         {isItemInCart ? (
@@ -96,9 +92,7 @@ const QuantitySelector = ({ itemName, itemPrice }) => {
           <button onClick={() => updateCart(quantity)}>Add to Cart</button>
         )}
         <br />
-        <Link to="/cart" style={{ color: "black" }}>
-          View/Edit Cart
-        </Link>
+        <Link to="/cart">View/Edit Cart</Link>
       </div>
     </div>
   );

@@ -111,43 +111,67 @@ const UserDetails = ({ userEmail }) => {
           <div>
             <div
               style={{
-                marginBottom: "4vh",
-                fontSize: "120%",
+                marginBottom: "0.5vh",
+                fontSize: "85%",
                 fontWeight: "bold",
               }}
             >
               Username
-              <div style={{ fontWeight: "normal", fontSize: "16px" }}>
+              <div style={{ fontWeight: "normal", fontSize: "80%" }}>
                 {userData.username}
               </div>
             </div>
-            <div>
+            <div
+              style={{
+                marginBottom: "0.5vh",
+                fontSize: "85%",
+                fontWeight: "bold",
+              }}
+            >
               Phone Number
-              <div style={{ fontWeight: "normal", fontSize: "16px" }}>
+              <div style={{ fontWeight: "normal", fontSize: "80%" }}>
                 {userData.phoneNumber}
               </div>
             </div>
 
-            <div>
-              Email <div> {userData.email}</div>
+            <div
+              style={{
+                marginBottom: "0.5vh",
+                fontSize: "85%",
+                fontWeight: "bold",
+              }}
+            >
+              Email{" "}
+              <div style={{ fontWeight: "normal", fontSize: "80%" }}>
+                {" "}
+                {userData.email}
+              </div>
             </div>
 
-            <div style={{ marginBottom: "10vh" }}>
+            <div
+              style={{
+                marginBottom: "5vh",
+                fontSize: "85%",
+                fontWeight: "bold",
+              }}
+            >
               Date of Birth
-              <div>{userData.dob}</div>
+              <div style={{ fontWeight: "normal", fontSize: "80%" }}>
+                {userData.dob}
+              </div>
             </div>
             <Link to="/sign-out">
               <button
                 style={{
-                  padding: "5px 13px",
+                  padding: "3px 10px",
                   backgroundColor: "darkred",
                   color: "white",
                   border: "none",
                   borderRadius: "5px",
                   cursor: "pointer",
-                  fontSize: "16px",
                   position: "relative",
-                  right: "5vw",
+                  right: "3.5vw",
+                  fontSize: "80%",
                 }}
               >
                 Sign Out
@@ -156,15 +180,15 @@ const UserDetails = ({ userEmail }) => {
             <button
               onClick={handleEdit}
               style={{
-                padding: "5px 30px",
+                padding: "4px 20px",
                 backgroundColor: "#6a0dad",
                 color: "#fff",
                 border: "none",
                 borderRadius: "5px",
                 cursor: "pointer",
-                fontSize: "16px",
                 position: "relative",
-                left: "25vw",
+                left: "28vw",
+                fontSize: "80%",
               }}
             >
               Edit
@@ -172,7 +196,7 @@ const UserDetails = ({ userEmail }) => {
           </div>
         )
       ) : (
-        <p>Loading user data...</p>
+        <p>Loading ...</p>
       )}
     </div>
   );

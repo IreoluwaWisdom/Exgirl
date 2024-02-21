@@ -155,9 +155,10 @@ const Cart = ({ user }) => {
             {item.itemName}
           </span>
           <br />
-          <span className="item-quantity">Quantity: {item.quantity}</span>
-          <br />
-          <span className="item-price">(Price per item: ${item.price})</span>
+          <div style={{ fontSize: "80%" }}>
+            <span className="item-quantity"> {item.quantity} item</span>
+            <span className="item-price"> ₦{item.price}</span>
+          </div>
           <br />
           <button
             style={{
