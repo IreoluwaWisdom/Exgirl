@@ -166,11 +166,19 @@ const UserDetails = ({ userEmail }) => {
         ) : (
           <div>
             {/* Display profile picture and user information */}
-            <img
-              src={profilePicture}
-              alt="Profile"
-              style={{ width: "100px", height: "100px", borderRadius: "50%" }}
-            />
+            <div
+              style={{
+                textAlign: "center",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <img
+                src={profilePicture}
+                alt="Profile"
+                style={{ width: "80px", height: "80px", borderRadius: "50%" }}
+              />
+            </div>
             <div
               style={{
                 marginBottom: "0.5vh",
