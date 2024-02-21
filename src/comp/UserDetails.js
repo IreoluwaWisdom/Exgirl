@@ -132,13 +132,7 @@ const UserDetails = ({ userEmail }) => {
               onChange={handleChange}
               style={{ marginBottom: "2vh" }}
             />
-            <input
-              type="text"
-              name="email"
-              value={editedUserData.email}
-              onChange={handleChange}
-              style={{ marginBottom: "2vh" }}
-            />
+
             <input
               type="date"
               name="dateOfBirth"
