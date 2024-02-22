@@ -4,8 +4,16 @@ import { db } from "../config/firebaseConfig";
 import "../styles/Account.css";
 import { Link } from "react-router-dom";
 
-// Import default profile picture
-import defaultProfilePicture from "../assets/Designer.jpeg";
+// Import default profile pictures
+import designerProfilePicture from "../assets/Designer.jpeg";
+import businessmanProfilePicture from "../assets/Designer (1).jpeg";
+import teacherProfilePicture from "../assets/Designer (2).jpeg";
+
+const profilePictures = [
+  { id: 1, src: designerProfilePicture },
+  { id: 2, src: businessmanProfilePicture },
+  { id: 3, src: teacherProfilePicture },
+];
 
 const UserDetails = ({ userEmail }) => {
   const [userData, setUserData] = useState(
@@ -15,8 +23,9 @@ const UserDetails = ({ userEmail }) => {
   const [editedUserData, setEditedUserData] = useState(null);
   const [online, setOnline] = useState(navigator.onLine);
   const [profilePicture, setProfilePicture] = useState(
-    localStorage.getItem("profilePicture") || defaultProfilePicture,
+    localStorage.getItem("profilePicture") || designerProfilePicture,
   );
+  const [selectedPictureId, setSelectedPictureId] = useState(1); // Default selected picture id
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -67,16 +76,9 @@ const UserDetails = ({ userEmail }) => {
     }));
   };
 
-  const handleProfilePictureChange = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setProfilePicture(reader.result);
-    };
-    if (file) {
-      reader.readAsDataURL(file);
-      // You can also upload the file to storage and get its URL to save to Firestore
-    }
+  const handleProfilePictureChange = (id, src) => {
+    setSelectedPictureId(id);
+    setProfilePicture(src);
   };
 
   const handleSave = async () => {
@@ -106,18 +108,23 @@ const UserDetails = ({ userEmail }) => {
       {userData ? (
         editing ? (
           <div>
-            {/* Display profile picture and option to change */}
-            <img
-              src={profilePicture}
-              alt="Profile"
-              style={{ width: "100px", height: "100px", borderRadius: "50%" }}
-            />
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleProfilePictureChange}
-              style={{ marginBottom: "2vh" }}
-            />
+            {/* Display profile picture options */}
+            <div className="profile-picture-options">
+              {profilePictures.map((picture) => (
+                <img
+                  key={picture.id}
+                  src={picture.src}
+                  alt="Profile"
+                  className={`profile-picture-option ${
+                    selectedPictureId === picture.id ? "selected" : ""
+                  }`}
+                  onClick={() =>
+                    handleProfilePictureChange(picture.id, picture.src)
+                  }
+                  style={{ width: "100px", height: "100px" }}
+                />
+              ))}
+            </div>
             <input
               type="text"
               name="username"
@@ -161,16 +168,22 @@ const UserDetails = ({ userEmail }) => {
           <div>
             {/* Display profile picture and user information */}
             <div
+              className="profile-picture-container"
               style={{
-                textAlign: "center",
                 display: "flex",
+                alignItems: "center",
                 justifyContent: "center",
               }}
             >
               <img
                 src={profilePicture}
                 alt="Profile"
-                style={{ width: "80px", height: "80px", borderRadius: "50%" }}
+                className="profile-picture"
+                style={{
+                  width: "90px",
+                  height: "90px",
+                  borderRadius: "50%",
+                }}
               />
             </div>
             <div
@@ -195,20 +208,6 @@ const UserDetails = ({ userEmail }) => {
               Phone Number
               <div style={{ fontWeight: "normal", fontSize: "80%" }}>
                 {userData.phoneNumber}
-              </div>
-            </div>
-
-            <div
-              style={{
-                marginBottom: "0.5vh",
-                fontSize: "85%",
-                fontWeight: "bold",
-              }}
-            >
-              Email{" "}
-              <div style={{ fontWeight: "normal", fontSize: "80%" }}>
-                {" "}
-                {userData.email}
               </div>
             </div>
 

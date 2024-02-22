@@ -110,3 +110,6 @@
 .help-text a:hover {
   text-decoration: underline;
 }
+.profile-picture-option.selected {
+  border: 2px solid blue; /* Add whatever styling you want for the selected picture */
+}
