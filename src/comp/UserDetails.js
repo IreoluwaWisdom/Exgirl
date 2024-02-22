@@ -37,6 +37,18 @@ const UserDetails = ({ userEmail }) => {
           setUserData(userData);
           setEditedUserData(userData);
           localStorage.setItem("userData", JSON.stringify(userData));
+
+          // Check if profile picture ID exists in the user data
+          if (userData.profilePictureId) {
+            // Find the profile picture from the profilePictures array
+            const selectedPicture = profilePictures.find(
+              (picture) => picture.id === userData.profilePictureId,
+            );
+            if (selectedPicture) {
+              setProfilePicture(selectedPicture.src);
+              setSelectedPictureId(userData.profilePictureId);
+            }
+          }
         } else {
           console.error("User data not found");
         }
@@ -196,6 +208,18 @@ const UserDetails = ({ userEmail }) => {
               Username
               <div style={{ fontWeight: "normal", fontSize: "80%" }}>
                 {userData.username}
+              </div>
+            </div>
+            <div
+              style={{
+                marginBottom: "0.5vh",
+                fontSize: "85%",
+                fontWeight: "bold",
+              }}
+            >
+              Email
+              <div style={{ fontWeight: "normal", fontSize: "80%" }}>
+                {userData.email}
               </div>
             </div>
             <div
