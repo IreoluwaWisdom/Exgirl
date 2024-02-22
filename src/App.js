@@ -9,6 +9,7 @@ import Profile from "./pages/Profile";
 import Account from "./pages/Account";
 import SignUpPage from "./pages/SignUpPage";
 import SignInPage from "./pages/SignInPage";
+import GoogleSignUpPage from "./pages/GoogleSignUp";
 import SignOut from "./pages/SignOut";
 import Checkout from "./pages/Checkout";
 import JollofRice from "./items/JollofRice";
@@ -48,6 +49,7 @@ const App = () => {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/sign-out" element={<SignOut />} />
         <Route path="/sign-in" element={<SignInPage />} />
+        <Route path="/google-sign-up" element={<GoogleSignUpPage />} />
         <Route path="/menu/jollof-rice" element={<JollofRice />} />
         <Route path="/menu/amala" element={<Amala />} />
         <Route path="/menu/chicken" element={<Chicken />} />

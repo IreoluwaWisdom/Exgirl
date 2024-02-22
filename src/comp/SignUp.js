@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -10,7 +11,9 @@ import {
   setDoc,
   collection,
   addDoc,
+  getDoc,
 } from "firebase/firestore";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -23,6 +26,7 @@ const SignUp = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [dobError, setDOBError] = useState("");
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false); // State to control the visibility of success message
 
   const validateEmail = (email) => {
     // Regular expression for email format validation
@@ -117,81 +121,125 @@ const SignUp = () => {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    const auth = getAuth();
+    const provider = new GoogleAuthProvider();
+
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      // Check if the user is already registered
+      const db = getFirestore();
+      const userRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userRef);
+
+      if (userDoc.exists()) {
+        // User is already registered, redirect to account page
+        window.location.href = "/account";
+        console.log("User is already registered");
+      } else {
+        // New user, show sign-up form
+        localStorage.setItem("userEmail", user.email);
+        window.location.href = "/google-sign-up";
+      }
+    } catch (error) {
+      console.error("Google sign-in error:", error.code, error.message);
+      // Handle sign-in error
+    }
+  };
+
   return (
     <div>
-      <h2>Sign Up</h2>
-      <form onSubmit={handleSignUp}>
-        <label>
-          Email:
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          {emailError && <p>{emailError}</p>}
-        </label>
-        <br />
-        <label>
-          Password:
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          {passwordError && <p>{passwordError}</p>}
-        </label>
-        <br />
-        <label>
-          Username:
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </label>
-        <br />
-        <label>
-          Phone Number:
-          <input
-            type="tel"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            required
-          />
-        </label>
-        <br />
-        <label>
-          Date of Birth (DD/MM):
-          <input
-            type="text"
-            value={dobDayMonth}
-            onChange={(e) => setDOB(e.target.value)}
-            required
-          />
-          {dobError && <p>{dobError}</p>}
-        </label>
-        <br />
-        <label>
-          How did you hear about us?
-          <select
-            value={hearAboutUs}
-            onChange={(e) => setHearAboutUs(e.target.value)}
-            required
-          >
-            <option value="">Select an option</option>
-            <option value="Friend">Friend</option>
-            <option value="Advertisement">Advertisement</option>
-            <option value="Social media">Social media</option>
-            <option value="Other">Other</option>
-          </select>
-        </label>
-        <br />
-        <button type="submit">Sign Up</button>
-      </form>
-      {message && <p>{message}</p>}
+      <div>
+        <h2>Sign Up</h2>
+        <form onSubmit={handleSignUp}>
+          <label>
+            Email:
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            {emailError && <p>{emailError}</p>}
+          </label>
+          <br />
+          <label>
+            Password:
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            {passwordError && <p>{passwordError}</p>}
+          </label>
+          <br />
+          <label>
+            Username:
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </label>
+          <br />
+          <label>
+            Phone Number:
+            <input
+              type="tel"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              required
+            />
+          </label>
+          <br />
+          <label>
+            Date of Birth (DD/MM):
+            <input
+              type="text"
+              value={dobDayMonth}
+              onChange={(e) => setDOB(e.target.value)}
+              required
+            />
+            {dobError && <p>{dobError}</p>}
+          </label>
+          <br />
+          <label>
+            How did you hear about us?
+            <select
+              value={hearAboutUs}
+              onChange={(e) => setHearAboutUs(e.target.value)}
+              required
+            >
+              <option value="">Select an option</option>
+              <option value="Friend">Friend</option>
+              <option value="Advertisement">Advertisement</option>
+              <option value="Social media">Social media</option>
+              <option value="Other">Other</option>
+            </select>
+          </label>
+          <br />
+          <button type="submit">Sign Up</button>
+        </form>
+        {message && <p>{message}</p>}
+      </div>
+
+      <div>
+        {/* Existing JSX */}
+        <button onClick={handleGoogleSignIn}>Sign in with Google</button>
+        {/* Show success message */}
+        {showSuccessMessage && (
+          <>
+            <p>Sign in successful</p>{" "}
+            <Link to="/account">
+              <button> Confirm</button>{" "}
+            </Link>
+          </>
+        )}
+      </div>
     </div>
   );
 };
