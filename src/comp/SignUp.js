@@ -129,17 +129,17 @@ const SignUp = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      // Check if the user is already registered
+      // Check if the user data exists in Firestore
       const db = getFirestore();
-      const userRef = doc(db, "users", user.uid);
+      const userRef = doc(db, "users", user.email); // Use email as the document ID
       const userDoc = await getDoc(userRef);
 
       if (userDoc.exists()) {
-        // User is already registered, redirect to account page
+        // User data exists in Firestore, redirect to account page
         window.location.href = "/account";
-        console.log("User is already registered");
+        console.log("User data exists in Firestore");
       } else {
-        // New user, show sign-up form
+        // User data does not exist in Firestore, redirect to google-sign-up page
         localStorage.setItem("userEmail", user.email);
         window.location.href = "/google-sign-up";
       }
