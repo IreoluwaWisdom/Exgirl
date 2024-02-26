@@ -6,6 +6,7 @@ import SignUpButton from "../Buttons/SignUpButton";
 import SignInButton from "../Buttons/SignInButton";
 import Continuing from "../Texts/Continuing";
 import UserDetails from "../comp/UserDetails";
+import GoogleSignInButton from "../comp/GoogleButton";
 import "../styles/Account.css";
 
 const Account = () => {
@@ -24,8 +25,8 @@ const Account = () => {
             <SignUpButton />
             <br /> <SignInButton />
             OR &nbsp;
-
             <span>CONTINUE WITH GOOGLE </span>
+            <GoogleSignInButton />
           </div>
           <Continuing />
           <span style={{ fontSize: "80%" }}> Need Help? Chat with Perry</span>

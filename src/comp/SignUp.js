@@ -1,19 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import "../styles/SignUp.css";
 import {
   getAuth,
   createUserWithEmailAndPassword,
   sendEmailVerification,
 } from "firebase/auth";
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  collection,
-  addDoc,
-  getDoc,
-} from "firebase/firestore";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getFirestore, doc, setDoc, collection } from "firebase/firestore";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -121,77 +114,56 @@ const SignUp = () => {
     }
   };
 
-  const handleGoogleSignIn = async () => {
-    const auth = getAuth();
-    const provider = new GoogleAuthProvider();
-
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-
-      // Check if the user data exists in Firestore
-      const db = getFirestore();
-      const userRef = doc(db, "users", user.email); // Use email as the document ID
-      const userDoc = await getDoc(userRef);
-
-      if (userDoc.exists()) {
-        // User data exists in Firestore, redirect to account page
-        window.location.href = "/account";
-        console.log("User data exists in Firestore");
-      } else {
-        // User data does not exist in Firestore, redirect to google-sign-up page
-        localStorage.setItem("userEmail", user.email);
-        window.location.href = "/google-sign-up";
-      }
-    } catch (error) {
-      console.error("Google sign-in error:", error.code, error.message);
-      // Handle sign-in error
-    }
-  };
-
   return (
-    <div>
+    <div style={{ textAlign: "center" }}>
       <div>
-        <h2>Sign Up</h2>
         <form onSubmit={handleSignUp}>
           <label>
-            Email:
+            Email
+            <br />
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              style={{ borderRadius: "30px" }}
             />
             {emailError && <p>{emailError}</p>}
           </label>
           <br />
           <label>
-            Password:
+            Password
+            <br />
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              style={{ borderRadius: "30px" }}
               required
             />
             {passwordError && <p>{passwordError}</p>}
           </label>
           <br />
           <label>
-            Username:
+            Username
+            <br />
             <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              style={{ borderRadius: "30px" }}
               required
             />
           </label>
           <br />
           <label>
-            Phone Number:
+            Phone Number
+            <br />
             <input
               type="tel"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
+              style={{ borderRadius: "30px" }}
               required
             />
           </label>
@@ -202,6 +174,7 @@ const SignUp = () => {
               type="text"
               value={dobDayMonth}
               onChange={(e) => setDOB(e.target.value)}
+              style={{ borderRadius: "30px" }}
               required
             />
             {dobError && <p>{dobError}</p>}
@@ -209,9 +182,11 @@ const SignUp = () => {
           <br />
           <label>
             How did you hear about us?
+            <br />
             <select
               value={hearAboutUs}
               onChange={(e) => setHearAboutUs(e.target.value)}
+              style={{ borderRadius: "30px" }}
               required
             >
               <option value="">Select an option</option>
@@ -222,14 +197,27 @@ const SignUp = () => {
             </select>
           </label>
           <br />
-          <button type="submit">Sign Up</button>
+          <button
+            type="submit"
+            style={{
+              backgroundColor: "#6a0dad",
+              color: "white",
+              border: "none",
+              padding: "5px 10px",
+              borderRadius: "15px",
+              cursor: "pointer",
+              width: "50vw",
+              margin: "8vw auto",
+            }}
+          >
+            Sign Up
+          </button>
         </form>
         {message && <p>{message}</p>}
       </div>
 
       <div>
         {/* Existing JSX */}
-        <button onClick={handleGoogleSignIn}>Sign in with Google</button>
         {/* Show success message */}
         {showSuccessMessage && (
           <>
