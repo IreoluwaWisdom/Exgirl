@@ -8,7 +8,7 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 
-const Support = () => {
+const Orders = () => {
   const { currentUser } = useAuth();
   const [ongoingOrders, setOngoingOrders] = useState([]);
   const [completedOrders, setCompletedOrders] = useState([]);
@@ -161,4 +161,4 @@ const styles = {
   },
 };
 
-export default Support;
+export default Orders;

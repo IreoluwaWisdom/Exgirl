@@ -6,6 +6,7 @@ import {
   collection,
   onSnapshot,
 } from "firebase/firestore";
+import Tabs from "../comp/Tab";
 import { db } from "../config/firebaseConfig";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { Link } from "react-router-dom";
@@ -147,88 +148,91 @@ const Cart = ({ user }) => {
   }
 
   return (
-    <div className="cart-container">
-      <h2 className="cart-header">Your Cart</h2>
-      {itemsWithPrices.map((item) => (
-        <div key={item.itemName} className="cart-item">
-          <span className="item-name" style={{ textAlign: "center" }}>
-            {item.itemName}
-          </span>
-          <br />
-          <div style={{ fontSize: "80%" }}>
-            <span className="item-quantity"> {item.quantity} item</span>
-            <span className="item-price"> ₦{item.price}</span>
+    <div>
+      <Tabs />
+
+      <div className="cart-container" style={{ marginTop: "7vh" }}>
+        {itemsWithPrices.map((item) => (
+          <div key={item.itemName} className="cart-item">
+            <span className="item-name" style={{ textAlign: "center" }}>
+              {item.itemName}
+            </span>
+            <br />
+            <div style={{ fontSize: "80%" }}>
+              <span className="item-quantity"> {item.quantity} item</span>
+              <span className="item-price"> ₦{item.price}</span>
+            </div>
+            <br />
+            <button
+              style={{
+                marginRight: "10px",
+                color: "white",
+                backgroundColor: "#6a0dad",
+                borderWidth: "0px",
+                fontWeight: "bolder",
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+              }}
+              onClick={() => decreaseQuantity(item.itemName)}
+            >
+              -
+            </button>
+            <button
+              style={{
+                marginRight: "10px",
+                color: "white",
+                backgroundColor: "#bb806b",
+                borderWidth: "0px",
+                fontWeight: "bolder",
+                fontSize: "16px",
+                width: "40px",
+                height: "40px",
+                borderRadius: "20px",
+              }}
+              onClick={() => increaseQuantity(item.itemName)}
+            >
+              +
+            </button>
+            <button
+              style={{
+                borderRadius: "20px",
+                color: "white",
+                backgroundColor: "#6a0dad",
+                borderColor: "#6a0dad",
+              }}
+              onClick={() => removeItem(item.itemName)}
+            >
+              Remove
+            </button>
           </div>
-          <br />
-          <button
-            style={{
-              marginRight: "10px",
-              color: "white",
-              backgroundColor: "#6a0dad",
-              borderWidth: "0px",
-              fontWeight: "bolder",
-              width: "40px",
-              height: "40px",
-              borderRadius: "50%",
-            }}
-            onClick={() => decreaseQuantity(item.itemName)}
-          >
-            -
-          </button>
-          <button
-            style={{
-              marginRight: "10px",
-              color: "white",
-              backgroundColor: "#bb806b",
-              borderWidth: "0px",
-              fontWeight: "bolder",
-              fontSize: "16px",
-              width: "40px",
-              height: "40px",
-              borderRadius: "20px",
-            }}
-            onClick={() => increaseQuantity(item.itemName)}
-          >
-            +
-          </button>
-          <button
-            style={{
-              borderRadius: "20px",
-              color: "white",
-              backgroundColor: "#6a0dad",
-              borderColor: "#6a0dad",
-            }}
-            onClick={() => removeItem(item.itemName)}
-          >
-            Remove
-          </button>
-        </div>
-      ))}
-      <br />
-      <p className="cart-total">Total Price: ${totalPrice.toFixed(2)}</p>
-      <div
-        style={{
-          textAlign: "center",
-          position: "relative",
-          left: "15%",
-          marginBottom: "20vh",
-        }}
-      >
-        <Link
-          to="/checkout"
+        ))}
+        <br />
+        <p className="cart-total">Total Price: ${totalPrice.toFixed(2)}</p>
+        <div
           style={{
-            textDecoration: "none",
-            fontWeight: "bold",
             textAlign: "center",
+            position: "relative",
+            left: "15%",
+            marginBottom: "20vh",
           }}
         >
-          <button
-            className="proceed-btn"
-            style={{ textDecoration: "none", fontWeight: "bold" }}
+          <Link
+            to="/checkout"
+            style={{
+              textDecoration: "none",
+              fontWeight: "bold",
+              textAlign: "center",
+            }}
           >
-            Proceed to Checkout
-          </button>
-        </Link>
+            <button
+              className="proceed-btn"
+              style={{ textDecoration: "none", fontWeight: "bold" }}
+            >
+              Proceed to Checkout
+            </button>
+          </Link>
+        </div>
       </div>
     </div>
   );

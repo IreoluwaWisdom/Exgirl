@@ -4,7 +4,7 @@ import Nav from "./comp/Nav";
 import Home from "./pages/Home";
 import Menu from "./pages/Menu";
 import Cart from "./pages/Cart";
-import Support from "./pages/Support";
+import Orders from "./pages/Orders";
 import Profile from "./pages/Profile";
 import Account from "./pages/Account";
 import SignUpPage from "./pages/SignUpPage";
@@ -30,7 +30,8 @@ import Sharwarma from "./items/Sharwarma";
 import Spaghetti from "./items/Spaghetti";
 import SignUp from "./comp/SignUp";
 import ResetPassword from "./pages/ResetPassword";
-
+import OngoingOrders from "./pages/OngoingOrders";
+import CompletedOrders from "./pages/CompletedOrders";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
@@ -41,7 +42,9 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/support" element={<Support />} />
+        <Route path="/ongoing" element={<OngoingOrders />} />
+        <Route path="/completed" element={<CompletedOrders />} />
+        <Route path="/orders" element={<Orders />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/account" element={<Account />} />
