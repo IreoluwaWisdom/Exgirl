@@ -55,15 +55,40 @@ const QuantitySelector = ({ itemName, itemPrice }) => {
 
   return (
     <div>
-      <div>
+      <div style={{ marginBottom: "10px" }}>
         <button
           onClick={decreaseQuantity}
           disabled={quantity === 0 || !isItemInCart}
+          style={{
+            marginRight: "10px",
+            color: "white",
+            backgroundColor: "#6a0dad",
+            borderWidth: "0px",
+            fontWeight: "bolder",
+            width: "40px",
+            height: "40px",
+            borderRadius: "50%",
+          }}
         >
           -
         </button>
         <span>{quantity}</span>
-        <button onClick={increaseQuantity}>+</button>
+        <button
+          onClick={increaseQuantity}
+          style={{
+            marginLeft: "10px",
+            color: "white",
+            backgroundColor: "#bb806b",
+            borderWidth: "0px",
+            fontWeight: "bolder",
+            fontSize: "16px",
+            width: "40px",
+            height: "40px",
+            borderRadius: "20px",
+          }}
+        >
+          +
+        </button>
       </div>
       <div>
         {isItemInCart ? (
