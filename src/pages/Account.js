@@ -13,19 +13,19 @@ const Account = () => {
 
   return (
     <div className="account-container">
-      <h2>Account</h2>
       {currentUser ? (
         <div className="user-details-container">
           <UserDetails userEmail={currentUser.email} />
-          {/* Change the button to link to the sign-out page */}
         </div>
       ) : (
         <div>
           <h5>You are using Guest Mode</h5>
           <div style={{ textAlign: "center" }}>
             <SignUpButton />
+            <br /> <SignInButton />
             OR &nbsp;
-            <SignInButton />
+
+            <span>CONTINUE WITH GOOGLE </span>
           </div>
           <Continuing />
           <span style={{ fontSize: "80%" }}> Need Help? Chat with Perry</span>

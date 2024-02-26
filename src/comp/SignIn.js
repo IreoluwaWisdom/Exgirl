@@ -96,28 +96,66 @@ const SignIn = () => {
   };
 
   return (
-    <div>
-      <h2>Sign In</h2>
+    <div
+      style={{
+        display: "block",
+        justifyContent: "center",
+
+        paddingTop: "8vh",
+        paddingBottom: "0vh",
+        marginBottom: "0vh",
+      }}
+    >
+      <div style={{ textAlign: "center" }}> Email Sign In</div>
+      <br />
       <form onSubmit={handleSignIn}>
-        <label>
-          Email:
+        <label style={{ textAlign: "center" }}>
+          Email
+          <br />
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            style={{
+              textAlign: "left",
+              width: "75vw",
+              borderRadius: "30px",
+              marginBottom: "5vh",
+            }}
           />
         </label>
         <br />
-        <label>
-          Password:
+        <label style={{ textAlign: "center" }}>
+          Password
+          <br />
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            style={{
+              textAlign: "left",
+              width: "75vw",
+              borderRadius: "30px",
+              marginBottom: "5vh",
+            }}
           />
         </label>
         <br />
-        <button type="submit">Sign In</button>
+        <div style={{ textAlign: "center" }}>
+          <button
+            type="submit"
+            style={{
+              width: "50vw",
+              borderRadius: "30px",
+              backgroundColor: "#6a0dad",
+              color: "white",
+              border: "none",
+              padding: "6px 12px",
+            }}
+          >
+            Sign In
+          </button>
+        </div>
       </form>
 
       {/* Display message */}
