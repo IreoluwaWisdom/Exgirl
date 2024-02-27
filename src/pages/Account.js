@@ -25,7 +25,7 @@ const Account = () => {
             <SignUpButton />
             <br /> <SignInButton />
             OR &nbsp;
-            <span>CONTINUE WITH GOOGLE </span>
+            <span>CONTINUE  WITH GOOGLE </span>
             <GoogleSignInButton />
           </div>
           <Continuing />

@@ -144,7 +144,10 @@ const Cart = ({ user }) => {
   }
 
   if (itemsWithPrices.length === 0) {
-    return <EmptyCart />;
+    return (<div>
+      <Tabs />
+      <EmptyCart />
+      </div>);
   }
 
   return (

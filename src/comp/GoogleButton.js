@@ -2,6 +2,7 @@ import React from "react";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { getAuth } from "firebase/auth";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { FcGoogle } from "react-icons/fc";
 
 const GoogleSignInButton = () => {
   const handleGoogleSignIn = async () => {
@@ -34,7 +35,7 @@ const GoogleSignInButton = () => {
 
   return (
     <div>
-      <br /> <button onClick={handleGoogleSignIn}>Google</button>
+      <br /> <button onClick={handleGoogleSignIn} style={{border:'none'}}><FcGoogle /></button>
     </div>
   );
 };
