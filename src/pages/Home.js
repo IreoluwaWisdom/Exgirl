@@ -4,7 +4,6 @@ import SwallowMenu from '../comp/SwallowMenu'
 import ModernMenu from '../comp/ModernMenu'
 import ProteinMenu from '../comp/ProteinMenu';
 import Showed from '../comp/Showed';
-import Welcome from '../comp/Welcome'
 import TestimonialCarousel from '../comp/TestimonialCarousel';
 import OrderNowButton from '../comp/OrderNowButton'
 import HowItWorks from '../comp/HowItWorks';
