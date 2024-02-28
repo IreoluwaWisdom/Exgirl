@@ -3,8 +3,8 @@ import { getDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../config/firebaseConfig";
 import "../styles/Account.css";
 import { Link } from "react-router-dom";
-import { FiLogOut } from 'react-icons/fi';
-import { MdEdit } from 'react-icons/md';
+import { FiLogOut } from "react-icons/fi";
+import { MdEdit } from "react-icons/md";
 
 // Import default profile pictures
 import designerProfilePicture from "../assets/Designer.jpeg";

@@ -8,12 +8,15 @@ import Continuing from "../Texts/Continuing";
 import UserDetails from "../comp/UserDetails";
 import GoogleSignInButton from "../comp/GoogleButton";
 import "../styles/Account.css";
+import OfflineAlert from "../comp/OfflineAlert";
 
 const Account = () => {
   const { currentUser } = useAuth();
 
   return (
     <div className="account-container">
+      {" "}
+      <OfflineAlert />
       {currentUser ? (
         <div className="user-details-container">
           <UserDetails userEmail={currentUser.email} />
@@ -25,7 +28,7 @@ const Account = () => {
             <SignUpButton />
             <br /> <SignInButton />
             OR &nbsp;
-            <span>CONTINUE  WITH GOOGLE </span>
+            <span>CONTINUE WITH GOOGLE </span>
             <GoogleSignInButton />
           </div>
           <Continuing />

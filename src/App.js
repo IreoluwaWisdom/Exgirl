@@ -33,11 +33,12 @@ import ResetPassword from "./pages/ResetPassword";
 import OngoingOrders from "./pages/OngoingOrders";
 import CompletedOrders from "./pages/CompletedOrders";
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import OfflineAlert from "./comp/OfflineAlert";
 const App = () => {
   return (
     <Router>
       <Nav />
+      <OfflineAlert />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/menu" element={<Menu />} />
