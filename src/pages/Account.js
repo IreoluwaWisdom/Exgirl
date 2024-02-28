@@ -8,13 +8,12 @@ import Continuing from "../Texts/Continuing";
 import UserDetails from "../comp/UserDetails";
 import GoogleSignInButton from "../comp/GoogleButton";
 import "../styles/Account.css";
-import OfflineAlert from "../comp/Offline";
 
 const Account = () => {
   const { currentUser } = useAuth();
 
   return (
-    <div className="account-container">
+    <div className="account-container" style={{ marginBottom: "15vh" }}>
       {" "}
       {/* <OfflineAlert /> */}
       {currentUser ? (

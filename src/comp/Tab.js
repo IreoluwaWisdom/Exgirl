@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { IoMdReorder } from "react-icons/io";
 import { BiTime, BiCheck } from "react-icons/bi";
+import { MdShoppingCart } from "react-icons/md";
 import "../styles/Nav.css";
 
 const Tabs = () => {
@@ -24,16 +25,18 @@ const Tabs = () => {
           to="/cart"
           className={`navbar-brand${currentPage === "cart" ? " active" : ""}`}
           style={{
-            fontSize: "2em",
+            fontSize: "150%",
             ...(currentPage === "cart" && {
               backgroundColor: "white",
               color: "#6a0dad",
               borderRadius: "20px",
               padding: "0px 15px",
+              width: "80px",
+              margin: "0px",
             }),
           }}
         >
-          <IoMdReorder />
+          <MdShoppingCart />{" "}
           {currentPage === "cart" && (
             <span style={{ fontSize: "2vw" }}>Cart</span>
           )}
@@ -43,12 +46,14 @@ const Tabs = () => {
           to="/ongoing"
           className={`navbar-brand${currentPage === "ongoing" ? " active" : ""}`}
           style={{
-            fontSize: "2em",
+            fontSize: "150%",
             ...(currentPage === "ongoing" && {
               backgroundColor: "white",
               color: "#6a0dad",
               borderRadius: "20px",
               padding: "0px 15px",
+              width: "80px",
+              margin: "0px",
             }),
           }}
         >
@@ -62,12 +67,14 @@ const Tabs = () => {
           to="/completed"
           className={`navbar-brand${currentPage === "completed" ? " active" : ""}`}
           style={{
-            fontSize: "2em",
+            fontSize: "150%",
             ...(currentPage === "completed" && {
               backgroundColor: "white",
               color: "#6a0dad",
               borderRadius: "20px",
               padding: "0px 15px",
+              width: "80px",
+              margin: "0px",
             }),
           }}
         >

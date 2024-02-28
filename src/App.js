@@ -32,6 +32,7 @@ import SignUp from "./comp/SignUp";
 import ResetPassword from "./pages/ResetPassword";
 import OngoingOrders from "./pages/OngoingOrders";
 import CompletedOrders from "./pages/CompletedOrders";
+import FAQ from "./pages/FAQ";
 import "bootstrap/dist/css/bootstrap.min.css";
 import OfflineAlert from "./comp/Offline";
 const App = () => {
@@ -43,6 +44,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/faq" element={<FAQ />} />
         <Route path="/ongoing" element={<OngoingOrders />} />
         <Route path="/completed" element={<CompletedOrders />} />
         <Route path="/orders" element={<Orders />} />

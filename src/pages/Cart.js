@@ -15,6 +15,7 @@ import EmptyCart from "../comp/EmptyCart";
 import Showed from "../comp/Showed";
 import "../styles/Cart.css";
 import Loader from "../comp/Loader";
+import { FaShoppingCart } from "react-icons/fa";
 
 const Cart = ({ user }) => {
   const { cart, dispatch } = useCart();
@@ -144,10 +145,33 @@ const Cart = ({ user }) => {
   }
 
   if (itemsWithPrices.length === 0) {
-    return (<div>
-      <Tabs />
-      <EmptyCart />
-      </div>);
+    return (
+      <div
+        style={{
+          textAlign: "center",
+          display: "block",
+          justifyContent: "center",
+          // marginTop: "7vh",
+        }}
+      >
+        <Tabs />
+        <div style={{ position: "relative", top: "30vh", fontSize: "200%" }}>
+          <EmptyCart />
+          <Link style={{ color: "black" }} to="/menu">
+            {" "}
+            Add Item to Cart
+          </Link>
+          <br />
+          <span style={{ color: "" }}>
+            <span>
+              <FaShoppingCart
+                style={{ fill: "none", stroke: "black", strokeWidth: "50px" }}
+              />{" "}
+            </span>
+          </span>
+        </div>
+      </div>
+    );
   }
 
   return (

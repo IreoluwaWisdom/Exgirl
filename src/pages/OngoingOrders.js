@@ -53,7 +53,7 @@ const OngoingOrders = () => {
     <div>
       <Tabs />
       <div style={{ marginBottom: "30vh", marginTop: "5vh" }}>
-        <h5>Ongoing Orders</h5>
+        <h5 style={{ color: "#6a0dad" }}>Ongoing Orders</h5>
         {currentUser ? (
           <div>
             {ongoingOrders.length > 0 ? (
@@ -63,31 +63,38 @@ const OngoingOrders = () => {
                     <h6>Order ID: {order.id}</h6>
 
                     <p>
-                      <strong>Delivery Date:</strong> {order.deliveryDate}
+                      <strong style={{ color: "#6a0dad" }}>
+                        Delivery Date:
+                      </strong>{" "}
+                      {order.deliveryDate}
                     </p>
                     <p>
-                      <strong>Delivery Time:</strong> {order.deliveryTime}
+                      <strong style={{ color: "#6a0dad" }}>
+                        Delivery Time:
+                      </strong>{" "}
+                      {order.deliveryTime}
                     </p>
                     <p>
-                      <strong>Location:</strong> {order.location}
+                      <strong style={{ color: "#6a0dad" }}>Location:</strong>{" "}
+                      {order.location}
                     </p>
                     <p>
-                      <strong>Items:</strong>
+                      <strong style={{ color: "#6a0dad" }}>Items:</strong>
                     </p>
                     <ul>
-                      {Object.entries(order.items.cart).map(
-                        ([item, quantity]) => (
+                      {Object.entries(order.items.cart)
+                        .filter(([item, quantity]) => quantity > 0) // Filter out items with quantity 0
+                        .map(([item, quantity]) => (
                           <li key={item}>
                             {item}: {quantity}
                           </li>
-                        ),
-                      )}
+                        ))}
                     </ul>
                     <p>
-                      <strong>Total Price:</strong> ₦
-                      {order.items.totalPrice.toFixed(2)}
+                      <strong style={{ color: "#6a0dad" }}>Total Price:</strong>{" "}
+                      ₦{order.items.totalPrice.toFixed(2)}
                     </p>
-                    <hr style={styles.hr} />
+                    <hr style={{ ...styles.hr, borderColor: "#6a0dad" }} />
                   </div>
                 ))}
               </div>
@@ -106,9 +113,10 @@ const OngoingOrders = () => {
 const styles = {
   orderContainer: {
     marginBottom: "20px",
-    padding: "10px",
-    border: "1px solid #ccc",
-    borderRadius: "5px",
+    padding: "20px",
+    border: "1px solid #6a0dad",
+    borderRadius: "10px",
+    boxShadow: "0px 0px 10px rgba(106, 13, 173, 0.3)", // Box shadow with color #6a0dad
   },
   hr: {
     margin: "10px 0",

@@ -51,6 +51,23 @@ const QuantitySelector = ({ itemName, itemPrice }) => {
   const removeItemFromCart = () => {
     setQuantity(0); // Set quantity to 0 in component state
     updateCart(0); // Update quantity to 0 in Firestore
+
+    // Remove item from cart locally
+    const updatedCart = { ...cart };
+    delete updatedCart[itemName];
+    dispatch({ type: "SET_CART", payload: updatedCart });
+
+    // Remove item from Firestore if user is authenticated
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (user) {
+      const userCartRef = doc(collection(db, "carts"), user.email);
+      setDoc(userCartRef, { cart: updatedCart }, { merge: true })
+        .then(() => console.log("Item removed from Firestore"))
+        .catch((error) =>
+          console.error("Error removing item from Firestore:", error),
+        );
+    }
   };
 
   return (

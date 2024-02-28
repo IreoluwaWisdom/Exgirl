@@ -5,6 +5,8 @@ import "../styles/Account.css";
 import { Link } from "react-router-dom";
 import { FiLogOut } from "react-icons/fi";
 import { MdEdit } from "react-icons/md";
+import FaqComponent from "../comp/FaqComponent";
+import faqData from "../data/faqData";
 
 // Import default profile pictures
 import designerProfilePicture from "../assets/Designer.jpeg";
@@ -173,7 +175,7 @@ const UserDetails = ({ userEmail }) => {
                   backgroundColor: "darkblue",
                   color: "white",
                   border: "none",
-                  fontSize: "80%",
+                  fontSize: "100%",
                 }}
                 onClick={handleSave}
               >
@@ -211,7 +213,7 @@ const UserDetails = ({ userEmail }) => {
               }}
             >
               Username
-              <div style={{ fontWeight: "normal", fontSize: "80%" }}>
+              <div style={{ fontWeight: "normal", fontSize: "100%" }}>
                 {userData.username}
               </div>
             </div>
@@ -223,7 +225,7 @@ const UserDetails = ({ userEmail }) => {
               }}
             >
               Email
-              <div style={{ fontWeight: "normal", fontSize: "80%" }}>
+              <div style={{ fontWeight: "normal", fontSize: "100%" }}>
                 {userData.email}
               </div>
             </div>
@@ -235,7 +237,7 @@ const UserDetails = ({ userEmail }) => {
               }}
             >
               Phone Number
-              <div style={{ fontWeight: "normal", fontSize: "80%" }}>
+              <div style={{ fontWeight: "normal", fontSize: "100%" }}>
                 {userData.phoneNumber}
               </div>
             </div>
@@ -248,8 +250,11 @@ const UserDetails = ({ userEmail }) => {
               }}
             >
               Date of Birth
-              <div style={{ fontWeight: "normal", fontSize: "80%" }}>
+              <div style={{ fontWeight: "normal", fontSize: "100%" }}>
                 {userData.dob}
+              </div>
+              <div style={{ fontWeight: "normal", fontSize: "90%" }}>
+                <FaqComponent faqData={faqData} />
               </div>
             </div>
             <Link to="/sign-out">

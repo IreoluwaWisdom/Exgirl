@@ -24,14 +24,11 @@ const CompletedOrders = () => {
             where("userEmail", "==", currentUser.email),
           );
           const querySnapshot = await onSnapshot(q, (snapshot) => {
-            const ongoing = [];
             const completed = [];
             snapshot.forEach((doc) => {
               const order = { id: doc.id, ...doc.data() };
               if (order.status === "completed") {
                 completed.push(order);
-              } else {
-                ongoing.push(order);
               }
             });
             setCompletedOrders(completed);
@@ -52,42 +49,49 @@ const CompletedOrders = () => {
   return (
     <div>
       <Tabs />
-      <div style={{ marginBottom: "30vh", marginTop: "10vh" }}>
-        <h5>Completed Orders</h5>
+      <div style={{ marginBottom: "30vh", marginTop: "5vh" }}>
+        <h5 style={{ color: "#6a0dad" }}>Completed Orders</h5>
         {currentUser ? (
           <div>
             {completedOrders.length > 0 ? (
               <div style={{ fontSize: "80%" }}>
                 {completedOrders.map((order) => (
                   <div key={order.id} style={styles.orderContainer}>
-                    <h6>Order ID: {order.id}</h6>
+                    <h6 style={{ color: "#6a0dad" }}>Order ID: {order.id}</h6>
 
                     <p>
-                      <strong>Delivery Date:</strong> {order.deliveryDate}
+                      <strong style={{ color: "#6a0dad" }}>
+                        Delivery Date:
+                      </strong>{" "}
+                      {order.deliveryDate}
                     </p>
                     <p>
-                      <strong>Delivery Time:</strong> {order.deliveryTime}
+                      <strong style={{ color: "#6a0dad" }}>
+                        Delivery Time:
+                      </strong>{" "}
+                      {order.deliveryTime}
                     </p>
                     <p>
-                      <strong>Location:</strong> {order.location}
+                      <strong style={{ color: "#6a0dad" }}>Location:</strong>{" "}
+                      {order.location}
                     </p>
                     <p>
-                      <strong>Items:</strong>
+                      <strong style={{ color: "#6a0dad" }}>Items:</strong>
                     </p>
                     <ul>
-                      {Object.entries(order.items.cart).map(
-                        ([item, quantity]) => (
+                      {Object.entries(order.items.cart)
+                        .filter(([item, quantity]) => quantity > 0) // Filter out items with quantity 0
+                        .map(([item, quantity]) => (
                           <li key={item}>
                             {item}: {quantity}
                           </li>
-                        ),
-                      )}
+                        ))}
                     </ul>
                     <p>
-                      <strong>Total Price:</strong> ₦
-                      {order.items.totalPrice.toFixed(2)}
+                      <strong style={{ color: "#6a0dad" }}>Total Price:</strong>{" "}
+                      ₦{order.items.totalPrice.toFixed(2)}
                     </p>
-                    <hr style={styles.hr} />
+                    <hr style={{ ...styles.hr, borderColor: "#6a0dad" }} />
                   </div>
                 ))}
               </div>
@@ -106,9 +110,10 @@ const CompletedOrders = () => {
 const styles = {
   orderContainer: {
     marginBottom: "20px",
-    padding: "10px",
-    border: "1px solid #ccc",
-    borderRadius: "5px",
+    padding: "20px",
+    border: "2px solid #6a0dad", // Border style with color #6a0dad
+    borderRadius: "10px",
+    boxShadow: "0px 0px 10px rgba(106, 13, 173, 0.3)", // Box shadow with color #6a0dad
   },
   hr: {
     margin: "10px 0",
