@@ -123,7 +123,10 @@ const UserDetails = ({ userEmail }) => {
         editing ? (
           <div>
             {/* Display profile picture options */}
-            <div className="profile-picture-options">
+            <div
+              className="profile-picture-options"
+              style={{ marginBottom: "4vh" }}
+            >
               {profilePictures.map((picture) => (
                 <img
                   key={picture.id}
@@ -135,7 +138,7 @@ const UserDetails = ({ userEmail }) => {
                   onClick={() =>
                     handleProfilePictureChange(picture.id, picture.src)
                   }
-                  style={{ width: "100px", height: "100px" }}
+                  style={{ width: "70px", height: "70px" }}
                 />
               ))}
             </div>
@@ -276,7 +279,7 @@ const UserDetails = ({ userEmail }) => {
                 borderRadius: "5px",
                 cursor: "pointer",
                 position: "relative",
-                left: "28vw",
+                left: "23vw",
                 fontSize: "80%",
               }}
             >

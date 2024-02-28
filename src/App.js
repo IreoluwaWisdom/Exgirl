@@ -33,7 +33,7 @@ import ResetPassword from "./pages/ResetPassword";
 import OngoingOrders from "./pages/OngoingOrders";
 import CompletedOrders from "./pages/CompletedOrders";
 import "bootstrap/dist/css/bootstrap.min.css";
-import OfflineAlert from "./comp/OfflineAlert";
+import OfflineAlert from "./comp/Offline";
 const App = () => {
   return (
     <Router>

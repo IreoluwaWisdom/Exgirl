@@ -93,8 +93,30 @@ const QuantitySelector = ({ itemName, itemPrice }) => {
       <div>
         {isItemInCart ? (
           <>
-            <button onClick={() => updateCart(quantity)}>Update Cart</button>
-            <button onClick={removeItemFromCart} disabled={quantity === 0}>
+            <button
+              onClick={() => updateCart(quantity)}
+              style={{
+                borderRadius: "20px",
+                color: "white",
+                backgroundColor: "#bb806b",
+                borderColor: "#bb806b",
+                marginLeft: "7px",
+              }}
+            >
+              Update Cart
+            </button>
+
+            <button
+              onClick={removeItemFromCart}
+              disabled={quantity === 0}
+              style={{
+                borderRadius: "20px",
+                color: "white",
+                backgroundColor: "#6a0dad",
+                borderColor: "#6a0dad",
+                marginLeft: "7px",
+              }}
+            >
               Remove
             </button>
           </>
@@ -102,7 +124,9 @@ const QuantitySelector = ({ itemName, itemPrice }) => {
           <button onClick={() => updateCart(quantity)}>Add to Cart</button>
         )}
         <br />
-        <Link to="/cart">View/Edit Cart</Link>
+        <Link to="/cart" style={{ color: "black" }}>
+          View/Edit Cart
+        </Link>
       </div>
     </div>
   );
