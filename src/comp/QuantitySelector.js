@@ -108,7 +108,7 @@ const QuantitySelector = ({ itemName, itemPrice }) => {
         </button>
       </div>
       <div>
-        {isItemInCart ? (
+        {isItemInCart && quantity > 0 ? (
           <>
             <button
               onClick={() => updateCart(quantity)}
@@ -138,7 +138,19 @@ const QuantitySelector = ({ itemName, itemPrice }) => {
             </button>
           </>
         ) : (
-          <button onClick={() => updateCart(quantity)}>Add to Cart</button>
+          <button
+            onClick={() => updateCart(quantity)}
+            style={{
+              borderRadius: "20px",
+              color: "white",
+              backgroundColor: "#6a0dad",
+              borderColor: "#6a0dad",
+              padding: "4px 8px",
+              // marginLeft: "13px",
+            }}
+          >
+            Add to Cart
+          </button>
         )}
         <br />
         <div style={{ marginTop: "2vh" }}>
