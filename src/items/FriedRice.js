@@ -1,6 +1,6 @@
 import React from "react";
 import QuantitySelector from '../comp/QuantitySelector';
-
+import friedrice from '../assets/fried-rice';
 
 
 const FriedRice = () => {
