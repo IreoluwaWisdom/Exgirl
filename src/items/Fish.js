@@ -13,9 +13,9 @@ const Fish = () => {
         left: "15%",
       }}
     >
-      <h1 style={{ textAlign: "center" }}>Amala</h1>
+      <h1 style={{ textAlign: "center" }}>Fish and Meat Sauce</h1>
       <img
-        src={amala}
+        src={fish}
         style={{
           borderRadius: "10px",
           marginTop: "3vh",
