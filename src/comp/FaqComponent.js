@@ -16,7 +16,7 @@ const FaqComponent = ({ faqData }) => {
 
   return (
     <div className="faq-container">
-      <h6>Frequently Asked Questions</h6>
+      <h6>FAQs</h6>
 
       {/* Display limited number of FAQ items initially */}
       {faqData.slice(0, 2).map((faq, index) => (

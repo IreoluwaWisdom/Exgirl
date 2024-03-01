@@ -1,15 +1,31 @@
 import React from "react";
-import QuantitySelector from '../comp/QuantitySelector';
-import amala from '../assets/amala.jpg'
-import Next from '../comp/Next';
+import QuantitySelector from "../comp/QuantitySelector";
+import amala from "../assets/amala.jpg";
+import Next from "../comp/Next";
 
 const Amala = () => {
   return (
-    <div>
-      <h1>Amala and Ewedu</h1>
-      <QuantitySelector itemName="Amala and Ewedu" itemPrice = '5000' />
+    <div
+      style={{
+        position: "absolute",
+        textAlign: "center",
+        top: "15%",
+        left: "15%",
+      }}
+    >
+      <h1 style={{ textAlign: "center" }}>Amala</h1>
+      <img
+        src={amala}
+        style={{
+          borderRadius: "10px",
+          marginTop: "3vh",
+          marginBottom: "5vh",
+          width: "75vw",
+          height: "55vw",
+        }}
+      />
+      <QuantitySelector itemName="Amala and Ewedu" itemPrice="5000" />
     </div>
-
   );
 };
 export default Amala;

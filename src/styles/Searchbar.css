@@ -1,3 +1,77 @@
+.search-item {
+  display: flex;
+  align-items: center;
+  margin-left: 6vw;
+  margin-bottom: 10px;
+}
+
+.item-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: black;
+}
+
+.item-image {
+  width: 50vw;
+  height: 40vw;
+  margin-right: 8px;
+  border-radius: 20px;
+}
+
+.item-details {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Added to allow the item details to grow and fill available space */
+}
+
+.item-name {
+  font-weight: bold;
+  margin: 0;
+  margin-bottom: 5px;
+}
+
+.item-price {
+  color: #6a0dad;
+  margin: 0;
+  margin-bottom: 5px;
+}
+
+.item-description {
+  margin: 0;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.favorite-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.favorite-icon {
+  color: #6a0dad;
+}
+
+.favorite-icon-fill {
+  color: #bb806b;
+}
+
+.favorite {
+  color: #bb860b;
+}
+
+/* SearchBar.css */
+
+.search-input {
+  width: 80vw;
+  margin: 0;
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  margin-bottom: 1.5vh;
+}
+
 /* SearchBar.css */
 
 .search-input {
@@ -41,7 +115,7 @@
 }
 
 .item-price {
-  color: #6A0DAD;
+  color: #6a0dad;
   margin-bottom: 5px;
 }
 
@@ -60,31 +134,17 @@
   color: #6a0dad;
 }
 
-.favorite-icon-fill{
-color:#bb806b;
+.favorite-icon-fill {
+  color: #bb806b;
 }
-
 
 .favorite {
   color: #bb860b;
 }
 
-
 .typing {
-  margin-bottom: '5vh'
+  margin-bottom: "5vh";
 }
-
-
-
-
-
-
-
-
-
-/* Searchbar.css */
-
-
 
 label {
   width: 100%;
@@ -100,11 +160,12 @@ label {
   border: 2px solid #bb860b;
   color: #111;
   font-size: 15px;
-  box-shadow: 3px 1px 0px 2px, 0px -1px 0px 2px #6a0dad;
+  box-shadow:
+    3px 1px 0px 2px,
+    0px -1px 0px 2px #6a0dad;
   height: 58px;
   transform: skew(-3deg, 1deg);
-  font-family: 'Knewave', cursive;
+  font-family: "Knewave", cursive;
   letter-spacing: 2px;
   outline: none;
 }
-

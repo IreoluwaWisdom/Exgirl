@@ -52,7 +52,14 @@ const OngoingOrders = () => {
   return (
     <div>
       <Tabs />
-      <div style={{ marginBottom: "30vh", marginTop: "5vh" }}>
+      <div
+        style={{
+          marginBottom: "30vh",
+          marginTop: "5vh",
+          marginLeft: "2vw",
+          marginRight: "2vw",
+        }}
+      >
         <h5 style={{ color: "#6a0dad" }}>Ongoing Orders</h5>
         {currentUser ? (
           <div>

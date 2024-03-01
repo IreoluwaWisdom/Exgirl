@@ -235,7 +235,9 @@ const Cart = ({ user }) => {
           </div>
         ))}
         <br />
-        <p className="cart-total">Total Price: ${totalPrice.toFixed(2)}</p>
+        <p style={{ fontWeight: "bold" }} className="cart-total">
+          Total Price: ₦{totalPrice.toFixed(2)}
+        </p>
         <div
           style={{
             textAlign: "center",

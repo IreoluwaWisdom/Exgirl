@@ -117,7 +117,7 @@ const QuantitySelector = ({ itemName, itemPrice }) => {
                 color: "white",
                 backgroundColor: "#bb806b",
                 borderColor: "#bb806b",
-                marginLeft: "7px",
+                marginRight: "19px",
               }}
             >
               Update Cart
@@ -131,7 +131,7 @@ const QuantitySelector = ({ itemName, itemPrice }) => {
                 color: "white",
                 backgroundColor: "#6a0dad",
                 borderColor: "#6a0dad",
-                marginLeft: "7px",
+                marginLeft: "13px",
               }}
             >
               Remove
@@ -141,9 +141,11 @@ const QuantitySelector = ({ itemName, itemPrice }) => {
           <button onClick={() => updateCart(quantity)}>Add to Cart</button>
         )}
         <br />
-        <Link to="/cart" style={{ color: "black" }}>
-          View/Edit Cart
-        </Link>
+        <div style={{ marginTop: "2vh" }}>
+          <Link to="/cart" style={{ color: "black", marginTop: "5vh" }}>
+            View/Edit Cart
+          </Link>
+        </div>
       </div>
     </div>
   );

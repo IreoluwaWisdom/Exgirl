@@ -8,14 +8,19 @@ const JollofRice = () => {
       style={{
         position: "absolute",
         textAlign: "center",
-        top: "10%",
+        top: "15%",
         left: "15%",
       }}
     >
       <h1 style={{ textAlign: "center" }}>Jollof Rice</h1>
       <img
         src={jollofrice}
-        style={{ borderRadius: "100px", marginTop: "3vh", marginBottom: "5vh" }}
+        style={{
+          borderRadius: "10px",
+          marginTop: "3vh",
+          marginBottom: "5vh",
+          width: "75vw",
+        }}
       />
       <QuantitySelector itemName="Jollof Rice" />
     </div>
