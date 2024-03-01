@@ -21,7 +21,7 @@ const Amala = () => {
           marginTop: "3vh",
           marginBottom: "5vh",
           width: "75vw",
-          height: "55vw",
+          height: "50vw",
         }}
       />
       <QuantitySelector itemName="Amala and Ewedu" itemPrice="5000" />
