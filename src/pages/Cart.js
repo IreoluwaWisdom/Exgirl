@@ -82,19 +82,24 @@ const Cart = ({ user }) => {
       }
 
       const userCartRef = doc(collection(db, "carts"), currentUser.email);
-      const userCartDoc = await getDoc(userCartRef);
-      const cartDataFromFirestore = userCartDoc.exists()
-        ? userCartDoc.data().cart
-        : {};
 
-      const mergedCartData = {
-        ...(JSON.parse(localStorage.getItem("cart")) || {}),
-        ...cartDataFromFirestore,
-      };
+      // Listen for changes to the cart document
+      const unsubscribe = onSnapshot(userCartRef, (doc) => {
+        const cartDataFromFirestore = doc.exists() ? doc.data().cart : {};
 
-      localStorage.setItem("cart", JSON.stringify(mergedCartData));
-      dispatch({ type: "SET_CART", payload: mergedCartData });
-      setLoading(false);
+        // Merge cart data from Firestore with local storage
+        const mergedCartData = {
+          ...(JSON.parse(localStorage.getItem("cart")) || {}),
+          ...cartDataFromFirestore,
+        };
+
+        // Update local storage and context with merged cart data
+        localStorage.setItem("cart", JSON.stringify(mergedCartData));
+        dispatch({ type: "SET_CART", payload: mergedCartData });
+        setLoading(false);
+      });
+
+      return () => unsubscribe(); // Unsubscribe from the snapshot listener when component unmounts
     } catch (error) {
       console.error("Error fetching cart:", error);
     }
