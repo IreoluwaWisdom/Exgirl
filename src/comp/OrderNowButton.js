@@ -1,10 +1,10 @@
 import React from "react";
-import { Link } from "react-scroll";
+import { Link } from "react-router-dom";
 import "../styles/OrderNowButton.css";
 
 const OrderNowButton = () => {
   return (
-    <Link to="swallow" smooth={true} duration={500}>
+    <Link to="/menu">
       <button
         className="order-now-button"
         style={{ marginTop: "15vh", marginRight: "auto", marginLeft: "auto" }}
