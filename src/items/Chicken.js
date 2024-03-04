@@ -1,6 +1,7 @@
 import React from "react";
 import QuantitySelector from "../comp/QuantitySelector";
 import chicken from "../assets/chicken.jpg";
+import { BsChevronRight } from "react-icons/bs";
 
 const Chicken = () => {
   return (

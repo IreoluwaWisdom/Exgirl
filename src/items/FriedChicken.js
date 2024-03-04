@@ -1,11 +1,11 @@
 import React from "react";
-import QuantitySelector from '../comp/QuantitySelector';
-import friedchicken from '../assets/fried-chicken.jpg';
-
+import QuantitySelector from "../comp/QuantitySelector";
+import friedchicken from "../assets/fried-chicken.jpg";
+import { BsChevronRight } from "react-icons/bs";
 
 const FriedChicken = () => {
   return (
-        <div
+    <div
       style={{
         position: "absolute",
         textAlign: "center",
@@ -24,7 +24,7 @@ const FriedChicken = () => {
           height: "50vw",
         }}
       />
-      <QuantitySelector itemName="Fried Chicken"/>
+      <QuantitySelector itemName="Fried Chicken" />
     </div>
   );
 };

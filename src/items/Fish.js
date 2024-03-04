@@ -1,11 +1,11 @@
 import React from "react";
-import QuantitySelector from '../comp/QuantitySelector';
-import fish from '../assets/fish.jpg'
-
+import QuantitySelector from "../comp/QuantitySelector";
+import fish from "../assets/fish.jpg";
+import { BsChevronRight } from "react-icons/bs";
 
 const Fish = () => {
   return (
-       <div
+    <div
       style={{
         position: "absolute",
         textAlign: "center",
@@ -24,7 +24,7 @@ const Fish = () => {
           height: "50vw",
         }}
       />
-      <QuantitySelector itemName="Fish and Meat Sauce"/>
+      <QuantitySelector itemName="Fish and Meat Sauce" />
     </div>
   );
 };

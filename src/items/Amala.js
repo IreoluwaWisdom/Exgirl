@@ -1,7 +1,7 @@
 import React from "react";
 import QuantitySelector from "../comp/QuantitySelector";
 import amala from "../assets/amala.jpg";
-import Next from "../comp/Next";
+import { BsChevronRight } from "react-icons/bs";
 
 const Amala = () => {
   return (

@@ -1,6 +1,7 @@
 import React from "react";
 import QuantitySelector from "../comp/QuantitySelector";
 import ewa from "../assets/ewa.jpg";
+import { BsChevronRight } from "react-icons/bs";
 
 const Ewa = () => {
   return (

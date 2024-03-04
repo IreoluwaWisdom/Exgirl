@@ -1,7 +1,5 @@
-
-
 .order-now-button {
-  background-color: #6A0DAD; /* Coral color, you can customize */
+  background-color: #6a0dad; /* Coral color, you can customize */
   color: white;
   padding: 10px 20px;
   font-size: 16px;
@@ -11,21 +9,29 @@
   margin-bottom: 10vh;
   animation: shake 5s ease infinite;
   position: relative;
-  left:30vw;
+  left: 30vw;
 }
 
 .order-now-button:hover {
-  background-color: #ff4500; /* Darker shade on hover, you can customize */
+  /* background-color: #ff4500; Darker shade on hover, you can customize */
 }
 
 @keyframes shake {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0);
   }
-  10%, 30%, 50%, 70%, 90% {
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
     transform: translateX(-10px);
   }
-  20%, 40%, 60%, 80% {
+  20%,
+  40%,
+  60%,
+  80% {
     transform: translateX(10px);
   }
 }
