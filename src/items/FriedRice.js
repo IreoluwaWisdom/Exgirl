@@ -1,11 +1,10 @@
 import React from "react";
-import QuantitySelector from '../comp/QuantitySelector';
-import friedrice from '../assets/fried-rice';
-
+import QuantitySelector from "../comp/QuantitySelector";
+import friedrice from "../assets/fried-rice.jpg";
 
 const FriedRice = () => {
   return (
-     <div
+    <div
       style={{
         position: "absolute",
         textAlign: "center",
@@ -24,7 +23,7 @@ const FriedRice = () => {
           height: "50vw",
         }}
       />
-      <QuantitySelector itemName="Fried Rice"/>
+      <QuantitySelector itemName="Fried Rice" />
     </div>
   );
 };
