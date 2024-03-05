@@ -22,8 +22,7 @@ const OfflineAlert = () => {
     connectionTestImage.onerror = () => {
       setIsSlowConnection(true); // Set slow connection flag on image load error
     };
-    connectionTestImage.src = "https://example.com/your-image.jpg"; // Replace with a URL to an image on your server
-
+    connectionTestImage.src = require("../assets/jollof-rice.jpg");
     return () => {
       window.removeEventListener("online", handleOnline);
       window.removeEventListener("offline", handleOffline);
