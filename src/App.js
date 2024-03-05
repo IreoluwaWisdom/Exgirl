@@ -35,6 +35,8 @@ import CompletedOrders from "./pages/CompletedOrders";
 import FAQ from "./pages/FAQ";
 import "bootstrap/dist/css/bootstrap.min.css";
 import OfflineAlert from "./comp/Offline";
+import SupportPage from "./pages/Support";
+
 const App = () => {
   return (
     <Router>
@@ -49,6 +51,7 @@ const App = () => {
         <Route path="/completed" element={<CompletedOrders />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/support" element={<SupportPage />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/account" element={<Account />} />
         <Route path="/sign-up" element={<SignUpPage />} />
