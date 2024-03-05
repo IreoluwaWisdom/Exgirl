@@ -2,6 +2,8 @@ import React from "react";
 import QuantitySelector from "../comp/QuantitySelector";
 import fish from "../assets/fish.jpg";
 import { BsChevronRight } from "react-icons/bs";
+import { BsChevronLeft } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 const Fish = () => {
   return (
