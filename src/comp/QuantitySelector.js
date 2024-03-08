@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { collection, doc, setDoc } from "firebase/firestore";
 import { db } from "../config/firebaseConfig";
-import { getAuth } from "firebase/auth";
+import { getAuth, signInAnonymously } from "firebase/auth";
 
-const QuantitySelector = ({ itemName, itemPrice }) => {
+const QuantitySelector = ({ itemName }) => {
   const { cart, dispatch } = useCart();
   const [quantity, setQuantity] = useState(0);
   const [isItemInCart, setIsItemInCart] = useState(false);
@@ -15,6 +15,21 @@ const QuantitySelector = ({ itemName, itemPrice }) => {
     setQuantity(mergedCartData[itemName] || 0);
     setIsItemInCart(mergedCartData.hasOwnProperty(itemName));
   }, [itemName]);
+
+  useEffect(() => {
+    // Check if user is authenticated, if not, authenticate anonymously
+    const auth = getAuth();
+    if (!auth.currentUser) {
+      signInAnonymously(auth)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log("Anonymous user authenticated", user.uid);
+        })
+        .catch((error) => {
+          console.error("Error authenticating anonymously:", error);
+        });
+    }
+  }, []);
 
   const increaseQuantity = () => {
     const updatedQuantity = quantity + 1;
@@ -37,11 +52,15 @@ const QuantitySelector = ({ itemName, itemPrice }) => {
     };
     dispatch({ type: "SET_CART", payload: updatedCart });
 
+    // Store cart data locally
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+
+    // Update cart in Firestore if user is authenticated and not anonymous
     const auth = getAuth();
     const user = auth.currentUser;
 
-    if (user) {
-      const userCartRef = doc(collection(db, "carts"), user.email);
+    if (user && !user.isAnonymous) {
+      const userCartRef = doc(collection(db, "carts"), user.uid);
       setDoc(userCartRef, { cart: updatedCart }, { merge: true })
         .then(() => console.log("Cart updated successfully"))
         .catch((error) => console.error("Error updating cart:", error));
@@ -61,7 +80,7 @@ const QuantitySelector = ({ itemName, itemPrice }) => {
     const auth = getAuth();
     const user = auth.currentUser;
     if (user) {
-      const userCartRef = doc(collection(db, "carts"), user.email);
+      const userCartRef = doc(collection(db, "carts"), user.uid);
       setDoc(userCartRef, { cart: updatedCart }, { merge: true })
         .then(() => console.log("Item removed from Firestore"))
         .catch((error) =>
@@ -146,7 +165,6 @@ const QuantitySelector = ({ itemName, itemPrice }) => {
               backgroundColor: "#6a0dad",
               borderColor: "#6a0dad",
               padding: "4px 8px",
-              // marginLeft: "13px",
             }}
           >
             Add to Cart

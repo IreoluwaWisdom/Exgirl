@@ -16,6 +16,7 @@ import Showed from "../comp/Showed";
 import "../styles/Cart.css";
 import Loader from "../comp/Loader";
 import { FaShoppingCart } from "react-icons/fa";
+import AnonymousUserComponent from "../comp/AnonymousCart";
 
 const Cart = ({ user }) => {
   const { cart, dispatch } = useCart();
@@ -65,7 +66,7 @@ const Cart = ({ user }) => {
         0,
       );
       setTotalPrice(total);
-      if (currentUser) {
+      if (currentUser && currentUser.email && !currentUser.isAnonymous) {
         const userCartRef = doc(collection(db, "carts"), currentUser.email);
         setDoc(userCartRef, { totalPrice: total }, { merge: true });
       }
@@ -76,30 +77,34 @@ const Cart = ({ user }) => {
 
   const fetchCart = async (currentUser) => {
     try {
-      if (!currentUser || !currentUser.email) {
-        console.log("No user or email found.");
+      console.log("Current user:", currentUser); // Log the currentUser object
+      let cartData;
+      if (!currentUser || (!currentUser.email && !currentUser.isAnonymous)) {
+        console.log("No user or email found. Loading cart from local storage.");
+        const mergedCartData = JSON.parse(localStorage.getItem("cart")) || {};
+        dispatch({ type: "SET_CART", payload: mergedCartData });
+        setLoading(false);
         return;
-      }
+      } else {
+        console.log("Fetching cart data from Firestore.");
+        if (!currentUser.isAnonymous) {
+          console.log("Signed-in user detected. Loading cart with email.");
+          const userCartRef = doc(collection(db, "carts"), currentUser.email);
+          const userCartDoc = await getDoc(userCartRef);
+          cartData = userCartDoc.exists() ? userCartDoc.data().cart : {};
+        }
 
-      const userCartRef = doc(collection(db, "carts"), currentUser.email);
-
-      // Listen for changes to the cart document
-      const unsubscribe = onSnapshot(userCartRef, (doc) => {
-        const cartDataFromFirestore = doc.exists() ? doc.data().cart : {};
-
-        // Merge cart data from Firestore with local storage
+        // Merge cart data from Firestore (if available) with local storage
         const mergedCartData = {
           ...(JSON.parse(localStorage.getItem("cart")) || {}),
-          ...cartDataFromFirestore,
+          ...cartData,
         };
 
         // Update local storage and context with merged cart data
         localStorage.setItem("cart", JSON.stringify(mergedCartData));
         dispatch({ type: "SET_CART", payload: mergedCartData });
         setLoading(false);
-      });
-
-      return () => unsubscribe(); // Unsubscribe from the snapshot listener when component unmounts
+      }
     } catch (error) {
       console.error("Error fetching cart:", error);
     }
@@ -137,16 +142,12 @@ const Cart = ({ user }) => {
     }
   };
 
-  if (loading) {
-    return <Loader />;
+  if (!currentUser || !currentUser.email || currentUser.isAnonymous) {
+    return <AnonymousUserComponent />;
   }
 
-  if (!currentUser) {
-    return (
-      <div style={{ marginTop: "7vh" }}>
-        <Showed />
-      </div>
-    );
+  if (loading) {
+    return <Loader />;
   }
 
   if (itemsWithPrices.length === 0) {
@@ -243,6 +244,9 @@ const Cart = ({ user }) => {
         <p style={{ fontWeight: "bold" }} className="cart-total">
           Total Price: ₦{totalPrice.toFixed(2)}
         </p>
+        <Link to="/menu" style={{ color: "black" }}>
+          Add Item to Cart
+        </Link>
         <div
           style={{
             textAlign: "center",

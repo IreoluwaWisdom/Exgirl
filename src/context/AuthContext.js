@@ -1,13 +1,24 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
-import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
+import React, { useContext, useState, useEffect } from "react";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut,
+  signInAnonymously,
+} from "firebase/auth";
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 
 const AuthContext = React.createContext();
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
@@ -21,9 +32,19 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user);
+      if (!user) {
+        // If there is no authenticated user, sign in anonymously
+        try {
+          const anonymousUser = await signInAnonymously(auth);
+          setCurrentUser(anonymousUser);
+        } catch (error) {
+          console.error("Error signing in anonymously:", error.message);
+        }
+      }
+
       if (user) {
-        const ordersRef = collection(db, 'orders');
-        const q = query(ordersRef, where('userEmail', '==', user.email));
+        const ordersRef = collection(db, "orders");
+        const q = query(ordersRef, where("userEmail", "==", user.email));
         const querySnapshot = await getDocs(q);
         const orders = [];
         querySnapshot.forEach((doc) => {
@@ -46,7 +67,7 @@ export const AuthProvider = ({ children }) => {
       try {
         await signOut(auth);
       } catch (error) {
-        console.error('Sign-out error:', error.message);
+        console.error("Sign-out error:", error.message);
         // Handle the error, e.g., show an error message to the user
       }
     },
