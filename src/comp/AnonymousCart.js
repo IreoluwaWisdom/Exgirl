@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { collection, onSnapshot, doc } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  doc,
+  setDoc,
+  getDocs,
+} from "firebase/firestore";
 import Tabs from "../comp/Tab";
 import { db } from "../config/firebaseConfig";
 import { useCart } from "../context/CartContext";
@@ -14,8 +20,14 @@ const AnonymousUserComponent = () => {
   const [itemsWithPrices, setItemsWithPrices] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [documentId, setDocumentId] = useState("");
+
+  //   const [userUUID, setUserUUID] = useState("");
 
   useEffect(() => {
+    // const storedUUID = localStorage.getItem("userUUID");
+    // setUserUUID(storedUUID);
+
     const unsubscribe = onSnapshot(collection(db, "menu"), (snapshot) => {
       const updatedItemsWithPrices = snapshot.docs
         .filter((doc) => cart[doc.id] > 0)
@@ -50,10 +62,57 @@ const AnonymousUserComponent = () => {
     setLoading(false);
   }, []);
 
+  useEffect(() => {
+    const storedDocumentId = localStorage.getItem("documentId");
+    if (storedDocumentId) {
+      setDocumentId(storedDocumentId);
+    }
+
+    setLoading(false);
+  }, []);
+
   if (loading) {
     return <Loader />;
   }
 
+  const saveCartToFirestore = async () => {
+    try {
+      if (documentId) {
+        // If documentId is present, update the existing document
+        const cartRef = doc(db, "carts", documentId);
+        await setDoc(cartRef, {
+          ...cart,
+          totalPrice: totalPrice,
+        });
+        console.log("Cart updated in Firestore successfully!");
+      } else {
+        // If documentId is not present, create a new document
+        const cartsCollectionRef = collection(db, "carts");
+        const querySnapshot = await getDocs(cartsCollectionRef);
+        const userDocs = querySnapshot.docs.filter((doc) =>
+          doc.id.startsWith("user"),
+        );
+        const userCount = userDocs.length + 1;
+        const newDocumentId = `user${userCount.toString().padStart(3, "0")}`;
+
+        const cartRef = doc(db, "carts", newDocumentId);
+        await setDoc(cartRef, {
+          ...cart,
+          totalPrice: totalPrice,
+        });
+
+        console.log(
+          "Cart saved to Firestore successfully with document ID:",
+          newDocumentId,
+        );
+
+        setDocumentId(newDocumentId);
+        localStorage.setItem("documentId", newDocumentId);
+      }
+    } catch (error) {
+      console.error("Error saving cart to Firestore: ", error);
+    }
+  };
   const increaseQuantity = (itemName) => {
     const updatedCart = { ...cart, [itemName]: (cart[itemName] || 0) + 1 };
     updateCart(updatedCart);
@@ -171,13 +230,39 @@ const AnonymousUserComponent = () => {
             </div>
           </div>
         ))}
+        <Link to="/menu" style={{ color: "black" }}>
+          Add Item to Cart
+        </Link>
         <br />
         <p style={{ fontWeight: "bold" }} className="cart-total">
           Total Price: ₦{totalPrice.toFixed(2)}
         </p>
-        <Link to="/menu" style={{ color: "black" }}>
-          Add Item to Cart
-        </Link>
+
+        <div
+          style={{
+            textAlign: "center",
+            position: "relative",
+            left: "15%",
+            marginBottom: "20vh",
+          }}
+        >
+          <Link
+            to="/checkout"
+            style={{
+              textDecoration: "none",
+              fontWeight: "bold",
+              textAlign: "center",
+            }}
+          >
+            <button
+              className="proceed-btn"
+              style={{ textDecoration: "none", fontWeight: "bold" }}
+              onClick={saveCartToFirestore}
+            >
+              Proceed to Checkout
+            </button>
+          </Link>
+        </div>
 
         <div style={{ marginTop: "7vh", marginBottom: "20vh" }}>
           <Showed />

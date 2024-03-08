@@ -9,11 +9,18 @@ const QuantitySelector = ({ itemName }) => {
   const { cart, dispatch } = useCart();
   const [quantity, setQuantity] = useState(0);
   const [isItemInCart, setIsItemInCart] = useState(false);
+  const [userUUID, setUserUUID] = useState("");
 
   useEffect(() => {
     const mergedCartData = JSON.parse(localStorage.getItem("cart")) || {};
     setQuantity(mergedCartData[itemName] || 0);
     setIsItemInCart(mergedCartData.hasOwnProperty(itemName));
+
+    // Check if user UUID exists in local storage
+    const storedUUID = localStorage.getItem("userUUID");
+    if (storedUUID) {
+      setUserUUID(storedUUID);
+    }
   }, [itemName]);
 
   useEffect(() => {
@@ -24,6 +31,8 @@ const QuantitySelector = ({ itemName }) => {
         .then((userCredential) => {
           const user = userCredential.user;
           console.log("Anonymous user authenticated", user.uid);
+          setUserUUID(user.uid); // Save user UUID locally
+          localStorage.setItem("userUUID", user.uid); // Save user UUID in local storage
         })
         .catch((error) => {
           console.error("Error authenticating anonymously:", error);
