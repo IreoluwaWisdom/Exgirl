@@ -16,33 +16,30 @@ import Showed from "../comp/Showed";
 import "../styles/Cart.css";
 import Loader from "../comp/Loader";
 import { FaShoppingCart } from "react-icons/fa";
-import AnonymousUserComponent from "../comp/AnonymousCart";
 
-const Cart = ({ user }) => {
+const Cart = () => {
   const { cart, dispatch } = useCart();
   const [totalPrice, setTotalPrice] = useState(0);
   const [itemsWithPrices, setItemsWithPrices] = useState([]);
-  const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const auth = getAuth();
 
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        setCurrentUser(user);
+        // Fetch cart data for authenticated users
         fetchCart(user);
       } else {
-        setCurrentUser(null);
-        dispatch({ type: "RESET_CART" });
-        setLoading(false);
+        // Fetch cart data for unauthenticated users
+        fetchCart(null);
       }
     });
 
     return () => {
       unsubscribe();
     };
-  }, [user]);
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "menu"), (snapshot) => {
@@ -66,43 +63,40 @@ const Cart = ({ user }) => {
         0,
       );
       setTotalPrice(total);
-      if (currentUser && currentUser.email && !currentUser.isAnonymous) {
-        const userCartRef = doc(collection(db, "carts"), currentUser.email);
-        setDoc(userCartRef, { totalPrice: total }, { merge: true });
-      }
     };
 
     calculateTotalPrice();
-  }, [itemsWithPrices, currentUser]);
+  }, [itemsWithPrices]);
 
-  const fetchCart = async (currentUser) => {
+  const fetchCart = async (user) => {
     try {
-      console.log("Current user:", currentUser); // Log the currentUser object
-      let cartData;
-      if (!currentUser || (!currentUser.email && !currentUser.isAnonymous)) {
-        console.log("No user or email found. Loading cart from local storage.");
-        const mergedCartData = JSON.parse(localStorage.getItem("cart")) || {};
-        dispatch({ type: "SET_CART", payload: mergedCartData });
-        setLoading(false);
-        return;
+      if (user) {
+        const userCartRef = doc(collection(db, "carts"), user.email);
+
+        // Listen for changes to the cart document
+        const unsubscribe = onSnapshot(userCartRef, (doc) => {
+          const cartDataFromFirestore = doc.exists() ? doc.data().cart : {};
+
+          // Merge cart data from Firestore with local storage
+          const mergedCartData = {
+            ...(JSON.parse(localStorage.getItem("cart")) || {}),
+            ...cartDataFromFirestore,
+          };
+
+          // Update local storage and context with merged cart data
+          localStorage.setItem("cart", JSON.stringify(mergedCartData));
+          dispatch({ type: "SET_CART", payload: mergedCartData });
+          setLoading(false);
+        });
+
+        return () => unsubscribe(); // Unsubscribe from the snapshot listener when component unmounts
       } else {
-        console.log("Fetching cart data from Firestore.");
-        if (!currentUser.isAnonymous) {
-          console.log("Signed-in user detected. Loading cart with email.");
-          const userCartRef = doc(collection(db, "carts"), currentUser.email);
-          const userCartDoc = await getDoc(userCartRef);
-          cartData = userCartDoc.exists() ? userCartDoc.data().cart : {};
-        }
+        // Fetch cart data from local storage directly for unauthenticated users
 
-        // Merge cart data from Firestore (if available) with local storage
-        const mergedCartData = {
-          ...(JSON.parse(localStorage.getItem("cart")) || {}),
-          ...cartData,
-        };
-
-        // Update local storage and context with merged cart data
-        localStorage.setItem("cart", JSON.stringify(mergedCartData));
-        dispatch({ type: "SET_CART", payload: mergedCartData });
+        // console.log("Fetching cart from local storage...");
+        // console.log("Cart data:", JSON.parse(localStorage.getItem("cart")));
+        const localCartData = JSON.parse(localStorage.getItem("cart")) || {};
+        dispatch({ type: "SET_CART", payload: localCartData });
         setLoading(false);
       }
     } catch (error) {
@@ -142,10 +136,6 @@ const Cart = ({ user }) => {
     }
   };
 
-  if (!currentUser || !currentUser.email || currentUser.isAnonymous) {
-    return <AnonymousUserComponent />;
-  }
-
   if (loading) {
     return <Loader />;
   }
@@ -157,6 +147,7 @@ const Cart = ({ user }) => {
           textAlign: "center",
           display: "block",
           justifyContent: "center",
+          // marginTop: "7vh",
         }}
       >
         <Tabs />
@@ -166,6 +157,14 @@ const Cart = ({ user }) => {
             {" "}
             Add Item to Cart
           </Link>
+          <br />
+          <span style={{ color: "" }}>
+            <span>
+              <FaShoppingCart
+                style={{ fill: "none", stroke: "black", strokeWidth: "50px" }}
+              />{" "}
+            </span>
+          </span>
         </div>
       </div>
     );
@@ -174,13 +173,16 @@ const Cart = ({ user }) => {
   return (
     <div>
       <Tabs />
-      <div className="cart-container">
+
+      <div className="cart-container" style={{ marginTop: "7vh" }}>
         {itemsWithPrices.map((item) => (
           <div key={item.itemName} className="cart-item">
-            <span className="item-name">{item.itemName}</span>
+            <span className="item-name" style={{ textAlign: "center" }}>
+              {item.itemName}
+            </span>
             <br />
             <div style={{ fontSize: "80%" }}>
-              <span className="item-quantity">{item.quantity} item</span>
+              <span className="item-quantity"> {item.quantity} item</span>
               <span className="item-price"> ₦{item.price}</span>
             </div>
             <br />
@@ -232,9 +234,6 @@ const Cart = ({ user }) => {
         <p style={{ fontWeight: "bold" }} className="cart-total">
           Total Price: ₦{totalPrice.toFixed(2)}
         </p>
-        <Link to="/menu" style={{ color: "black" }}>
-          Add Item to Cart
-        </Link>
         <div
           style={{
             textAlign: "center",

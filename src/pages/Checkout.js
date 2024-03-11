@@ -37,7 +37,6 @@ const Checkout = () => {
   const [message, setMessage] = useState("");
   const [confirmPin, setConfirmPin] = useState("");
 
-  const documentId = localStorage.getItem("documentId");
   const isAcceptableTime = (hour, minute) => {
     const time = parseInt(hour) + parseInt(minute) / 60;
     return time >= 6 && time < 18;
@@ -45,72 +44,68 @@ const Checkout = () => {
 
   const handleCheckout = async () => {
     try {
-      if (currentUser) {
-        let userEmail = currentUser.email; // Default to user's email if authenticated
-        if (!userEmail) {
-          // If user is anonymous, use documentId as the email
-          userEmail = documentId;
-        }
+      if (currentUser && currentUser.email && deliveryDate && location) {
+        const currentDate = new Date().toISOString().split("T")[0];
+        const selectedDateTime = new Date(
+          `${deliveryDate}T${deliveryHour}:${deliveryMinute}`,
+        );
+        const selectedDate = selectedDateTime.toISOString().split("T")[0];
+        const selectedHour = selectedDateTime.getHours();
+        const selectedMinute = selectedDateTime.getMinutes();
 
-        if (userEmail && deliveryDate && location) {
-          const currentDate = new Date().toISOString().split("T")[0];
-          const selectedDateTime = new Date(
-            `${deliveryDate}T${deliveryHour}:${deliveryMinute}`,
-          );
-          const selectedDate = selectedDateTime.toISOString().split("T")[0];
-          const selectedHour = selectedDateTime.getHours();
-          const selectedMinute = selectedDateTime.getMinutes();
+        if (
+          selectedDate >= currentDate &&
+          isAcceptableTime(deliveryHour, deliveryMinute)
+        ) {
+          const cartRef = doc(db, "carts", currentUser.email);
+          const cartDoc = await getDoc(cartRef);
 
-          if (
-            selectedDate >= currentDate &&
-            isAcceptableTime(deliveryHour, deliveryMinute)
-          ) {
-            const cartRef = doc(db, "carts", userEmail);
-            const cartDoc = await getDoc(cartRef);
+          if (cartDoc.exists()) {
+            const cartData = cartDoc.data();
+            const totalPrice = cartData.totalPrice || 0;
+            const cart = cartData || {};
 
-            if (cartDoc.exists()) {
-              const cartData = cartDoc.data();
-              const totalPrice = cartData.totalPrice || 0;
-              const cart = cartData || {};
+            MonnifySDK.initialize({
+              amount: totalPrice,
+              currency: "NGN",
+              reference: new String(new Date().getTime()),
+              customerFullName: "Ireoluwa",
+              customerEmail: "wisdomireoluwa@gmail.com",
+              apiKey: "MK_TEST_7M2J17JK93",
+              contractCode: "3362135433",
+              paymentDescription: "Your Payment Description",
 
-              MonnifySDK.initialize({
-                amount: totalPrice,
-                currency: "NGN",
-                reference: new String(new Date().getTime()),
-                customerFullName: "Ireoluwa",
-                customerEmail: "wisdomireoluwa@gmail.com",
-                apiKey: "MK_TEST_7M2J17JK93",
-                contractCode: "3362135433",
-                paymentDescription: "Your Payment Description",
+              onClose: function (response) {
+                console.log(response);
+                updateFirestoreAfterPayment(
+                  currentUser.email,
+                  cart,
+                  deliveryDate,
+                  `${deliveryHour}:${deliveryMinute}`,
+                  location,
+                  message,
+                  confirmPin,
+                );
+              },
 
-                onClose: function (response) {
-                  console.log(response);
-                  updateFirestoreAfterPayment(
-                    userEmail,
-                    cart,
-                    deliveryDate,
-                    `${deliveryHour}:${deliveryMinute}`,
-                    location,
-                    message,
-                    confirmPin,
-                  );
-                },
-              });
+              //onClose: function (data) {
+              //console.log(data);
+              //window.location.href = "/checkout";
 
-              console.log("Order processed successfully");
-            } else {
-              console.log("Cart document does not exist for this user.");
-            }
+              // },
+            });
+
+            console.log("Order processed successfully");
           } else {
-            alert(
-              "Please select a future date and a time between 6:00 AM and 6:00 PM.",
-            );
+            console.log("Cart document does not exist for this user.");
           }
         } else {
-          alert("Please provide delivery date, time, and location.");
+          alert(
+            "Please select a future date and a time between 6:00 AM and 6:00 PM.",
+          );
         }
       } else {
-        alert("Please sign in to proceed with checkout.");
+        alert("Please provide delivery date, time, and location.");
       }
     } catch (error) {
       console.error("Error during checkout:", error);
@@ -166,8 +161,6 @@ const Checkout = () => {
         const cartRef = doc(db, "carts", userEmail);
         await deleteDoc(cartRef);
         localStorage.setItem("cart", JSON.stringify({}));
-
-        await setDoc(cartRef, {});
 
         console.log("Order stored in Firestore after successful payment.");
       } else {

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect } from "react";
-import { getAuth, signInAnonymously } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import {
   getFirestore,
   doc,
@@ -31,7 +31,9 @@ const CartProvider = ({ children }) => {
 
     const setupCartListener = async (user) => {
       if (!user || !user.email) {
-        // No user or no email, do not set up listener
+        // No user or no email, use local storage only
+        const mergedCartData = JSON.parse(localStorage.getItem("cart")) || {};
+        dispatch({ type: "SET_CART", payload: mergedCartData });
         return;
       }
 
@@ -39,27 +41,16 @@ const CartProvider = ({ children }) => {
         doc(collection(db, "carts"), user.email),
         (snapshot) => {
           const data = snapshot.data();
-          dispatch({ type: "SET_CART", payload: data.cart || {} });
+          const cartData = data ? data.cart : {};
+          dispatch({ type: "SET_CART", payload: cartData });
         },
       );
 
       return () => unsubscribe();
     };
 
-    if (!user) {
-      // User not authenticated, sign in anonymously
-      signInAnonymously(auth)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          setupCartListener(user);
-        })
-        .catch((error) => {
-          console.error("Error signing in anonymously:", error.message);
-        });
-    } else {
-      setupCartListener(user);
-    }
-  }, []);
+    setupCartListener(user);
+  }, []); // Dependency array should be empty to run once when component mounts
 
   return (
     <CartContext.Provider value={{ cart, dispatch }}>

@@ -1,10 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import {
-  getAuth,
-  onAuthStateChanged,
-  signOut,
-  signInAnonymously,
-} from "firebase/auth";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import {
   getFirestore,
   collection,
@@ -32,22 +27,6 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user);
-      if (!user) {
-        // If there is no authenticated user, sign in anonymously
-        try {
-          const anonymousUser = await signInAnonymously(auth);
-          setCurrentUser(anonymousUser);
-        } catch (error) {
-          console.error("Error signing in anonymously:", error.message);
-        }
-      } else {
-        // If there is an authenticated user, check if it's not anonymous
-        if (!user.isAnonymous) {
-          // Delete the locally stored document ID
-          localStorage.removeItem("documentId");
-        }
-      }
-
       if (user) {
         const ordersRef = collection(db, "orders");
         const q = query(ordersRef, where("userEmail", "==", user.email));
@@ -58,6 +37,7 @@ export const AuthProvider = ({ children }) => {
         });
         setUserOrders(orders);
       } else {
+        setCurrentUser(null); // Ensure currentUser is null if no user is authenticated
         setUserOrders([]);
       }
     });

@@ -119,190 +119,182 @@ const UserDetails = ({ userEmail }) => {
     }
   };
 
-  if (!userData) {
-    return <AnonymousUserComponent />;
-  }
-
   return (
     <div>
-      {editing ? (
-        <div>
-          {/* Display profile picture options */}
-          <div
-            className="profile-picture-options"
-            style={{ marginBottom: "4vh" }}
-          >
-            {profilePictures.map((picture) => (
-              <img
-                key={picture.id}
-                src={picture.src}
-                alt="Profile"
-                className={`profile-picture-option ${
-                  selectedPictureId === picture.id ? "selected" : ""
-                }`}
-                onClick={() =>
-                  handleProfilePictureChange(picture.id, picture.src)
-                }
-                style={{ width: "70px", height: "70px" }}
-              />
-            ))}
-          </div>
-          <input
-            type="text"
-            name="username"
-            value={editedUserData.username}
-            onChange={handleChange}
-            style={{ marginBottom: "2vh" }}
-          />
-          <input
-            type="text"
-            name="phoneNumber"
-            value={editedUserData.phoneNumber}
-            onChange={handleChange}
-            style={{ marginBottom: "2vh" }}
-          />
-
-          <input
-            type="date"
-            name="dateOfBirth"
-            value={editedUserData.dob}
-            onChange={handleChange}
-            style={{ marginBottom: "4vh" }}
-          />
-          <br />
-          <div style={{ textAlign: "center" }}>
-            <button
-              style={{
-                borderRadius: "15px",
-                padding: "4px 25px",
-                backgroundColor: "darkblue",
-                color: "white",
-                border: "none",
-                fontSize: "100%",
-              }}
-              onClick={handleSave}
+      {userData ? (
+        editing ? (
+          <div>
+            {/* Display profile picture options */}
+            <div
+              className="profile-picture-options"
+              style={{ marginBottom: "4vh" }}
             >
-              Save
-            </button>
-          </div>
-        </div>
-      ) : (
-        <div>
-          {/* Display profile picture and user information */}
-          <div
-            className="profile-picture-container"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <img
-              src={profilePicture}
-              alt="Profile"
-              className="profile-picture"
-              style={{
-                width: "90px",
-                height: "90px",
-                borderRadius: "50%",
-              }}
+              {profilePictures.map((picture) => (
+                <img
+                  key={picture.id}
+                  src={picture.src}
+                  alt="Profile"
+                  className={`profile-picture-option ${
+                    selectedPictureId === picture.id ? "selected" : ""
+                  }`}
+                  onClick={() =>
+                    handleProfilePictureChange(picture.id, picture.src)
+                  }
+                  style={{ width: "70px", height: "70px" }}
+                />
+              ))}
+            </div>
+            <input
+              type="text"
+              name="username"
+              value={editedUserData.username}
+              onChange={handleChange}
+              style={{ marginBottom: "2vh" }}
             />
-          </div>
-          <div
-            style={{
-              marginBottom: "0.5vh",
-              fontSize: "85%",
-              fontWeight: "bold",
-            }}
-          >
-            Username
-            <div style={{ fontWeight: "normal", fontSize: "100%" }}>
-              {userData.username}
-            </div>
-          </div>
-          <div
-            style={{
-              marginBottom: "0.5vh",
-              fontSize: "85%",
-              fontWeight: "bold",
-            }}
-          >
-            Email
-            <div style={{ fontWeight: "normal", fontSize: "100%" }}>
-              {userData.email}
-            </div>
-          </div>
-          <div
-            style={{
-              marginBottom: "0.5vh",
-              fontSize: "85%",
-              fontWeight: "bold",
-            }}
-          >
-            Phone Number
-            <div style={{ fontWeight: "normal", fontSize: "100%" }}>
-              {userData.phoneNumber}
-            </div>
-          </div>
+            <input
+              type="text"
+              name="phoneNumber"
+              value={editedUserData.phoneNumber}
+              onChange={handleChange}
+              style={{ marginBottom: "2vh" }}
+            />
 
-          <div
-            style={{
-              marginBottom: "5vh",
-              fontSize: "85%",
-              fontWeight: "bold",
-            }}
-          >
-            Date of Birth
-            <div style={{ fontWeight: "normal", fontSize: "100%" }}>
-              {userData.dob}
-            </div>
-            <div style={{ fontWeight: "normal", fontSize: "90%" }}>
-              <FaqComponent faqData={faqData} />
+            <input
+              type="date"
+              name="dateOfBirth"
+              value={editedUserData.dob}
+              onChange={handleChange}
+              style={{ marginBottom: "4vh" }}
+            />
+            <br />
+            <div style={{ textAlign: "center" }}>
+              <button
+                style={{
+                  borderRadius: "15px",
+                  padding: "4px 25px",
+                  backgroundColor: "darkblue",
+                  color: "white",
+                  border: "none",
+                  fontSize: "100%",
+                }}
+                onClick={handleSave}
+              >
+                Save
+              </button>
             </div>
           </div>
-          <Link to="/sign-out">
-            <button
+        ) : (
+          <div>
+            {/* Display profile picture and user information */}
+            <div
+              className="profile-picture-container"
               style={{
-                padding: "3px 10px",
-                backgroundColor: "darkred",
-                color: "white",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <img
+                src={profilePicture}
+                alt="Profile"
+                className="profile-picture"
+                style={{
+                  width: "90px",
+                  height: "90px",
+                  borderRadius: "50%",
+                }}
+              />
+            </div>
+            <div
+              style={{
+                marginBottom: "0.5vh",
+                fontSize: "85%",
+                fontWeight: "bold",
+              }}
+            >
+              Username
+              <div style={{ fontWeight: "normal", fontSize: "100%" }}>
+                {userData.username}
+              </div>
+            </div>
+            <div
+              style={{
+                marginBottom: "0.5vh",
+                fontSize: "85%",
+                fontWeight: "bold",
+              }}
+            >
+              Email
+              <div style={{ fontWeight: "normal", fontSize: "100%" }}>
+                {userData.email}
+              </div>
+            </div>
+            <div
+              style={{
+                marginBottom: "0.5vh",
+                fontSize: "85%",
+                fontWeight: "bold",
+              }}
+            >
+              Phone Number
+              <div style={{ fontWeight: "normal", fontSize: "100%" }}>
+                {userData.phoneNumber}
+              </div>
+            </div>
+
+            <div
+              style={{
+                marginBottom: "5vh",
+                fontSize: "85%",
+                fontWeight: "bold",
+              }}
+            >
+              Date of Birth
+              <div style={{ fontWeight: "normal", fontSize: "100%" }}>
+                {userData.dob}
+              </div>
+              <div style={{ fontWeight: "normal", fontSize: "90%" }}>
+                <FaqComponent faqData={faqData} />
+              </div>
+            </div>
+            <Link to="/sign-out">
+              <button
+                style={{
+                  padding: "3px 10px",
+                  backgroundColor: "darkred",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                  position: "relative",
+                  right: "3.5vw",
+                  fontSize: "80%",
+                }}
+              >
+                Sign Out <FiLogOut />
+              </button>
+            </Link>
+            <button
+              onClick={handleEdit}
+              style={{
+                padding: "4px 20px",
+                backgroundColor: "#6a0dad",
+                color: "#fff",
                 border: "none",
                 borderRadius: "5px",
                 cursor: "pointer",
                 position: "relative",
-                right: "3.5vw",
+                left: "23vw",
                 fontSize: "80%",
               }}
             >
-              Sign Out <FiLogOut />
+              Edit <MdEdit />
             </button>
-          </Link>
-          <button
-            onClick={handleEdit}
-            style={{
-              padding: "4px 20px",
-              backgroundColor: "#6a0dad",
-              color: "#fff",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-              position: "relative",
-              left: "23vw",
-              fontSize: "80%",
-            }}
-          >
-            Edit <MdEdit />
-          </button>
-        </div>
+          </div>
+        )
+      ) : (
+        <p>Loading ...</p>
       )}
-    </div>
-  );
-};
-
-const AnonymousUserComponent = () => {
-  return (
-    <div>
-      <p>Anonymous user component goes here...</p>
     </div>
   );
 };
