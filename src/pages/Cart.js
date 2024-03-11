@@ -169,7 +169,7 @@ const Cart = () => {
 
         // Save cart state for unauthenticated user in Firestore
         const cartRef = doc(collection(db, "carts"), newCartDocumentId);
-        await setDoc(cartRef, { cart }, { merge: true });
+        await setDoc(cartRef, { cart, totalPrice }, { merge: true });
 
         // Store or update the document ID locally
         localStorage.setItem("cartDocumentId", newCartDocumentId);

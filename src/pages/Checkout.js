@@ -44,7 +44,15 @@ const Checkout = () => {
 
   const handleCheckout = async () => {
     try {
-      if (currentUser && currentUser.email && deliveryDate && location) {
+      let userEmail = currentUser ? currentUser.email : null;
+
+      if (!userEmail) {
+        // If no authenticated user, use the document ID as the user email
+        userEmail =
+          localStorage.getItem("cartDocumentId") || "guest@example.com";
+      }
+
+      if (userEmail && deliveryDate && location) {
         const currentDate = new Date().toISOString().split("T")[0];
         const selectedDateTime = new Date(
           `${deliveryDate}T${deliveryHour}:${deliveryMinute}`,
@@ -57,7 +65,7 @@ const Checkout = () => {
           selectedDate >= currentDate &&
           isAcceptableTime(deliveryHour, deliveryMinute)
         ) {
-          const cartRef = doc(db, "carts", currentUser.email);
+          const cartRef = doc(db, "carts", userEmail);
           const cartDoc = await getDoc(cartRef);
 
           if (cartDoc.exists()) {
@@ -78,7 +86,7 @@ const Checkout = () => {
               onClose: function (response) {
                 console.log(response);
                 updateFirestoreAfterPayment(
-                  currentUser.email,
+                  userEmail,
                   cart,
                   deliveryDate,
                   `${deliveryHour}:${deliveryMinute}`,
@@ -87,12 +95,6 @@ const Checkout = () => {
                   confirmPin,
                 );
               },
-
-              //onClose: function (data) {
-              //console.log(data);
-              //window.location.href = "/checkout";
-
-              // },
             });
 
             console.log("Order processed successfully");
