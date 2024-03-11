@@ -40,6 +40,12 @@ export const AuthProvider = ({ children }) => {
         } catch (error) {
           console.error("Error signing in anonymously:", error.message);
         }
+      } else {
+        // If there is an authenticated user, check if it's not anonymous
+        if (!user.isAnonymous) {
+          // Delete the locally stored document ID
+          localStorage.removeItem("documentId");
+        }
       }
 
       if (user) {

@@ -157,7 +157,6 @@ const Cart = ({ user }) => {
           textAlign: "center",
           display: "block",
           justifyContent: "center",
-          // marginTop: "7vh",
         }}
       >
         <Tabs />
@@ -167,14 +166,6 @@ const Cart = ({ user }) => {
             {" "}
             Add Item to Cart
           </Link>
-          <br />
-          <span style={{ color: "" }}>
-            <span>
-              <FaShoppingCart
-                style={{ fill: "none", stroke: "black", strokeWidth: "50px" }}
-              />{" "}
-            </span>
-          </span>
         </div>
       </div>
     );
@@ -183,16 +174,13 @@ const Cart = ({ user }) => {
   return (
     <div>
       <Tabs />
-
-      <div className="cart-container" style={{ marginTop: "7vh" }}>
+      <div className="cart-container">
         {itemsWithPrices.map((item) => (
           <div key={item.itemName} className="cart-item">
-            <span className="item-name" style={{ textAlign: "center" }}>
-              {item.itemName}
-            </span>
+            <span className="item-name">{item.itemName}</span>
             <br />
             <div style={{ fontSize: "80%" }}>
-              <span className="item-quantity"> {item.quantity} item</span>
+              <span className="item-quantity">{item.quantity} item</span>
               <span className="item-price"> ₦{item.price}</span>
             </div>
             <br />

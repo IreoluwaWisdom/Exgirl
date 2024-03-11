@@ -1,25 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
-import { collection, doc, setDoc } from "firebase/firestore";
+import { collection, doc, setDoc, deleteDoc } from "firebase/firestore";
 import { db } from "../config/firebaseConfig";
-import { getAuth, signInAnonymously } from "firebase/auth";
+import { getAuth, signInAnonymously, deleteUser } from "firebase/auth";
 
 const QuantitySelector = ({ itemName }) => {
   const { cart, dispatch } = useCart();
   const [quantity, setQuantity] = useState(0);
   const [isItemInCart, setIsItemInCart] = useState(false);
-  const [userUUID, setUserUUID] = useState("");
+  const [userUID, setUserUID] = useState("");
 
   useEffect(() => {
     const mergedCartData = JSON.parse(localStorage.getItem("cart")) || {};
     setQuantity(mergedCartData[itemName] || 0);
     setIsItemInCart(mergedCartData.hasOwnProperty(itemName));
 
-    // Check if user UUID exists in local storage
-    const storedUUID = localStorage.getItem("userUUID");
-    if (storedUUID) {
-      setUserUUID(storedUUID);
+    // Check if user UID exists in local storage
+    const storedUID = localStorage.getItem("userUID");
+    if (storedUID) {
+      setUserUID(storedUID);
     }
   }, [itemName]);
 
@@ -31,14 +31,47 @@ const QuantitySelector = ({ itemName }) => {
         .then((userCredential) => {
           const user = userCredential.user;
           console.log("Anonymous user authenticated", user.uid);
-          setUserUUID(user.uid); // Save user UUID locally
-          localStorage.setItem("userUUID", user.uid); // Save user UUID in local storage
+          setUserUID(user.uid); // Save user UID locally
+          localStorage.setItem("userUID", user.uid); // Save user UID in local storage
         })
         .catch((error) => {
           console.error("Error authenticating anonymously:", error);
         });
     }
   }, []);
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user && !user.isAnonymous) {
+        setUserUID(user.uid);
+        localStorage.setItem("userUID", user.uid);
+      } else {
+        setUserUID("");
+        localStorage.removeItem("userUID");
+        // If the user is anonymous, delete their data
+        deleteUserData();
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const deleteUserData = async () => {
+    try {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      if (user && user.isAnonymous) {
+        // Delete user data from Firestore
+        await deleteDoc(doc(db, "carts", user.uid));
+        // Delete the anonymous user
+        await deleteUser(user);
+        console.log("Anonymous user data deleted successfully");
+      }
+    } catch (error) {
+      console.error("Error deleting anonymous user data:", error);
+    }
+  };
 
   const increaseQuantity = () => {
     const updatedQuantity = quantity + 1;

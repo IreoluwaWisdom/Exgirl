@@ -16,13 +16,16 @@ const OngoingOrders = () => {
 
   useEffect(() => {
     const fetchOrders = async () => {
-      if (currentUser) {
-        try {
+      try {
+        if (currentUser) {
+          let userEmail = currentUser.email;
+          if (!userEmail) {
+            // If user is anonymous, use documentId as the email
+            userEmail = localStorage.getItem("documentId");
+          }
+
           const ordersRef = collection(db, "orders");
-          const q = query(
-            ordersRef,
-            where("userEmail", "==", currentUser.email),
-          );
+          const q = query(ordersRef, where("userEmail", "==", userEmail));
           const querySnapshot = await onSnapshot(q, (snapshot) => {
             const ongoing = [];
             const completed = [];
@@ -37,9 +40,12 @@ const OngoingOrders = () => {
             setOngoingOrders(ongoing);
           });
           return () => querySnapshot();
-        } catch (error) {
-          console.error("Error fetching orders:", error);
+        } else {
+          // If currentUser is null, handle sign-in flow or redirect to sign-in page
+          console.log("User is not signed in.");
         }
+      } catch (error) {
+        console.error("Error fetching orders:", error);
       }
     };
 
@@ -68,35 +74,29 @@ const OngoingOrders = () => {
                 {ongoingOrders.map((order) => (
                   <div key={order.id} style={styles.orderContainer}>
                     <h6>Order ID: {order.id}</h6>
-
                     <p>
                       <strong style={{ color: "#6a0dad" }}>
                         Delivery Date:
                       </strong>{" "}
                       {order.deliveryDate}
                     </p>
-                    <p>
-                      <strong style={{ color: "#6a0dad" }}>
-                        Delivery Time:
-                      </strong>{" "}
-                      {order.deliveryTime}
-                    </p>
-                    <p>
-                      <strong style={{ color: "#6a0dad" }}>Location:</strong>{" "}
-                      {order.location}
-                    </p>
-                    <p>
-                      <strong style={{ color: "#6a0dad" }}>Items:</strong>
-                    </p>
-                    <ul>
-                      {Object.entries(order.items.cart)
-                        .filter(([item, quantity]) => quantity > 0) // Filter out items with quantity 0
-                        .map(([item, quantity]) => (
-                          <li key={item}>
-                            {item}: {quantity}
-                          </li>
-                        ))}
-                    </ul>
+                    {/* Add a check for order.items.cart */}
+                    {order.items && order.items.cart && (
+                      <>
+                        <p>
+                          <strong style={{ color: "#6a0dad" }}>Items:</strong>
+                        </p>
+                        <ul>
+                          {Object.entries(order.items.cart)
+                            .filter(([item, quantity]) => quantity > 0) // Filter out items with quantity 0
+                            .map(([item, quantity]) => (
+                              <li key={item}>
+                                {item}: {quantity}
+                              </li>
+                            ))}
+                        </ul>
+                      </>
+                    )}
                     <p>
                       <strong style={{ color: "#6a0dad" }}>Total Price:</strong>{" "}
                       ₦{order.items.totalPrice.toFixed(2)}
