@@ -37,14 +37,12 @@ const CartProvider = ({ children }) => {
         return;
       }
 
-      const unsubscribe = onSnapshot(
-        doc(collection(db, "carts"), user.email),
-        (snapshot) => {
-          const data = snapshot.data();
-          const cartData = data ? data.cart : {};
-          dispatch({ type: "SET_CART", payload: cartData });
-        },
-      );
+      const userDocRef = doc(db, "users", user.email);
+      const unsubscribe = onSnapshot(userDocRef, (snapshot) => {
+        const userData = snapshot.data();
+        const cartData = userData ? userData.cart || {} : {};
+        dispatch({ type: "SET_CART", payload: cartData });
+      });
 
       return () => unsubscribe();
     };

@@ -45,7 +45,7 @@ const QuantitySelector = ({ itemName }) => {
     const user = auth.currentUser;
 
     if (user) {
-      const userCartRef = doc(collection(db, "carts"), user.uid);
+      const userCartRef = doc(collection(db, "carts"), user.email);
       setDoc(userCartRef, { cart: updatedCart }, { merge: true })
         .then(() => console.log("Cart updated successfully"))
         .catch((error) => console.error("Error updating cart:", error));
