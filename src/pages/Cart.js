@@ -80,6 +80,9 @@ const Cart = () => {
         // Listen for changes to the cart document
         const unsubscribe = onSnapshot(userCartRef, (doc) => {
           const cartDataFromFirestore = doc.exists() ? doc.data().cart : {};
+          const totalPriceFromFirestore = doc.exists()
+            ? doc.data().totalPrice || 0
+            : 0; // Retrieve totalPrice from Firestore
 
           // Merge cart data from Firestore with local storage
           const mergedCartData = {
@@ -90,6 +93,7 @@ const Cart = () => {
           // Update local storage and context with merged cart data
           localStorage.setItem("cart", JSON.stringify(mergedCartData));
           dispatch({ type: "SET_CART", payload: mergedCartData });
+          setTotalPrice(totalPriceFromFirestore);
           setLoading(false);
         });
 
@@ -126,15 +130,27 @@ const Cart = () => {
   };
 
   const updateCart = (updatedCart) => {
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
-    dispatch({ type: "SET_CART", payload: updatedCart });
-
     const auth = getAuth();
     const user = auth.currentUser;
 
+    // Update local storage and context
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    dispatch({ type: "SET_CART", payload: updatedCart });
+
     if (user) {
       const userCartRef = doc(collection(db, "carts"), user.email);
-      setDoc(userCartRef, { cart: updatedCart }, { merge: true })
+      const updatedTotalPrice = itemsWithPrices.reduce(
+        (acc, { itemName, price }) =>
+          acc + (updatedCart[itemName] || 0) * price,
+        0,
+      );
+
+      // Update Firestore with updated cart and totalPrice
+      setDoc(
+        userCartRef,
+        { cart: updatedCart, totalPrice: updatedTotalPrice },
+        { merge: true },
+      )
         .then(() => console.log("Cart updated successfully"))
         .catch((error) => console.error("Error updating cart:", error));
     }

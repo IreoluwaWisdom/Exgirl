@@ -162,6 +162,7 @@ const Checkout = () => {
 
         const cartRef = doc(db, "carts", userEmail);
         await deleteDoc(cartRef);
+        await setDoc(cartRef, { cart: {} });
         localStorage.setItem("cart", JSON.stringify({}));
 
         console.log("Order stored in Firestore after successful payment.");
