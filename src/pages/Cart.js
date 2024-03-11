@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
 import {
-  getDocs,
-  where,
-  query,
+  getDoc,
   doc,
   setDoc,
   collection,
   onSnapshot,
-  updateDoc,
-  increment,
 } from "firebase/firestore";
 import Tabs from "../comp/Tab";
 import { db } from "../config/firebaseConfig";
@@ -137,24 +133,6 @@ const Cart = () => {
       setDoc(userCartRef, { cart: updatedCart }, { merge: true })
         .then(() => console.log("Cart updated successfully"))
         .catch((error) => console.error("Error updating cart:", error));
-    } else {
-      // Query to count the number of documents starting with "cart"
-      const cartQuery = query(
-        collection(db, "carts"),
-        where("__name__", ">=", "cart"),
-        where("__name__", "<", "caru"),
-      );
-      getDocs(cartQuery)
-        .then((querySnapshot) => {
-          // Calculate the count based on the number of documents
-          const count = querySnapshot.size;
-          const cartId = `cart${(count + 1).toString().padStart(3, "0")}`;
-          const cartRef = doc(collection(db, "carts"), cartId);
-          setDoc(cartRef, { cart: updatedCart })
-            .then(() => console.log("Cart updated successfully"))
-            .catch((error) => console.error("Error updating cart:", error));
-        })
-        .catch((error) => console.error("Error counting carts:", error));
     }
   };
 
