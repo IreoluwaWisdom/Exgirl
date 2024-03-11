@@ -5,6 +5,9 @@ import {
   setDoc,
   collection,
   onSnapshot,
+  query,
+  where,
+  getDocs,
 } from "firebase/firestore";
 import Tabs from "../comp/Tab";
 import { db } from "../config/firebaseConfig";
@@ -22,6 +25,7 @@ const Cart = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [itemsWithPrices, setItemsWithPrices] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [cartDocumentId, setCartDocumentId] = useState(null); // State to store the cart document ID
 
   useEffect(() => {
     const auth = getAuth();
@@ -136,6 +140,51 @@ const Cart = () => {
     }
   };
 
+  const generateDocumentId = async () => {
+    const cartQuery = query(
+      collection(db, "carts"),
+      where("__name__", ">=", "cart"),
+    );
+    const snapshot = await getDocs(cartQuery);
+    const cartCount = snapshot.size;
+    return `cart${cartCount + 1}`;
+  };
+
+  const proceedToCheckout = async () => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    // Check if user is authenticated
+    if (user) {
+      // Redirect authenticated user to checkout page
+      window.location.href = "/checkout";
+    } else {
+      try {
+        let newCartDocumentId = localStorage.getItem("cartDocumentId");
+
+        // Generate a new document ID if one doesn't exist locally
+        if (!newCartDocumentId) {
+          newCartDocumentId = await generateDocumentId();
+        }
+
+        // Save cart state for unauthenticated user in Firestore
+        const cartRef = doc(collection(db, "carts"), newCartDocumentId);
+        await setDoc(cartRef, { cart }, { merge: true });
+
+        // Store or update the document ID locally
+        localStorage.setItem("cartDocumentId", newCartDocumentId);
+        setCartDocumentId(newCartDocumentId); // Also update state for immediate use
+        console.log("Cart saved successfully for unauthenticated user");
+        window.location.href = "/checkout";
+      } catch (error) {
+        console.error("Error saving cart for unauthenticated user:", error);
+      }
+    }
+
+    // Proceed to checkout logic here
+    // You can redirect the user to the checkout page or handle it as required
+  };
+
   if (loading) {
     return <Loader />;
   }
@@ -242,21 +291,13 @@ const Cart = () => {
             marginBottom: "20vh",
           }}
         >
-          <Link
-            to="/checkout"
-            style={{
-              textDecoration: "none",
-              fontWeight: "bold",
-              textAlign: "center",
-            }}
+          <button
+            className="proceed-btn"
+            style={{ textDecoration: "none", fontWeight: "bold" }}
+            onClick={proceedToCheckout}
           >
-            <button
-              className="proceed-btn"
-              style={{ textDecoration: "none", fontWeight: "bold" }}
-            >
-              Proceed to Checkout
-            </button>
-          </Link>
+            Proceed to Checkout
+          </button>
         </div>
       </div>
     </div>
