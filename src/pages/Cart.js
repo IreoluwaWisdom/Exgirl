@@ -181,16 +181,22 @@ const Cart = () => {
         // Generate a new document ID if one doesn't exist locally
         if (!newCartDocumentId) {
           newCartDocumentId = await generateDocumentId();
+
+          // Store the new document ID locally
+          localStorage.setItem("cartDocumentId", newCartDocumentId);
+          console.log("New document ID generated:", newCartDocumentId);
         }
 
         // Save cart state for unauthenticated user in Firestore
         const cartRef = doc(collection(db, "carts"), newCartDocumentId);
         await setDoc(cartRef, { cart, totalPrice }, { merge: true });
 
-        // Store or update the document ID locally
-        localStorage.setItem("cartDocumentId", newCartDocumentId);
-        setCartDocumentId(newCartDocumentId); // Also update state for immediate use
         console.log("Cart saved successfully for unauthenticated user");
+
+        // Store the new cart document ID as the email for unauthenticated users
+        localStorage.setItem("newCartDocumentId", newCartDocumentId);
+        console.log("New cart document ID stored:", newCartDocumentId);
+
         window.location.href = "/checkout";
       } catch (error) {
         console.error("Error saving cart for unauthenticated user:", error);

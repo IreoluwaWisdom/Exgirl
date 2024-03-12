@@ -14,7 +14,10 @@ const Footer = () => {
     >
       &copy; 2024 Ex-girlfriend foods
       <br />
-      <Link to="https://www.upwork.com/freelancers/~011dd99f9d6b3935c9">
+      <Link
+        to="https://www.upwork.com/freelancers/~011dd99f9d6b3935c9"
+        style={{ color: "#6a0dad" }}
+      >
         Developed by Ireoluwa Olukayode
       </Link>
     </div>

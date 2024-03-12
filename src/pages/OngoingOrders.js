@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../context/AuthContext";
 import {
   getFirestore,
   collection,
@@ -8,42 +7,38 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import Tabs from "../comp/Tab";
+import { useAuth } from "../context/AuthContext";
 
 const OngoingOrders = () => {
-  const { currentUser } = useAuth();
   const [ongoingOrders, setOngoingOrders] = useState([]);
   const db = getFirestore();
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        if (currentUser) {
-          let userEmail = currentUser.email;
-          if (!userEmail) {
-            // If user is anonymous, use documentId as the email
-            userEmail = localStorage.getItem("documentId");
-          }
-
-          const ordersRef = collection(db, "orders");
-          const q = query(ordersRef, where("userEmail", "==", userEmail));
-          const querySnapshot = await onSnapshot(q, (snapshot) => {
-            const ongoing = [];
-            const completed = [];
-            snapshot.forEach((doc) => {
-              const order = { id: doc.id, ...doc.data() };
-              if (order.status === "completed") {
-                completed.push(order);
-              } else {
-                ongoing.push(order);
-              }
-            });
-            setOngoingOrders(ongoing);
-          });
-          return () => querySnapshot();
-        } else {
-          // If currentUser is null, handle sign-in flow or redirect to sign-in page
+        let userEmail = currentUser
+          ? currentUser.email
+          : localStorage.getItem("newCartDocumentId"); // Use stored identifier for unauthenticated users
+        if (!userEmail) {
+          // Handle the case when the user is not signed in or the identifier is not found
           console.log("User is not signed in.");
+          return;
         }
+        const ordersRef = collection(db, "orders");
+        const q = query(ordersRef, where("userEmail", "==", userEmail));
+        const querySnapshot = await onSnapshot(q, (snapshot) => {
+          const ongoing = [];
+          snapshot.forEach((doc) => {
+            const order = { id: doc.id, ...doc.data() };
+            if (order.status !== "completed") {
+              ongoing.push(order);
+            }
+          });
+          setOngoingOrders(ongoing);
+        });
+
+        return () => querySnapshot();
       } catch (error) {
         console.error("Error fetching orders:", error);
       }
@@ -53,7 +48,7 @@ const OngoingOrders = () => {
 
     // Clean up
     return () => {};
-  }, [currentUser, db]);
+  }, [db]);
 
   return (
     <div>
@@ -67,51 +62,44 @@ const OngoingOrders = () => {
         }}
       >
         <h5 style={{ color: "#6a0dad" }}>Ongoing Orders</h5>
-        {currentUser ? (
-          <div>
-            {ongoingOrders.length > 0 ? (
-              <div style={{ fontSize: "80%" }}>
-                {ongoingOrders.map((order) => (
-                  <div key={order.id} style={styles.orderContainer}>
-                    <h6>Order ID: {order.id}</h6>
-                    <p>
-                      <strong style={{ color: "#6a0dad" }}>
-                        Delivery Date:
-                      </strong>{" "}
-                      {order.deliveryDate}
-                    </p>
-                    {/* Add a check for order.items.cart */}
-                    {order.items && order.items.cart && (
-                      <>
-                        <p>
-                          <strong style={{ color: "#6a0dad" }}>Items:</strong>
-                        </p>
-                        <ul>
-                          {Object.entries(order.items.cart)
-                            .filter(([item, quantity]) => quantity > 0) // Filter out items with quantity 0
-                            .map(([item, quantity]) => (
-                              <li key={item}>
-                                {item}: {quantity}
-                              </li>
-                            ))}
-                        </ul>
-                      </>
-                    )}
-                    <p>
-                      <strong style={{ color: "#6a0dad" }}>Total Price:</strong>{" "}
-                      ₦{order.items.totalPrice.toFixed(2)}
-                    </p>
-                    <hr style={{ ...styles.hr, borderColor: "#6a0dad" }} />
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p>No ongoing orders found for the current user.</p>
-            )}
-          </div>
-        ) : (
-          <p>Please sign in to view ongoing orders.</p>
-        )}
+        <div>
+          {ongoingOrders.length > 0 ? (
+            <div style={{ fontSize: "80%" }}>
+              {ongoingOrders.map((order) => (
+                <div key={order.id} style={styles.orderContainer}>
+                  <h6>Order ID: {order.id}</h6>
+                  <p>
+                    <strong style={{ color: "#6a0dad" }}>Delivery Date:</strong>{" "}
+                    {order.deliveryDate}
+                  </p>
+                  {order.items && order.items.cart && (
+                    <>
+                      <p>
+                        <strong style={{ color: "#6a0dad" }}>Items:</strong>
+                      </p>
+                      <ul>
+                        {Object.entries(order.items.cart)
+                          .filter(([item, quantity]) => quantity > 0)
+                          .map(([item, quantity]) => (
+                            <li key={item}>
+                              {item}: {quantity}
+                            </li>
+                          ))}
+                      </ul>
+                    </>
+                  )}
+                  <p>
+                    <strong style={{ color: "#6a0dad" }}>Total Price:</strong> ₦
+                    {order.items.totalPrice.toFixed(2)}
+                  </p>
+                  <hr style={{ ...styles.hr, borderColor: "#6a0dad" }} />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>No ongoing orders found for the current user.</p>
+          )}
+        </div>
       </div>
     </div>
   );

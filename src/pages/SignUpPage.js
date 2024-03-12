@@ -2,6 +2,7 @@ import React from "react";
 import SignUp from "../comp/SignUp";
 import Already from "../Texts/Already";
 import GoogleSignInButton from "../comp/GoogleButton";
+import logo from "../assets/logo.png";
 
 const SignUpPage = () => {
   return (
@@ -26,6 +27,16 @@ const SignUpPage = () => {
         <GoogleSignInButton />
       </div>
       <Already />
+      {/* <div
+        style={{
+          width: "50vw",
+          marginTop: "5vh",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.4)",
+          textAlign: "center",
+        }}
+      >
+        <img src={logo} alt="Logo" style={{ width: "50vw" }} />
+      </div> */}
     </div>
   );
 };

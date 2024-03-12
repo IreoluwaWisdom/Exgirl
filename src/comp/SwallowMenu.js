@@ -5,7 +5,7 @@ import amala from "../assets/amala.jpg";
 import semo from "../assets/semo.jpg";
 import fufu from "../assets/fufu.jpg";
 import pando from "../assets/pando.jpg";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 const SwallowMenu = () => {
   const [favorites, setFavorites] = useState([]);
@@ -41,11 +41,14 @@ const SwallowMenu = () => {
 
   const handleFavorite = (index) => {
     setFavorites((prevFavorites) => {
+      const newFavorites = [...prevFavorites];
       if (prevFavorites.includes(index)) {
-        return prevFavorites.filter((item) => item !== index);
+        newFavorites.splice(prevFavorites.indexOf(index), 1);
       } else {
-        return [...prevFavorites, index];
+        newFavorites.push(index);
       }
+      localStorage.setItem("favorites", JSON.stringify(newFavorites));
+      return newFavorites;
     });
   };
 

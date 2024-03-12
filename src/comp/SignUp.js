@@ -6,104 +6,83 @@ import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
 } from "firebase/auth";
+import { FaUserPlus } from "react-icons/fa";
 import { getFirestore, doc, setDoc, collection } from "firebase/firestore";
+import { FaCheckCircle } from "react-icons/fa";
+import logo from "../assets/logo.png";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [dobDayMonth, setDOB] = useState("");
+  const [gender, setGender] = useState("");
   const [hearAboutUs, setHearAboutUs] = useState("");
   const [message, setMessage] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [dobError, setDOBError] = useState("");
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false); // State to control the visibility of success message
+  const [genderError, setGenderError] = useState("");
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const validateEmail = (email) => {
-    // Regular expression for email format validation
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailPattern.test(email);
   };
 
   const validatePassword = (password) => {
-    // Regular expression for password validation
-    const passwordPattern =
-      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/;
-    return passwordPattern.test(password);
-  };
-
-  const validateDOB = (dob) => {
-    // Regular expression for DD/MM format validation
-    const dobPattern = /^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])$/;
-    return dobPattern.test(dob);
+    return password.length >= 5;
   };
 
   const handleSignUp = async (e) => {
     e.preventDefault();
 
-    // Reset error messages
     setEmailError("");
     setPasswordError("");
-    setDOBError("");
+    setGenderError("");
 
-    // Validate email format
     if (!validateEmail(email)) {
       setEmailError("Please enter a valid email address");
       return;
     }
 
-    // Validate password strength
     if (!validatePassword(password)) {
-      setPasswordError(
-        "Password must be at least six characters long and include at least one number, one uppercase letter, one lowercase letter, and one symbol",
-      );
+      setPasswordError("Password must be at least five characters long");
       return;
     }
 
-    // Validate date of birth format
-    if (!validateDOB(dobDayMonth)) {
-      setDOBError("Please enter a valid date of birth in DD/MM format");
+    if (!gender) {
+      setGenderError("Please select your gender");
       return;
     }
 
-    // Continue with sign up process if all validations pass
     const auth = getAuth();
     const db = getFirestore();
 
     try {
-      // Create user
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password,
       );
 
-      // Send email verification
       await sendEmailVerification(userCredential.user);
 
-      // Store additional user details in Firestore
       const userDetails = {
         username,
         email,
         phoneNumber,
-        dob: dobDayMonth, // Only day and month
+        gender,
         hearAboutUs,
       };
 
-      // Add user details to Firestore
       const userRef = doc(collection(db, "users"), email);
 
-      // Set user details in Firestore
       await setDoc(userRef, userDetails);
 
-      // Provide feedback to the user
       setMessage(`Verification email sent to ${userCredential.user.email}. `);
     } catch (error) {
       console.error("Signup error:", error.code, error.message);
 
-      // Handle specific errors
       if (error.code === "auth/weak-password") {
         setPasswordError("Please choose a stronger password.");
       } else if (error.code === "auth/email-already-in-use") {
@@ -117,6 +96,9 @@ const SignUp = () => {
   return (
     <div style={{ textAlign: "center" }}>
       <div>
+        <FaUserPlus
+          style={{ fontSize: "10vw", color: "#6a0dad", marginBottom: "2vh" }}
+        />
         <form onSubmit={handleSignUp}>
           <label>
             Email
@@ -128,7 +110,9 @@ const SignUp = () => {
               required
               style={{ borderRadius: "30px" }}
             />
-            {emailError && <p>{emailError}</p>}
+            {emailError && (
+              <p style={{ color: "red", fontSize: "60%" }}>{emailError}</p>
+            )}
           </label>
           <br />
           <label>
@@ -141,7 +125,9 @@ const SignUp = () => {
               style={{ borderRadius: "30px" }}
               required
             />
-            {passwordError && <p>{passwordError}</p>}
+            {passwordError && (
+              <p style={{ color: "red", fontSize: "60%" }}>{passwordError}</p>
+            )}
           </label>
           <br />
           <label>
@@ -169,15 +155,19 @@ const SignUp = () => {
           </label>
           <br />
           <label>
-            Date of Birth (DD/MM):
-            <input
-              type="text"
-              value={dobDayMonth}
-              onChange={(e) => setDOB(e.target.value)}
+            Gender
+            <br />
+            <select
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
               style={{ borderRadius: "30px" }}
               required
-            />
-            {dobError && <p>{dobError}</p>}
+            >
+              <option value="">Select your gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+            {genderError && <p style={{ color: "red" }}>{genderError}</p>}
           </label>
           <br />
           <label>
@@ -213,17 +203,18 @@ const SignUp = () => {
             Sign Up
           </button>
         </form>
-        {message && <p>{message}</p>}
+        {message && <p style={{ color: "black" }}>{message}</p>}
       </div>
 
       <div>
-        {/* Existing JSX */}
-        {/* Show success message */}
         {showSuccessMessage && (
           <>
-            <p>Sign in successful</p>{" "}
+            <p>Sign up successful</p>{" "}
             <Link to="/account">
-              <button> Confirm</button>{" "}
+              <button>
+                {" "}
+                Confirm <FaCheckCircle />{" "}
+              </button>{" "}
             </Link>
           </>
         )}

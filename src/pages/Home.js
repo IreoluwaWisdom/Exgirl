@@ -3,6 +3,7 @@ import Headline from "../comp/Headline";
 import SwallowMenu from "../comp/SwallowMenu";
 import ModernMenu from "../comp/ModernMenu";
 import ProteinMenu from "../comp/ProteinMenu";
+import FavoriteMenu from "../comp/FavoriteMenu";
 import Showed from "../comp/Showed";
 import TestimonialCarousel from "../comp/TestimonialCarousel";
 import OrderNowButton from "../comp/OrderNowButton";
@@ -25,6 +26,8 @@ const Home = () => {
       <ModernMenu />
       <Typing phrase="Proteins" />
       <ProteinMenu />
+
+      {/* <FavoriteMenu /> */}
 
       <OrderNowButton />
       <TestimonialCarousel />

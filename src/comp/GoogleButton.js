@@ -35,7 +35,17 @@ const GoogleSignInButton = () => {
 
   return (
     <div>
-      <br /> <button onClick={handleGoogleSignIn} style={{border:'none'}}><FcGoogle /></button>
+      <br />{" "}
+      <button
+        onClick={handleGoogleSignIn}
+        style={{
+          border: "none",
+          backgroundColor: "transparent",
+          fontSize: "120%",
+        }}
+      >
+        <FcGoogle />
+      </button>
     </div>
   );
 };

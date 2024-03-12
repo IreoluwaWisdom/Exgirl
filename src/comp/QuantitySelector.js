@@ -35,6 +35,11 @@ const QuantitySelector = ({ itemName }) => {
       ...cart,
       [itemName]: updatedQuantity,
     };
+
+    if (updatedQuantity === 0) {
+      delete updatedCart[itemName];
+      setQuantity(0);
+    }
     dispatch({ type: "SET_CART", payload: updatedCart });
 
     // Store cart data locally
