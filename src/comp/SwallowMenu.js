@@ -59,23 +59,25 @@ const SwallowMenu = () => {
           <div
             key={index}
             className="menu-item"
-            style={{ marginRight: "7vw", width: "75vw" }}
+            // style={{ marginRight: "7vw", width: "75vw" }}
             ref={(ref) => (menuItemRefs.current[index] = ref)}
           >
             <div
               className="item-image-container"
-              style={{ height: "40vw", width: "60vw", marginRight: "10px" }}
+              // style={{ height: "40vw", width: "60vw", marginRight: "10px" }}
             >
               <img
                 src={item.image}
                 alt={item.name}
                 className="item-image"
-                style={{ height: "40vw", marginRight: "10px" }}
+                // style={{ height: "40vw", marginRight: "10px" }}
               />
             </div>
             <div className="item-details">
               <p className="item-name">{item.name}</p>
-              <div style={{ display: "flex", width: "55vw" }}>
+              <div
+              // style={{ display: "flex", width: "55vw" }}
+              >
                 <p style={{ color: "B8860B" }} className="item-price">
                   {item.price}
                 </p>{" "}
