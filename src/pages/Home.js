@@ -12,6 +12,7 @@ import Footer from "../comp/Footer";
 import Connect from "../comp/Connect";
 import { useAuth } from "../context/AuthContext";
 import Typing from "../Texts/Typing.js";
+import FeedbackForm from "../comp/FeedbackForm";
 
 const Home = () => {
   const { currentUser } = useAuth();
@@ -33,6 +34,7 @@ const Home = () => {
       <TestimonialCarousel />
       <HowItWorks />
       <Connect />
+      <FeedbackForm />
       <Footer />
     </div>
   );
