@@ -3,10 +3,8 @@
   overflow-x: auto;
   padding: 20px;
   margin-top: 8vh;
-  max-width: 900px;
   scrollbar-width: none; /* Hides the scrollbar in Firefox */
   -ms-overflow-style: none; /* Hides the scrollbar in IE and Edge */
-  /* max-width: 1000px; */
 }
 
 .menu-scroll {
