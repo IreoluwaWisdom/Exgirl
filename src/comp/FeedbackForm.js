@@ -14,6 +14,8 @@ import { AiOutlineCheck } from "react-icons/ai";
 const FeedbackForm = () => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
+  const [averageRating, setAverageRating] = useState(0);
+  const [totalRatings, setTotalRatings] = useState(0);
 
   useEffect(() => {
     // Fetch existing rating document if it exists
@@ -53,7 +55,8 @@ const FeedbackForm = () => {
       if (ratingDocSnap.exists()) {
         // Document exists, update state with existing ratings
         const ratingData = ratingDocSnap.data();
-        // Do something with the existing ratings if needed
+        setAverageRating(ratingData.average || 0);
+        setTotalRatings(ratingData.total || 0);
       } else {
         // Document doesn't exist, create a new one with initial ratings
         await initializeRatings();
@@ -122,6 +125,10 @@ const FeedbackForm = () => {
           ratingData["5-star"] * 5;
         const average = total > 0 ? sum / total : 0;
 
+        // Update state with average rating and total ratings
+        setAverageRating(average);
+        setTotalRatings(total);
+
         // Update average rating in Firestore
         await setDoc(ratingDocRef, { average: average }, { merge: true });
       }
@@ -130,9 +137,30 @@ const FeedbackForm = () => {
     }
   };
 
+  // Render the stars based on average rating
+  const renderStars = () => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      if (i <= averageRating) {
+        stars.push(
+          <span key={i} className="star-filled">
+            ★
+          </span>,
+        );
+      } else {
+        stars.push(
+          <span key={i} className="star">
+            ☆
+          </span>,
+        );
+      }
+    }
+    return stars;
+  };
+
   return (
     <div style={{ marginLeft: "5vh", textAlign: "center" }}>
-      What would you like to tell us?
+      <p>What would you like to tell us?</p>
       <form
         onSubmit={handleSubmit}
         style={{ marginBottom: "5vh", textAlign: "center" }}
@@ -142,8 +170,7 @@ const FeedbackForm = () => {
         </label>
         <label style={{ marginLeft: "5vw" }}>
           <span style={{ marginRight: "10px", fontWeight: "bold" }}>
-            {" "}
-            Comment:{" "}
+            Comment:
           </span>
           <br />
           <textarea
@@ -168,6 +195,12 @@ const FeedbackForm = () => {
           <AiOutlineCheck />
         </button>
       </form>
+      <div>
+        <p>
+          Average Rating: {averageRating.toFixed(1)} ({totalRatings} ratings)
+        </p>
+        <div>{renderStars()}</div>
+      </div>
     </div>
   );
 };
