@@ -20,14 +20,11 @@ const Nav = () => {
   }, [location.pathname]);
 
   return (
-    <nav
-      className="navbar fixed-bottom navbar-light"
-      style={{ marginTop: "5vh", padding: "0vh", backgroundColor: "#fffdd0" }}
-    >
-      <div className="container">
+    <nav className="navbar fixed-bottom navbar-light">
+      <div className="container nav-container">
         <Link
           to="/"
-          className={`navbar-brand${currentPage === "home" ? " active" : ""}`}
+          className={`navbar-brand ${currentPage === "home" ? "active" : ""}`}
         >
           <div className="menu-icon">
             <FiHome />
@@ -37,7 +34,7 @@ const Nav = () => {
 
         <Link
           to="/menu"
-          className={`navbar-brand${currentPage === "menu" ? " active" : ""}`}
+          className={`navbar-brand ${currentPage === "menu" ? "active" : ""}`}
         >
           <div className="menu-icon">
             <MdOutlineFoodBank />
@@ -47,7 +44,7 @@ const Nav = () => {
 
         <Link
           to="/cart"
-          className={`navbar-brand${currentPage === "cart" ? " active" : ""}`}
+          className={`navbar-brand ${currentPage === "cart" ? "active" : ""}`}
         >
           <div className="menu-icon">
             <IoMdReorder />
@@ -57,7 +54,7 @@ const Nav = () => {
 
         <Link
           to="/support"
-          className={`navbar-brand${currentPage === "support" ? " active" : ""}`}
+          className={`navbar-brand ${currentPage === "support" ? "active" : ""}`}
         >
           <div className="menu-icon">
             <BiSupport />
@@ -67,7 +64,7 @@ const Nav = () => {
 
         <Link
           to="/account"
-          className={`navbar-brand${currentPage === "account" ? " active" : ""}`}
+          className={`navbar-brand ${currentPage === "account" ? "active" : ""}`}
         >
           <div className="menu-icon">
             <CgProfile />

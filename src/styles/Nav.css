@@ -1,17 +1,28 @@
+.nav-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  background-color: #fffdd0;
+}
+
+.navbar-brand {
+  text-align: center;
+  padding: 6px;
+  color: black; /* Change color to your preference */
+  text-decoration: none;
+}
+
 .menu-icon {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
 .menu-text {
-  font-size: 0.4em; /* Adjust the font size as needed */
-  margin-top: 5px; /* Adjust the spacing between icon and text */
+  font-size: 35%;
 }
 
 .active {
-  /* background-color: white; */
+  background-color: white;
   color: #6a0dad;
-  /* border-radius: 20px; */
+  border-radius: 20px;
 }
