@@ -11,7 +11,7 @@ const SignInPage = () => {
         marginTop: "10vh",
         marginLeft: "8vw",
         marginRight: "8vw",
-        marginBottom: "0vh",
+        marginBottom: "40vh",
         paddingBottom: "0vh",
         borderRadius: "30px",
       }}

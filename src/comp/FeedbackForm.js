@@ -9,6 +9,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import StarRating from "./StarRating";
+import { AiOutlineCheck } from "react-icons/ai";
 
 const FeedbackForm = () => {
   const [rating, setRating] = useState(0);
@@ -130,19 +131,44 @@ const FeedbackForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        <StarRating onRate={handleRate} />
-      </label>
-      <label>
-        Comment:
-        <textarea
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-        />
-      </label>
-      <button type="submit">Submit</button>
-    </form>
+    <div style={{ marginLeft: "5vh", textAlign: "center" }}>
+      What would you like to tell us?
+      <form
+        onSubmit={handleSubmit}
+        style={{ marginBottom: "5vh", textAlign: "center" }}
+      >
+        <label>
+          <StarRating onRate={handleRate} />
+        </label>
+        <label style={{ marginLeft: "5vw" }}>
+          <span style={{ marginRight: "10px", fontWeight: "bold" }}>
+            {" "}
+            Comment:{" "}
+          </span>
+          <br />
+          <textarea
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            style={{ borderRadius: "30px" }}
+          />
+        </label>
+        <br />
+        <button
+          type="submit"
+          style={{
+            backgroundColor: "#bb806b",
+            color: "white",
+            borderColor: "#bb806b",
+            borderRadius: "20px",
+            marginLeft: "5vw",
+            fontWeight: "bold",
+            fontSize: "150%",
+          }}
+        >
+          <AiOutlineCheck />
+        </button>
+      </form>
+    </div>
   );
 };
 

@@ -41,7 +41,7 @@ import Chatbot from "./comp/Chatbot";
 const App = () => {
   return (
     <Router>
-      <Chatbot />
+      {/* <Chatbot /> */}
       <Nav />
       <OfflineAlert />
       <Routes>

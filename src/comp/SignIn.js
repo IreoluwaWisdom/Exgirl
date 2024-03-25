@@ -13,6 +13,7 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { Link } from "react-router-dom";
+import { AiOutlineCheck } from "react-icons/ai";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -171,7 +172,7 @@ const SignIn = () => {
       </div>
       {showSuccessMessage && (
         <>
-          <p>Sign in successful</p>{" "}
+          <p style={{ marginTop: "5vh" }}>Sign in successful</p>{" "}
           <div style={{ textAlign: "center" }}>
             <Link to="/account">
               <button
@@ -184,7 +185,7 @@ const SignIn = () => {
                 }}
               >
                 {" "}
-                Confirm
+                <AiOutlineCheck />
               </button>{" "}
             </Link>
           </div>

@@ -5,6 +5,7 @@ import "../styles/Account.css";
 import { Link } from "react-router-dom";
 import { FiLogOut } from "react-icons/fi";
 import { MdEdit } from "react-icons/md";
+import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
 import FaqComponent from "../comp/FaqComponent";
 import faqData from "../data/faqData";
 
@@ -119,16 +120,17 @@ const UserDetails = ({ userEmail }) => {
     }
   };
 
+  const handleCancel = () => {
+    setEditing(false); // Set editing mode to false to cancel changes
+  };
+
   return (
     <div>
       {userData ? (
         editing ? (
           <div>
             {/* Display profile picture options */}
-            <div
-              className="profile-picture-options"
-              style={{ marginBottom: "4vh" }}
-            >
+            <div className="profile-picture-options-container">
               {profilePictures.map((picture) => (
                 <img
                   key={picture.id}
@@ -140,7 +142,6 @@ const UserDetails = ({ userEmail }) => {
                   onClick={() =>
                     handleProfilePictureChange(picture.id, picture.src)
                   }
-                  style={{ width: "70px", height: "70px" }}
                 />
               ))}
             </div>
@@ -149,147 +150,68 @@ const UserDetails = ({ userEmail }) => {
               name="username"
               value={editedUserData.username}
               onChange={handleChange}
-              style={{ marginBottom: "2vh" }}
+              className="input-field"
             />
             <input
               type="text"
               name="phoneNumber"
               value={editedUserData.phoneNumber}
               onChange={handleChange}
-              style={{ marginBottom: "2vh" }}
+              className="input-field"
             />
-
             <input
               type="date"
               name="dateOfBirth"
               value={editedUserData.dob}
               onChange={handleChange}
-              style={{ marginBottom: "4vh" }}
+              className="input-field"
             />
-            <br />
-            <div style={{ textAlign: "center" }}>
-              <button
-                style={{
-                  borderRadius: "15px",
-                  padding: "4px 25px",
-                  backgroundColor: "darkblue",
-                  color: "white",
-                  border: "none",
-                  fontSize: "100%",
-                }}
-                onClick={handleSave}
-              >
-                Save
+            <div className="button-container">
+              <button onClick={handleCancel} className="cancel-button">
+                <AiOutlineClose />
+              </button>
+              <button onClick={handleSave} className="save-button">
+                <AiOutlineCheck />
               </button>
             </div>
           </div>
         ) : (
           <div>
             {/* Display profile picture and user information */}
-            <div
-              className="profile-picture-container"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
+            <div className="profile-picture-container">
               <img
                 src={profilePicture}
                 alt="Profile"
                 className="profile-picture"
-                style={{
-                  width: "90px",
-                  height: "90px",
-                  borderRadius: "50%",
-                }}
               />
             </div>
-            <div
-              style={{
-                marginBottom: "0.5vh",
-                fontSize: "85%",
-                fontWeight: "bold",
-              }}
-            >
+            <div className="username-container">
               Username
-              <div style={{ fontWeight: "normal", fontSize: "100%" }}>
-                {userData.username}
-              </div>
+              <div className="user-info">{userData.username}</div>
             </div>
-            <div
-              style={{
-                marginBottom: "0.5vh",
-                fontSize: "85%",
-                fontWeight: "bold",
-              }}
-            >
+            <div className="email-container">
               Email
-              <div style={{ fontWeight: "normal", fontSize: "100%" }}>
-                {userData.email}
-              </div>
+              <div className="user-info">{userData.email}</div>
             </div>
-            <div
-              style={{
-                marginBottom: "0.5vh",
-                fontSize: "85%",
-                fontWeight: "bold",
-              }}
-            >
+            <div className="phone-number-container">
               Phone Number
-              <div style={{ fontWeight: "normal", fontSize: "100%" }}>
-                {userData.phoneNumber}
-              </div>
+              <div className="user-info">{userData.phoneNumber}</div>
             </div>
-
-            <div
-              style={{
-                marginBottom: "5vh",
-                fontSize: "85%",
-                fontWeight: "bold",
-              }}
-            >
+            <div className="date-of-birth-container">
               Date of Birth
-              <div style={{ fontWeight: "normal", fontSize: "100%" }}>
-                {userData.dob}
-              </div>
-              <div style={{ fontWeight: "normal", fontSize: "90%" }}>
+              <div className="user-info">{userData.dob}</div>
+              <Link to="/sign-out" className="link">
+                <button className="sign-out-button">
+                  <FiLogOut />
+                </button>
+              </Link>
+              <button onClick={handleEdit} className="edit-button">
+                <MdEdit />
+              </button>
+              <div className="user-info">
                 <FaqComponent faqData={faqData} />
               </div>
             </div>
-            <Link to="/sign-out">
-              <button
-                style={{
-                  padding: "3px 10px",
-                  backgroundColor: "darkred",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                  position: "relative",
-                  right: "3.5vw",
-                  fontSize: "80%",
-                }}
-              >
-                Sign Out <FiLogOut />
-              </button>
-            </Link>
-            <button
-              onClick={handleEdit}
-              style={{
-                padding: "4px 20px",
-                backgroundColor: "#6a0dad",
-                color: "#fff",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-                position: "relative",
-                left: "23vw",
-                fontSize: "80%",
-              }}
-            >
-              Edit <MdEdit />
-            </button>
           </div>
         )
       ) : (

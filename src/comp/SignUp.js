@@ -213,7 +213,7 @@ const SignUp = () => {
             <Link to="/account">
               <button>
                 {" "}
-                Confirm <FaCheckCircle />{" "}
+                <FaCheckCircle />{" "}
               </button>{" "}
             </Link>
           </>

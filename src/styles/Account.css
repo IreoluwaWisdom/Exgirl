@@ -113,3 +113,81 @@
 .profile-picture-option.selected {
   border: 2px solid blue; /* Add whatever styling you want for the selected picture */
 }
+
+.profile-picture-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-picture {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+}
+
+.username-container,
+.email-container,
+.phone-number-container,
+.date-of-birth-container {
+  margin-bottom: 0.5vh;
+  font-size: 85%;
+  font-weight: bold;
+}
+
+.user-info {
+  font-weight: normal;
+  font-size: 100%;
+}
+
+.edit-button {
+  padding: 3px 10px;
+  background: none;
+  color: #000000;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 150%;
+}
+
+.sign-out-button {
+  padding: 3px 10px;
+  background: none;
+  color: red;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 150%;
+  position: relative;
+  right: 3.5vw;
+}
+
+@media screen and (max-width: 768px) {
+  .sign-out-button {
+    right: 0;
+  }
+}
+
+.profile-picture-option {
+  width: 20vw;
+}
+
+.button-container .cancel-button {
+  background: none;
+  border: none;
+  font-size: 150%;
+  color: #6a0dad;
+}
+
+.button-container .save-button {
+  background: none;
+  border: none;
+  font-size: 150%;
+  color: #bb806b;
+}
+
+input {
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+  border-radius: 20px;
+}

@@ -28,96 +28,51 @@ const Nav = () => {
         <Link
           to="/"
           className={`navbar-brand${currentPage === "home" ? " active" : ""}`}
-          style={{
-            fontSize: "2em",
-            ...(currentPage === "home" && {
-              backgroundColor: "white",
-              color: "#6a0dad",
-              borderRadius: "20px",
-              padding: "0px 15px",
-            }),
-          }}
         >
-          <FiHome />
-          {currentPage === "home" && (
-            <span style={{ fontSize: "2vw" }}>Home</span>
-          )}
+          <div className="menu-icon">
+            <FiHome />
+            <span className="menu-text">Home</span>
+          </div>
         </Link>
 
         <Link
           to="/menu"
           className={`navbar-brand${currentPage === "menu" ? " active" : ""}`}
-          style={{
-            fontSize: "2em",
-            ...(currentPage === "menu" && {
-              backgroundColor: "white",
-              color: "#6a0dad",
-              borderRadius: "20px",
-              padding: "0px 15px",
-            }),
-          }}
         >
-          <MdOutlineFoodBank />
-          {currentPage === "menu" && (
-            <span style={{ fontSize: "2vw" }}>Menu</span>
-          )}
+          <div className="menu-icon">
+            <MdOutlineFoodBank />
+            <span className="menu-text">Menu</span>
+          </div>
         </Link>
 
         <Link
           to="/cart"
           className={`navbar-brand${currentPage === "cart" ? " active" : ""}`}
-          style={{
-            fontSize: "2em",
-            ...(currentPage === "cart" && {
-              backgroundColor: "white",
-              color: "#6a0dad",
-              borderRadius: "20px",
-              padding: "0px 15px",
-            }),
-          }}
         >
-          <IoMdReorder />
-          {currentPage === "cart" && (
-            <span style={{ fontSize: "2vw" }}>Process</span>
-          )}
+          <div className="menu-icon">
+            <IoMdReorder />
+            <span className="menu-text">Process</span>
+          </div>
         </Link>
 
         <Link
           to="/support"
           className={`navbar-brand${currentPage === "support" ? " active" : ""}`}
-          style={{
-            fontSize: "2em",
-            ...(currentPage === "support" && {
-              backgroundColor: "white",
-              color: "#6a0dad",
-              borderRadius: "20px",
-              padding: "0px 15px",
-            }),
-          }}
         >
-          <BiSupport />
-          {currentPage === "support" && (
-            <span style={{ fontSize: "2vw" }}>Support</span>
-          )}
+          <div className="menu-icon">
+            <BiSupport />
+            <span className="menu-text">Support</span>
+          </div>
         </Link>
 
         <Link
           to="/account"
           className={`navbar-brand${currentPage === "account" ? " active" : ""}`}
-          style={{
-            fontSize: "2em",
-            ...(currentPage === "account" && {
-              backgroundColor: "white",
-              color: "#6a0dad",
-              borderRadius: "20px",
-              padding: "0px 15px",
-            }),
-          }}
         >
-          <CgProfile />
-          {currentPage === "account" && (
-            <span style={{ fontSize: "2vw" }}>Account</span>
-          )}
+          <div className="menu-icon">
+            <CgProfile />
+            <span className="menu-text">Account</span>
+          </div>
         </Link>
       </div>
     </nav>
