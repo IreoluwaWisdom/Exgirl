@@ -59,6 +59,8 @@ const OngoingOrders = () => {
           marginTop: "5vh",
           marginLeft: "2vw",
           marginRight: "2vw",
+          maxWidth: "500px",
+          display: "block",
         }}
       >
         <h5 style={{ color: "#6a0dad" }}>Ongoing Orders</h5>

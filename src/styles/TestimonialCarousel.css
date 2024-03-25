@@ -1,7 +1,8 @@
 .testimonial-carousel-container {
   width: 50vw;
+  max-width: 500px;
   margin: auto;
-  background-color: #FFFDD0;
+  background-color: #fffdd0;
   border-radius: 25px;
 }
 

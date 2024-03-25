@@ -36,10 +36,12 @@ import FAQ from "./pages/FAQ";
 import "bootstrap/dist/css/bootstrap.min.css";
 import OfflineAlert from "./comp/Offline";
 import SupportPage from "./pages/Support";
+import Chatbot from "./comp/Chatbot";
 
 const App = () => {
   return (
     <Router>
+      <Chatbot />
       <Nav />
       <OfflineAlert />
       <Routes>

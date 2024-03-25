@@ -62,6 +62,7 @@ const CompletedOrders = () => {
           marginTop: "5vh",
           marginLeft: "2vw",
           marginRight: "2vw",
+          maxWidth: "500px",
         }}
       >
         <h5 style={{ color: "#6a0dad" }}>Completed Orders</h5>

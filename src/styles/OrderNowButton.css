@@ -8,8 +8,6 @@
   margin-top: 30vh;
   margin-bottom: 10vh;
   animation: shake 5s ease infinite;
-  position: relative;
-  left: 30vw;
 }
 
 .order-now-button:hover {
