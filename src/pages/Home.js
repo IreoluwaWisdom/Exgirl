@@ -35,6 +35,15 @@ const Home = () => {
       <HowItWorks />
       <Connect />
       <FeedbackForm />
+      <div>
+        {" "}
+        <a
+          style={{ color: "black" }}
+          href="http://www.google.com/policies/privacy/partners/"
+        >
+          Our privacy policy{" "}
+        </a>
+      </div>
       <Footer />
     </div>
   );
