@@ -1,9 +1,9 @@
 import React from "react";
 import jollofrice from "../assets/jollof-rice.jpg";
 import QuantitySelector from "../comp/QuantitySelector";
-import { BsChevronRight } from "react-icons/bs";
-import { BsChevronLeft } from "react-icons/bs";
+import { BsChevronRight, BsChevronLeft } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import { menuItems } from "../data/menuNavigation";
 
 const JollofRice = () => {
   return (
@@ -12,52 +12,58 @@ const JollofRice = () => {
         position: "absolute",
         textAlign: "center",
         top: "15%",
-        left: "15%",
+        left: "7%", // Adjusted left position
       }}
     >
       <h1 style={{ textAlign: "center" }}>Jollof Rice</h1>
-      <img
-        src={jollofrice}
+      <div
         style={{
-          borderRadius: "10px",
-          marginTop: "3vh",
-          marginBottom: "5vh",
-          width: "75vw",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
-      />
+      >
+        <Link
+          to={menuItems[16 % menuItems.length].link}
+          style={{ marginRight: "10px" }}
+        >
+          <span
+            style={{
+              color: "black",
+              textDecoration: "none",
+              fontWeight: "bolder",
+            }}
+          >
+            <BsChevronLeft />
+          </span>{" "}
+        </Link>
+        <img
+          src={jollofrice}
+          style={{
+            borderRadius: "10px",
+            marginTop: "3vh",
+            marginBottom: "5vh",
+            width: "75vw",
+          }}
+        />
+        <Link
+          to={menuItems[2 % menuItems.length].link}
+          style={{ marginLeft: "10px" }}
+        >
+          <span
+            style={{
+              color: "black",
+              textDecoration: "none",
+              fontWeight: "bolder",
+            }}
+          >
+            <BsChevronRight />
+          </span>
+        </Link>
+      </div>
       <QuantitySelector itemName="Jollof Rice" />
-      <Link>
-        <button
-          style={{
-            marginRight: "10px",
-            border: "none",
-            backgroundColor: "transparent",
-            position: "relative",
-            bottom: "40vh",
-            right: "37vw",
-            fontSize: "120%",
-          }}
-        >
-          <BsChevronLeft />
-        </button>
-      </Link>
-
-      <Link to="/menu/fried-rice">
-        <button
-          style={{
-            marginLeft: "10px",
-            border: "none",
-            backgroundColor: "transparent",
-            position: "relative",
-            bottom: "40vh",
-            left: "37vw",
-            fontSize: "120%",
-          }}
-        >
-          <BsChevronRight />
-        </button>
-      </Link>
     </div>
   );
 };
+
 export default JollofRice;
