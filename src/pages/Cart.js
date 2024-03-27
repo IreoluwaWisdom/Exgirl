@@ -19,6 +19,7 @@ import Showed from "../comp/Showed";
 import "../styles/Cart.css";
 import Loader from "../comp/Loader";
 import { FaShoppingCart } from "react-icons/fa";
+import ScrollToTopButton from "../comp/ScrollToTopButton";
 
 const Cart = () => {
   const { cart, dispatch } = useCart();
@@ -322,6 +323,7 @@ const Cart = () => {
           </button>
         </div>
       </div>
+      <ScrollToTopButton />
     </div>
   );
 };

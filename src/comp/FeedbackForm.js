@@ -16,6 +16,7 @@ const FeedbackForm = () => {
   const [comment, setComment] = useState("");
   const [averageRating, setAverageRating] = useState(0);
   const [totalRatings, setTotalRatings] = useState(0);
+  const [individualRatings, setIndividualRatings] = useState([]);
 
   useEffect(() => {
     // Fetch existing rating document if it exists
@@ -57,6 +58,11 @@ const FeedbackForm = () => {
         const ratingData = ratingDocSnap.data();
         setAverageRating(ratingData.average || 0);
         setTotalRatings(ratingData.total || 0);
+        const individualRatingsArray = [];
+        for (let i = 1; i <= 5; i++) {
+          individualRatingsArray.push(ratingData[`${i}-star`] || 0);
+        }
+        setIndividualRatings(individualRatingsArray);
       } else {
         // Document doesn't exist, create a new one with initial ratings
         await initializeRatings();
@@ -129,6 +135,13 @@ const FeedbackForm = () => {
         setAverageRating(average);
         setTotalRatings(total);
 
+        // Update individual star ratings
+        const individualRatingsArray = [];
+        for (let i = 1; i <= 5; i++) {
+          individualRatingsArray.push(ratingData[`${i}-star`] || 0);
+        }
+        setIndividualRatings(individualRatingsArray);
+
         // Update average rating in Firestore
         await setDoc(ratingDocRef, { average: average }, { merge: true });
       }
@@ -143,15 +156,17 @@ const FeedbackForm = () => {
     for (let i = 1; i <= 5; i++) {
       if (i <= averageRating) {
         stars.push(
-          <span key={i} className="star-filled">
-            ★
-          </span>,
+          <div key={i} className="star-container">
+            <span className="star-filled">★</span>
+            <progress value={individualRatings[i - 1]} max={totalRatings} />
+          </div>,
         );
       } else {
         stars.push(
-          <span key={i} className="star">
-            ☆
-          </span>,
+          <div key={i} className="star-container">
+            <span className="star">☆</span>
+            <progress value={individualRatings[i - 1]} max={totalRatings} />
+          </div>,
         );
       }
     }
@@ -159,7 +174,9 @@ const FeedbackForm = () => {
   };
 
   return (
-    <div style={{ marginLeft: "5vh", textAlign: "center" }}>
+    <div
+      style={{ marginLeft: "5vh", textAlign: "center", marginBottom: "5vh" }}
+    >
       <p>What would you like to tell us?</p>
       <form
         onSubmit={handleSubmit}
