@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { getFirestore, doc, setDoc, collection } from "firebase/firestore";
+import { FaUserPlus } from "react-icons/fa";
 
 const GoogleSignUp = () => {
   const [email, setEmail] = useState(localStorage.getItem("userEmail") || "");
@@ -62,23 +62,29 @@ const GoogleSignUp = () => {
   };
 
   return (
-    <div>
+    <div style={{ textAlign: "center", marginBottom: "5vh" }}>
       <div>
-        <h2>Google Sign Up</h2>
+        <FaUserPlus
+          style={{ fontSize: "10vw", color: "#6a0dad", marginBottom: "2vh" }}
+        />
+
         <form onSubmit={handleSignUp}>
           <label>
-            Email:
+            Email
+            <br />
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              style={{ borderRadius: "30px" }}
               readOnly // Email field is read-only
             />
             {emailError && <p>{emailError}</p>}
           </label>
           <br />
           <label>
-            Username:
+            Username
+            <br />
             <input
               type="text"
               value={username}
@@ -88,7 +94,8 @@ const GoogleSignUp = () => {
           </label>
           <br />
           <label>
-            Phone Number:
+            Phone Number
+            <br />
             <input
               type="tel"
               value={phoneNumber}
@@ -98,7 +105,8 @@ const GoogleSignUp = () => {
           </label>
           <br />
           <label>
-            Date of Birth (DD/MM):
+            Date of Birth (DD/MM)
+            <br />
             <input
               type="text"
               value={dobDayMonth}
@@ -110,6 +118,7 @@ const GoogleSignUp = () => {
           <br />
           <label>
             How did you hear about us?
+            <br />
             <select
               value={hearAboutUs}
               onChange={(e) => setHearAboutUs(e.target.value)}
@@ -123,7 +132,21 @@ const GoogleSignUp = () => {
             </select>
           </label>
           <br />
-          <button type="submit">Sign Up</button>
+          <button
+            type="submit"
+            style={{
+              backgroundColor: "#6a0dad",
+              color: "white",
+              border: "none",
+              padding: "5px 10px",
+              borderRadius: "15px",
+              cursor: "pointer",
+              width: "50vw",
+              margin: "8vw auto",
+            }}
+          >
+            Sign Up
+          </button>
         </form>
         {message && <p>{message}</p>}
       </div>
