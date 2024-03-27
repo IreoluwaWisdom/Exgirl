@@ -87,7 +87,7 @@ const HowItWorks = () => {
     <div className="how-it-works-container">
       <h2 className="heading">How it Works</h2>
       <Accordion items={steps} setActiveStepIndex={setActiveStepIndex} />
-    <div> Powered by Ex-girlfriend foods </div>
+    <div> Powered by THE EXECUTIVES </div>
     </div>
   );
 };

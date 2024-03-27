@@ -12,7 +12,7 @@ const Footer = () => {
         color: "#6a0dad",
       }}
     >
-      &copy; 2024 Ex-girlfriend foods
+      &copy; 2024 THE EXECUTIVES
       <br />
       <Link
         to="https://www.upwork.com/freelancers/~011dd99f9d6b3935c9"
